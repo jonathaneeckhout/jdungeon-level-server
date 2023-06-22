@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://craohcl123yon"]
+
+[ext_resource type="Script" path="res://scenes/Multiplayer/Multiplayer.gd" id="1_xr2lh"]
+
+[node name="Multiplayer" type="Node2D"]
+script = ExtResource("1_xr2lh")
+
+[node name="Level" type="Node2D" parent="."]
+
+[node name="Grassland" type="Node2D" parent="Level"]
+
+[node name="Players" type="Node2D" parent="Level/Grassland"]
+
+[node name="NPCS" type="Node2D" parent="Level/Grassland"]
+
+[node name="Enemies" type="Node2D" parent="Level/Grassland"]
