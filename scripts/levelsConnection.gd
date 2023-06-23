@@ -39,7 +39,7 @@ func _ready():
 
 func _on_connection_succeeded():
 	print("Levels connection succeeded")
-	register_level.rpc_id(1, "Grassland", SERVER_ADDRESS, SERVER_PORT)
+	register_level.rpc_id(1, "Grassland", PlayersConnection.ADDRESS, PlayersConnection.PORT)
 
 
 func _on_connection_failed():
