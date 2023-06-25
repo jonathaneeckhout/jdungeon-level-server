@@ -1,51 +1,73 @@
 extends Node
 
-const SERVER_ADDRESS = "127.0.01"
-const SERVER_PORT = 4434
+const PORT = 4434
+const MAX_PEERS = 128
 
-var cert = load("res://data/certs/X509_certificate_levels.crt")
 
-var client = ENetMultiplayerPeer.new()
+var cert = load("res://data/certs/X509_certificate.crt")
+var key = load("res://data/certs/X509_key.key")
+var players = {}
+var server = ENetMultiplayerPeer.new()
 var multiplayer_api : MultiplayerAPI
 
+signal logged_in(id: int, username: String)
+
 func _ready():
+	server.peer_connected.connect(_client_connected)
+	server.peer_disconnected.connect(_client_disconnected)
 
-	var error = client.create_client(SERVER_ADDRESS, SERVER_PORT)
+	server.create_server(PORT, MAX_PEERS)
+
+	if server.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
+		print("Failed to start levels server.")
+		return
+
+	var server_tls_options = TLSOptions.server(key, cert)
+
+	var error = server.host.dtls_server_setup(server_tls_options)
 	if error != OK:
-		print("Error while creating")
-		return false
-
-	if client.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
-		print("Failed to connect to game")
-		# OS.alert("Failed to start multiplayer client.")
-		return false
-
-	#TODO: Use this function instead of debug function
-	# var client_tls_options = TLSOptions.client(cert)
-	#TODO: Remove next line
-	var client_tls_options = TLSOptions.client_unsafe(cert)
-	error = client.host.dtls_client_setup(SERVER_ADDRESS, client_tls_options)
-	if error != OK:
-		print("Failed to connect via DTLS")
-		return false
+		print("Failed to setup DTLS")
+		return
 
 	multiplayer_api = MultiplayerAPI.create_default_interface()
-	get_tree().set_multiplayer(multiplayer_api, self.get_path()) 
-	multiplayer_api.multiplayer_peer = client
-
-	multiplayer_api.connected_to_server.connect(_on_connection_succeeded)
-	multiplayer_api.connection_failed.connect(_on_connection_failed)
+	get_tree().set_multiplayer(multiplayer_api, self.get_path())
+	multiplayer_api.multiplayer_peer = server
 
 
-func _on_connection_succeeded():
-	print("Levels connection succeeded")
-	register_level.rpc_id(1, "Grassland", PlayersConnection.ADDRESS, PlayersConnection.PORT)
+func _process(_delta):
+	if multiplayer_api.has_multiplayer_peer():
+		multiplayer_api.poll()
 
 
-func _on_connection_failed():
-	print("Levels connection failed")
+func _client_connected(id):
+	print("Client connected ", id)
+	players[id] = {
+		"username": "", "logged_in": false, "connected_time": Time.get_unix_time_from_system()
+	}
+
+
+func _client_disconnected(id):
+	print("Client disconnected ", id)
+	players.erase(id)
 
 
 @rpc("call_remote", "any_peer", "reliable")
-func register_level(_level: String, _address: String, _port: int):
+func authenticate_with_cookie(username: String, cookie: String):
+	# Get the ID of remote peer
+	var id = multiplayer_api.get_remote_sender_id()
+	var res = await Database.authenticate_player_with_cookie(username, cookie)
+
+	if res:
+		# If authorization succeeded set logged_in to true for later reference
+		players[id]["username"] = username
+		players[id]["logged_in"] = true
+
+		logged_in.emit(id, username)
+
+	client_login_response.rpc_id(id, res)
+
+
+@rpc("call_remote", "authority", "reliable")
+func client_login_response(_succeeded: bool, _cookie: String):
+	#Placeholder code for server
 	pass
