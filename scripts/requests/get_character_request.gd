@@ -5,7 +5,7 @@ const AUTHENTICATION_SERVER = "http://localhost:3001/api"
 
 @onready var http_request = HTTPRequest.new()
 
-signal auth_response(response:bool)
+signal request_response(response)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -14,15 +14,14 @@ func _ready():
 	http_request.request_completed.connect(_http_request_completed)
 
 
-func authenticate_with_cookie(username: String, cookie: String) -> bool:
-	var body = JSON.stringify({"type": "auth-cookie", "args": {"username": username, "cookie": cookie}})
-
-	var error = http_request.request(AUTHENTICATION_SERVER, HEADERS, HTTPClient.METHOD_POST, body)
+func get_character(character_name: String):
+	var url = "%s/characters/%s" % [AUTHENTICATION_SERVER, character_name]
+	var error = http_request.request(url, HEADERS, HTTPClient.METHOD_GET)
 	if error != OK:
 		push_error("An error occurred in the HTTP request.")
-		return false
+		return null
 	else:
-		var response = await auth_response
+		var response = await request_response
 
 		return response
 
@@ -31,7 +30,7 @@ func authenticate_with_cookie(username: String, cookie: String) -> bool:
 func _http_request_completed(result, response_code, _headers, body):
 
 	if result != HTTPRequest.RESULT_SUCCESS:
-		auth_response.emit(false)
+		request_response.emit(null)
 		return
 
 	if response_code != 200:
@@ -42,8 +41,11 @@ func _http_request_completed(result, response_code, _headers, body):
 	json.parse(body.get_string_from_utf8())
 	var response = json.get_data()
 
-	if !response.has("error") or response["error"] or !response.has("data"):
-		auth_response.emit(false)
+	if !"error" in response or response["error"] or !"data" in response:
+		request_response.emit(null)
 		return
 
-	auth_response.emit(response["data"]["auth"])
+	var data = response["data"]
+	data["position"] = Vector2(response["data"]["position"]["x"], response["data"]["position"]["y"])
+
+	request_response.emit(data)

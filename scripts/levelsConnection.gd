@@ -10,7 +10,7 @@ var players = {}
 var server = ENetMultiplayerPeer.new()
 var multiplayer_api : MultiplayerAPI
 
-signal logged_in(id: int, username: String)
+signal logged_in(id: int, username: String, character: String)
 
 func _ready():
 	server.peer_connected.connect(_client_connected)
@@ -42,7 +42,7 @@ func _process(_delta):
 func _client_connected(id):
 	print("Client connected ", id)
 	players[id] = {
-		"username": "", "logged_in": false, "connected_time": Time.get_unix_time_from_system()
+		"username": "", "logged_in": false, "character": "", "connected_time": Time.get_unix_time_from_system()
 	}
 
 
@@ -52,7 +52,7 @@ func _client_disconnected(id):
 
 
 @rpc("call_remote", "any_peer", "reliable")
-func authenticate_with_cookie(username: String, cookie: String):
+func authenticate_with_cookie(username: String, cookie: String, character: String):
 	# Get the ID of remote peer
 	var id = multiplayer_api.get_remote_sender_id()
 	var res = await Database.authenticate_player_with_cookie(username, cookie)
@@ -61,8 +61,9 @@ func authenticate_with_cookie(username: String, cookie: String):
 		# If authorization succeeded set logged_in to true for later reference
 		players[id]["username"] = username
 		players[id]["logged_in"] = true
+		players[id]["character"] = character
 
-		logged_in.emit(id, username)
+		logged_in.emit(id, username, character)
 
 	client_login_response.rpc_id(id, res)
 
