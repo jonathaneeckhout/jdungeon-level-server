@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://vl0tbe6flllf"]
+
+[node name="Grassland" type="Node2D"]
+
+[node name="Players" type="Node2D" parent="."]
+
+[node name="NPCS" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]

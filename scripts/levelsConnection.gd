@@ -10,6 +10,7 @@ var players = {}
 var server = ENetMultiplayerPeer.new()
 var multiplayer_api : MultiplayerAPI
 
+
 signal logged_in(id: int, username: String, character: String)
 
 func _ready():
@@ -71,4 +72,15 @@ func authenticate_with_cookie(username: String, cookie: String, character: Strin
 @rpc("call_remote", "authority", "reliable")
 func client_login_response(_succeeded: bool, _cookie: String):
 	#Placeholder code for server
+	pass
+
+
+@rpc("call_remote", "authority", "reliable")
+func add_player(_character_name: String, _pos: Vector2):
+	#Placeholder code for server
+	pass
+
+
+@rpc("call_remote", "authority", "unreliable")
+func sync_player(_character_name: String, _pos: Vector2, _vel : Vector2):
 	pass
