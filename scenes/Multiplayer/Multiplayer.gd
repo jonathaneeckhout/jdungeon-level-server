@@ -15,7 +15,7 @@ func _on_player_logged_in(id: int, username: String, character_name: String):
 	var character = await Database.get_character(username)
 	if character == null:
 		print("Player=[%s], character=[%s] does not exist" %[username, character_name])
-		#TODO: disconnect client
+		multiplayer.disconnect_peer(id)
 		return
 	
 	if character["level"] != LEVEL:
