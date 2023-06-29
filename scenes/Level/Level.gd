@@ -29,8 +29,9 @@ func set_level(level_name: String):
 	return true
 
 
-func add_player(character_name: String, pos: Vector2):
+func add_player(id: int, character_name: String, pos: Vector2):
 	var player = player_scene.instantiate()
+	player.player = id
 	player.name = character_name
 	player.position = pos
 	player.username = character_name

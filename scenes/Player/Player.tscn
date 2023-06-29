@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dq18xjaweyeec"]
+[gd_scene load_steps=8 format=3 uid="uid://dq18xjaweyeec"]
 
 [ext_resource type="Script" path="res://scenes/Player/Player.gd" id="1_2682b"]
+[ext_resource type="Script" path="res://scenes/Player/PlayerInput.gd" id="2_t6mij"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bgovn"]
 radius = 16.0
@@ -78,6 +79,9 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_rn7ha")
 value = 100.0
 metadata/_edit_lock_ = true
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="ServerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_interval = 0.25
 replication_config = SubResource("SceneReplicationConfig_anxyv")
+
+[node name="PlayerInput" type="MultiplayerSynchronizer" parent="."]
+script = ExtResource("2_t6mij")
