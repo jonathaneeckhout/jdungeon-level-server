@@ -71,8 +71,3 @@ func client_login_response(_succeeded: bool, _cookie: String):
 func add_player(_character_name: String, _pos: Vector2):
 	#Placeholder code for server
 	pass
-
-
-@rpc("call_remote", "authority", "unreliable")
-func sync_player(_character_name: String, _pos: Vector2, _vel : Vector2):
-	pass

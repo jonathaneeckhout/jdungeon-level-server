@@ -1,7 +1,5 @@
 extends Node2D
 
-const SYNC_PERIOD = 0.25
-
 @onready var player_scene = load("res://scenes/Player/Player.tscn")
 
 var level: String = ""
@@ -9,13 +7,6 @@ var players: Node2D
 var npcs: Node2D
 var enemies: Node2D
 
-@onready var sync_timer = Timer.new()
-
-
-func _ready():
-	sync_timer.timeout.connect(_on_sync_timer_timeout)
-	add_child(sync_timer)	
-	sync_timer.start(SYNC_PERIOD)
 
 func set_level(level_name: String):
 	var scene
@@ -44,9 +35,3 @@ func add_player(character_name: String, pos: Vector2):
 	player.position = pos
 	player.username = character_name
 	players.add_child(player)
-
-
-func _on_sync_timer_timeout():
-	for player in players.get_children():
-		#TODO: only send it to authorized clients
-		LevelsConnection.sync_player.rpc(player.name, player.position, player.velocity)

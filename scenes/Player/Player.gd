@@ -5,6 +5,9 @@ extends CharacterBody2D
 		username = user
 		$Interface/Username.text = username
 
+@export var vel: Vector2
+
+
 var minSpeed: float = 50.0
 var maxSpeed: float = 100.0
 var areaRect: Rect2 = Rect2(-200, -200, 400, 400)
@@ -22,6 +25,7 @@ func _process(delta: float):
 		choose_new_target_position()
 	velocity = velocity.move_toward(targetPosition - position, maxSpeed * delta)
 	move_and_slide()
+	vel = velocity
 
 
 func choose_new_target_position():
