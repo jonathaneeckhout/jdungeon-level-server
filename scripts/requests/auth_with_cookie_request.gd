@@ -1,15 +1,23 @@
 extends Node
 
 const HEADERS = ["Content-Type: application/json"]
-const AUTHENTICATION_SERVER = "http://localhost:3001/api"
+const AUTHENTICATION_SERVER = "https://localhost:3001/api"
 
 @onready var http_request = HTTPRequest.new()
 
 signal auth_response(response:bool)
 
+var cert = load("res://data/certs/app/X509_certificate.crt")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	#TODO: Use this function instead of debug function
+	# var client_tls_options = TLSOptions.client(cert)
+	#TODO: Remove next line
+	var client_tls_options = TLSOptions.client_unsafe(cert)
+
+	http_request.set_tls_options(client_tls_options)
+
 	add_child(http_request)
 	http_request.request_completed.connect(_http_request_completed)
 
@@ -19,7 +27,7 @@ func authenticate_with_cookie(username: String, cookie: String) -> bool:
 
 	var error = http_request.request(AUTHENTICATION_SERVER, HEADERS, HTTPClient.METHOD_POST, body)
 	if error != OK:
-		push_error("An error occurred in the HTTP request.")
+		print("An error occurred in the HTTP request.")
 		return false
 	else:
 		var response = await auth_response

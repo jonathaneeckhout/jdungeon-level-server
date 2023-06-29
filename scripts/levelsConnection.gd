@@ -4,18 +4,15 @@ const PORT = 4434
 const MAX_PEERS = 128
 
 
-var cert = load("res://data/certs/X509_certificate.crt")
-var key = load("res://data/certs/X509_key.key")
+var cert = load("res://data/certs/level/X509_certificate.crt")
+var key = load("res://data/certs/level/X509_key.key")
 var players = {}
-var server = ENetMultiplayerPeer.new()
-var multiplayer_api : MultiplayerAPI
 
 
 signal logged_in(id: int, username: String, character: String)
 
 func _ready():
-	server.peer_connected.connect(_client_connected)
-	server.peer_disconnected.connect(_client_disconnected)
+	var server = ENetMultiplayerPeer.new()
 
 	server.create_server(PORT, MAX_PEERS)
 
@@ -30,14 +27,9 @@ func _ready():
 		print("Failed to setup DTLS")
 		return
 
-	multiplayer_api = MultiplayerAPI.create_default_interface()
-	get_tree().set_multiplayer(multiplayer_api, self.get_path())
-	multiplayer_api.multiplayer_peer = server
-
-
-func _process(_delta):
-	if multiplayer_api.has_multiplayer_peer():
-		multiplayer_api.poll()
+	multiplayer.multiplayer_peer = server
+	multiplayer.peer_connected.connect(_client_connected)
+	multiplayer.peer_disconnected.connect(_client_disconnected)
 
 
 func _client_connected(id):
@@ -55,7 +47,7 @@ func _client_disconnected(id):
 @rpc("call_remote", "any_peer", "reliable")
 func authenticate_with_cookie(username: String, cookie: String, character: String):
 	# Get the ID of remote peer
-	var id = multiplayer_api.get_remote_sender_id()
+	var id = multiplayer.get_remote_sender_id()
 	var res = await Database.authenticate_player_with_cookie(username, cookie)
 
 	if res:
