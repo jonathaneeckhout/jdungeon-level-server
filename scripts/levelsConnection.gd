@@ -76,6 +76,12 @@ func add_player(_character_name: String, _pos: Vector2):
 	pass
 
 
+@rpc("call_remote", "authority", "reliable")
+func remove_player(_character_name: String):
+	#Placeholder code for server
+	pass
+
+
 @rpc("call_remote", "any_peer", "reliable")
 func move(pos):
 	player_moved.emit(multiplayer.get_remote_sender_id(), pos)
