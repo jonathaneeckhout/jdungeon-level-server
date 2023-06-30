@@ -28,7 +28,7 @@ func _on_sync_area_body_entered(body):
 	if body == player:
 		return
 
-	LevelsConnection.add_player.rpc_id(player.player, body.name, body.position)
+	LevelsConnection.add_player.rpc_id(player.player, body.player, body.name, body.position)
 	players_in_range.append(body)
 
 
