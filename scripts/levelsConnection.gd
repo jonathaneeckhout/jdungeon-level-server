@@ -10,6 +10,9 @@ var players = {}
 
 
 signal logged_in(id: int, username: String, character: String)
+signal client_disconnected(id: int)
+signal player_moved(id: int, pos: Vector2)
+signal player_interacted(id: int, target: String)
 
 func _ready():
 	var server = ENetMultiplayerPeer.new()
@@ -71,3 +74,13 @@ func client_login_response(_succeeded: bool, _cookie: String):
 func add_player(_character_name: String, _pos: Vector2):
 	#Placeholder code for server
 	pass
+
+
+@rpc("call_remote", "any_peer", "reliable")
+func move(pos):
+	player_moved.emit(multiplayer.get_remote_sender_id(), pos)
+
+
+@rpc("call_remote", "any_peer", "reliable")
+func interact(target: String):
+	player_interacted.emit(multiplayer.get_remote_sender_id(), target)

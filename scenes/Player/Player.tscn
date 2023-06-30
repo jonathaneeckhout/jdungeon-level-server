@@ -1,6 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dq18xjaweyeec"]
 
 [ext_resource type="Script" path="res://scenes/Player/Player.gd" id="1_2682b"]
+[ext_resource type="Script" path="res://scenes/Player/ServerSynchronizer.gd" id="2_qf66c"]
 [ext_resource type="Script" path="res://scenes/Player/PlayerInput.gd" id="2_t6mij"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bgovn"]
@@ -14,14 +15,6 @@ radius = 64.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rn7ha"]
 bg_color = Color(0.356863, 0.690196, 0.364706, 1)
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_anxyv"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = true
-properties/0/sync = true
-properties/1/path = NodePath(".:vel")
-properties/1/spawn = true
-properties/1/sync = true
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 3
@@ -79,9 +72,8 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_rn7ha")
 value = 100.0
 metadata/_edit_lock_ = true
 
-[node name="ServerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_interval = 0.25
-replication_config = SubResource("SceneReplicationConfig_anxyv")
+[node name="ServerSynchronizer" type="Node" parent="."]
+script = ExtResource("2_qf66c")
 
-[node name="PlayerInput" type="MultiplayerSynchronizer" parent="."]
+[node name="PlayerInput" type="Node2D" parent="."]
 script = ExtResource("2_t6mij")

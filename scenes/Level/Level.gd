@@ -7,6 +7,10 @@ var players: Node2D
 var npcs: Node2D
 var enemies: Node2D
 
+var players_by_id = {}
+
+func _ready():
+	multiplayer.peer_disconnected.connect(_client_disconnected)
 
 func set_level(level_name: String):
 	var scene
@@ -36,3 +40,15 @@ func add_player(id: int, character_name: String, pos: Vector2):
 	player.position = pos
 	player.username = character_name
 	players.add_child(player)
+	# Add to this list for internal tracking
+	players_by_id[id] = player
+
+
+func remove_player(id: int):
+	if players_by_id[id]:
+		print("Removing player %s" % players_by_id[id].name)
+		players_by_id[id].queue_free()
+		players_by_id.erase(id)
+
+func _client_disconnected(id):
+	remove_player(id)
