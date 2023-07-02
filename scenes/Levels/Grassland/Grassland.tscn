@@ -1,14 +1,38 @@
-[gd_scene load_steps=2 format=3 uid="uid://vl0tbe6flllf"]
+[gd_scene load_steps=4 format=3 uid="uid://vl0tbe6flllf"]
 
 [ext_resource type="PackedScene" uid="uid://b8tu2wvmmjac3" path="res://scenes/Enemies/Wolf/Wolf.tscn" id="1_wgwrv"]
+[ext_resource type="PackedScene" uid="uid://no6f5p44dw02" path="res://scenes/PlayerSpawnLocation/PlayerSpawnLocation.tscn" id="2_e51m8"]
+[ext_resource type="PackedScene" uid="uid://b4nglbtl885h4" path="res://scenes/EnemySpawnLocation/EnemySpawnLocation.tscn" id="3_tknl2"]
 
 [node name="Grassland" type="Node2D"]
 
+[node name="PlayerRespawnLocations" type="Node2D" parent="."]
+
+[node name="PlayerSpawnLocation" parent="PlayerRespawnLocations" instance=ExtResource("2_e51m8")]
+position = Vector2(487, 83)
+
+[node name="EnemySpawnLocations" type="Node2D" parent="."]
+
+[node name="Wolf" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(197, 388)
+enemy_scene = ExtResource("1_wgwrv")
+respawn_time = 3
+
+[node name="Wolf2" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(278, 496)
+enemy_scene = ExtResource("1_wgwrv")
+respawn_time = 3
+
+[node name="Wolf3" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(132, 494)
+enemy_scene = ExtResource("1_wgwrv")
+respawn_time = 3
+
 [node name="Players" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="NPCS" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="Enemies" type="Node2D" parent="."]
-
-[node name="Wolf" parent="Enemies" instance=ExtResource("1_wgwrv")]
-position = Vector2(545, 374)
+y_sort_enabled = true

@@ -6,6 +6,7 @@ var level: String = ""
 var players: Node2D
 var npcs: Node2D
 var enemies: Node2D
+var player_respawn_locations: Node2D
 
 var players_by_id = {}
 
@@ -29,6 +30,7 @@ func set_level(level_name: String):
 	players = level_instance.get_node("Players")
 	npcs = level_instance.get_node("NPCS")
 	enemies = level_instance.get_node("Enemies")
+	player_respawn_locations = level_instance.get_node("PlayerRespawnLocations")
 
 	return true
 
@@ -52,3 +54,30 @@ func remove_player(id: int):
 
 func _client_disconnected(id):
 	remove_player(id)
+
+
+func add_enemy(enemy_scene: Resource, pos: Vector2) -> CharacterBody2D:
+	var enemy = enemy_scene.instantiate()
+	enemy.name = str(enemy.get_instance_id())
+	enemy.position = pos
+	enemies.add_child(enemy, true)
+	return enemy
+
+
+func find_player_respawn_location(pos: Vector2):
+	var spots = player_respawn_locations.get_children()
+
+	if len(spots) == 0:
+		print("No player respawn spots found")
+		return pos
+
+	var closest = spots[0].position
+	var closest_distance = closest.distance_to(pos)
+
+	for spot in spots:
+		var distance = spot.position.distance_to(pos)
+		if distance < closest_distance:
+			closest = spot.position
+			closest_distance = distance
+
+	return closest

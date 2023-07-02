@@ -115,11 +115,14 @@ func hurt(damage):
 
 
 func die():
-	# var respawn_location = $"../../".find_player_respawn_location(position)
-	# #Stop doing what you were doing
-	# state = STATES.IDLE
-	# position = respawn_location
+	var respawn_location = $"../../../".find_player_respawn_location(position)
+	#Stop doing what you were doing
+	state = STATES.IDLE
+	position = respawn_location
 	hp = MAX_HP
+
+	#TODO: sync dying, for now just update the hp again
+	server_synchronizer.sync_hurt(hp, 0)
 
 
 func update_hp_bar():

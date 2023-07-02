@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://no6f5p44dw02"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_puxtc"]
+bg_color = Color(0.823529, 1, 0.541176, 1)
+
+[node name="PlayerSpawnLocation" type="Node2D"]
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_puxtc")
