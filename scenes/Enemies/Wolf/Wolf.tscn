@@ -29,11 +29,15 @@ script = ExtResource("1_bbw8a")
 shape = SubResource("CircleShape2D_ubm1w")
 
 [node name="AggroArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AggroArea2D"]
 shape = SubResource("CircleShape2D_nmddy")
 
 [node name="AttackArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea2D"]
 shape = SubResource("CircleShape2D_rv788")

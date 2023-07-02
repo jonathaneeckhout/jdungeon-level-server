@@ -33,25 +33,10 @@ var enemies_in_attack_range = []
 
 
 func _ready():
-	# # Set the camera as current if we are this player.
-	# if player == multiplayer.get_unique_id():
-	# 	$Camera2D.make_current()
-	# 	$Interface/ChatPanel.user_name = username
-	# 	$Interface/ChatPanel.show()
-	# else:
-	# 	$Interface.remove_child($Interface/ChatPanel)
-
 	input.move_target = position
 
 	attack_timer.timeout.connect(_on_attack_timer_timeout)
 	add_child(attack_timer)
-
-	# EDIT: Let the client simulate player movement too to compesate network input latency.
-	# set_physics_process(multiplayer.is_server())
-
-	#Handle server specific functionality
-	if not multiplayer.is_server():
-		return
 
 	$AttackArea2D.body_entered.connect(_on_attack_area_body_entered)
 	$AttackArea2D.body_exited.connect(_on_attack_area_body_exited)
@@ -102,7 +87,7 @@ func _handle_attack():
 		velocity = Vector2.ZERO
 
 		if attack_timer.is_stopped():
-			input.interact_target.hurt.rpc(ATTACK_POWER)
+			attack(input.interact_target)
 			attack_timer.start(ATTACK_SPEED)
 
 	state = STATES.ATTACK
@@ -112,7 +97,10 @@ func _on_attack_timer_timeout():
 	attack_timer.stop()
 
 
-@rpc("call_local")
+func attack(target: CharacterBody2D):
+	target.hurt(ATTACK_POWER)
+
+
 func hurt(damage):
 	# Deal damage if health pool is big enough
 	if damage < hp:
@@ -125,10 +113,10 @@ func hurt(damage):
 
 
 func die():
-	var respawn_location = $"../../".find_player_respawn_location(position)
-	#Stop doing what you were doing
-	state = STATES.IDLE
-	position = respawn_location
+	# var respawn_location = $"../../".find_player_respawn_location(position)
+	# #Stop doing what you were doing
+	# state = STATES.IDLE
+	# position = respawn_location
 	hp = MAX_HP
 
 
