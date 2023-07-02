@@ -3,7 +3,7 @@ extends Node2D
 const SYNC_SPEED = 0.25
 
 @onready var sync_timer = Timer.new()
-@onready var player = $"../"
+@onready var enemy = $"../"
 
 var players_in_range = []
 
@@ -19,24 +19,23 @@ func _ready():
 
 
 func _on_sync_timer_timeout():
-	sync.rpc_id(player.player, player.position, player.velocity)
 	for other_player in players_in_range:
-		sync.rpc_id(other_player.player, player.position, player.velocity)
+		sync.rpc_id(other_player.player, enemy.position, enemy.velocity)
 
 
 func _on_sync_area_body_entered(body):
-	if body == player:
+	if body == enemy:
 		return
 
-	LevelsConnection.add_player.rpc_id(player.player, body.player, body.name, body.position)
+	LevelsConnection.add_enemy.rpc_id(body.player, enemy.name, enemy.position)
 	players_in_range.append(body)
 
 
 func _on_sync_area_body_exited(body):
-	if body == player:
+	if body == enemy:
 		return
 
-	LevelsConnection.remove_player.rpc_id(player.player, body.name)
+	LevelsConnection.remove_enemy.rpc_id(body.player, enemy.name)
 	players_in_range.erase(body)
 
 

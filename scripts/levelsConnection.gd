@@ -90,3 +90,15 @@ func move(pos):
 @rpc("call_remote", "any_peer", "reliable")
 func interact(target: String):
 	player_interacted.emit(multiplayer.get_remote_sender_id(), target)
+
+
+@rpc("call_remote", "authority", "reliable")
+func add_enemy(_enemy_name: String, _pos: Vector2):
+	#Placeholder code for server
+	pass
+
+
+@rpc("call_remote", "authority", "reliable")
+func remove_enemy(_enemy_name: String):
+	#Placeholder code for server
+	pass

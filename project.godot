@@ -20,6 +20,13 @@ config/icon="res://icon.svg"
 Database="*res://scripts/database.gd"
 LevelsConnection="*res://scripts/levelsConnection.gd"
 
+[layer_names]
+
+2d_physics/layer_1="world"
+2d_physics/layer_2="players"
+2d_physics/layer_3="enemies"
+2d_physics/layer_4="npcs"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
