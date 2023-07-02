@@ -5,7 +5,7 @@ enum STATES { IDLE, MOVE, ATTACK }
 const SPEED = 300.0
 const ATTACK_SPEED = 1.0
 const ATTACK_POWER = 30.0
-const MAX_HP = 100
+const MAX_HP = 100.0
 const ARRIVAL_DISTANCE = 8
 
 @export var username := "":
@@ -30,6 +30,7 @@ var enemies_in_attack_range = []
 @onready var attack_timer = Timer.new()
 # Player synchronized input.
 @onready var input = $PlayerInput
+@onready var server_synchronizer = $ServerSynchronizer
 
 
 func _ready():
@@ -105,6 +106,7 @@ func hurt(damage):
 	# Deal damage if health pool is big enough
 	if damage < hp:
 		hp -= damage
+		server_synchronizer.sync_hurt(hp, damage)
 	# Die if damage is bigger than remaining hp
 	else:
 		die()

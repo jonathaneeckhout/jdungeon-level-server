@@ -17,6 +17,7 @@ var players_in_aggro_range = []
 var players_in_attack_range = []
 
 @onready var attack_timer = Timer.new()
+@onready var server_synchronizer = $ServerSynchronizer
 
 
 func _ready():
@@ -89,6 +90,7 @@ func hurt(damage: int):
 		queue_free()
 		return
 
+	server_synchronizer.sync_hurt(hp, damage)
 	update_hp_bar()
 
 

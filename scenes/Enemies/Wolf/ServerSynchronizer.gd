@@ -39,6 +39,16 @@ func _on_sync_area_body_exited(body):
 	players_in_range.erase(body)
 
 
+func sync_hurt(current_hp: int, amount: int):
+	for other_player in players_in_range:
+		hurt.rpc_id(other_player.player, current_hp, amount)
+
+
 @rpc("call_remote", "authority", "unreliable")
 func sync(_pos, _vel):
+	pass
+
+
+@rpc("call_remote", "authority", "reliable")
+func hurt(_current_hp: int, _amount: int):
 	pass
