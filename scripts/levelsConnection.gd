@@ -51,7 +51,10 @@ func _client_disconnected(id):
 func authenticate_with_cookie(username: String, cookie: String, character: String):
 	# Get the ID of remote peer
 	var id = multiplayer.get_remote_sender_id()
-	var res = await Database.authenticate_player_with_cookie(username, cookie)
+
+	#TODO: bypass credentials now!!!!!!!!!!! IMPORTANT TO DO
+	# var res = await CommonConnection.authenticate_player_with_cookie(username, cookie)
+	var res = true
 
 	if res:
 		# If authorization succeeded set logged_in to true for later reference
