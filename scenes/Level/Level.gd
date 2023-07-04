@@ -47,7 +47,7 @@ func add_player(id: int, character_name: String, pos: Vector2):
 
 
 func remove_player(id: int):
-	if players_by_id[id]:
+	if id in players_by_id:
 		print("Removing player %s" % players_by_id[id].name)
 		players_by_id[id].queue_free()
 		players_by_id.erase(id)
