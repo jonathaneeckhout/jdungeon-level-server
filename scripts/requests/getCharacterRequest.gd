@@ -1,6 +1,8 @@
 extends Node
 
-const AUTHENTICATION_SERVER = "https://localhost:3001/api"
+@onready var debug = Env.get_value("DEBUG")
+@onready var common_server_address = Env.get_value("COMMON_SERVER_ADDRES")
+@onready var url = "%s/api" % common_server_address
 
 @onready var http_request = HTTPRequest.new()
 
@@ -8,10 +10,12 @@ signal request_response(response)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#TODO: Use this function instead of debug function
-	# var client_tls_options = TLSOptions.client(cert)
-	#TODO: Remove next line
-	var client_tls_options = TLSOptions.client_unsafe()
+	var client_tls_options: TLSOptions
+
+	if debug =="true":
+		client_tls_options = TLSOptions.client_unsafe()
+	else:
+		client_tls_options = TLSOptions.client()
 
 	http_request.set_tls_options(client_tls_options)
 
@@ -20,10 +24,10 @@ func _ready():
 
 
 func get_character(character_name: String, cookie: String):
-	var url = "%s/characters/%s" % [AUTHENTICATION_SERVER, character_name]
+	var request_url = "%s/characters/%s" % [url, character_name]
 	var headers =  ["Content-Type: application/json", "Cookie: %s" % cookie ]
 
-	var error = http_request.request(url, headers, HTTPClient.METHOD_GET)
+	var error = http_request.request(request_url, headers, HTTPClient.METHOD_GET)
 	if error != OK:
 		print("An error occurred in the HTTP request.")
 		return null

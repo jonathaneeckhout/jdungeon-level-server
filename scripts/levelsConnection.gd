@@ -1,13 +1,11 @@
 extends Node
 
-const PORT = 4434
-const MAX_PEERS = 128
+@onready var port = int(Env.get_value("LEVEL_PORT"))
+@onready var max_peers = int(Env.get_value("LEVEL_MAX_PEERS"))
+@onready var crt_path = Env.get_value("LEVEL_CRT")
+@onready var key_path = Env.get_value("LEVEL_KEY")
 
-
-var cert = load("res://data/certs/level/X509_certificate.crt")
-var key = load("res://data/certs/level/X509_key.key")
 var players = {}
-
 
 signal logged_in(id: int, username: String, character: String)
 signal client_disconnected(id: int)
@@ -17,11 +15,14 @@ signal player_interacted(id: int, target: String)
 func _ready():
 	var server = ENetMultiplayerPeer.new()
 
-	server.create_server(PORT, MAX_PEERS)
+	server.create_server(port, max_peers)
 
 	if server.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		print("Failed to start levels server.")
 		return
+
+	var cert = load(crt_path)
+	var key = load(key_path)
 
 	var server_tls_options = TLSOptions.server(key, cert)
 

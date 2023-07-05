@@ -21,7 +21,6 @@ func authenticate(level: String, key: String):
 	if res["response"]:
 		logged_in = true
 		cookie = res["cookie"]
-	print(res)
 	return res["response"]
 
 
