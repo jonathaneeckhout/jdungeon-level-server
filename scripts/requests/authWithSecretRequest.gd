@@ -1,20 +1,21 @@
 extends Node
 
-const HEADERS = ["Content-Type: application/json"]
-const AUTHENTICATION_SERVER = "https://localhost:3000/api"
+@onready var debug = Env.get_value("DEBUG")
+@onready var common_server_address = Env.get_value("COMMON_SERVER_ADDRES")
+@onready var url = "%s/level/login/player" % common_server_address
 
 @onready var http_request = HTTPRequest.new()
 
 signal auth_response(response:bool)
 
-var cert = load("res://data/certs/app/X509_certificate.crt")
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#TODO: Use this function instead of debug function
-	# var client_tls_options = TLSOptions.client(cert)
-	#TODO: Remove next line
-	var client_tls_options = TLSOptions.client_unsafe(cert)
+	var client_tls_options: TLSOptions
+
+	if debug =="true":
+		client_tls_options = TLSOptions.client_unsafe()
+	else:
+		client_tls_options = TLSOptions.client()
 
 	http_request.set_tls_options(client_tls_options)
 
@@ -22,10 +23,12 @@ func _ready():
 	http_request.request_completed.connect(_http_request_completed)
 
 
-func authenticate_with_cookie(username: String, cookie: String) -> bool:
-	var body = JSON.stringify({"type": "auth-cookie", "args": {"username": username, "cookie": cookie}})
+func authenticate_with_secret(username: String, secret: String, cookie: String) -> bool:
+	var headers =  ["Content-Type: application/json", "Cookie: %s" % cookie ]
 
-	var error = http_request.request(AUTHENTICATION_SERVER, HEADERS, HTTPClient.METHOD_POST, body)
+	var body = JSON.stringify({"username": username, "secret": secret})
+
+	var error = http_request.request(url, headers, HTTPClient.METHOD_POST, body)
 	if error != OK:
 		print("An error occurred in the HTTP request.")
 		return false

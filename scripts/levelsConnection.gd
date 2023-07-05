@@ -49,14 +49,11 @@ func _client_disconnected(id):
 
 
 @rpc("call_remote", "any_peer", "reliable")
-func authenticate_with_cookie(username: String, cookie: String, character: String):
+func authenticate_with_secret(username: String, secret: String, character: String):
 	# Get the ID of remote peer
 	var id = multiplayer.get_remote_sender_id()
 
-	#TODO: bypass credentials now!!!!!!!!!!! IMPORTANT TO DO
-	# var res = await CommonConnection.authenticate_player_with_cookie(username, cookie)
-	var res = true
-
+	var res = await CommonConnection.authenticate_player_with_secret(username, secret)
 	if res:
 		# If authorization succeeded set logged_in to true for later reference
 		players[id]["username"] = username

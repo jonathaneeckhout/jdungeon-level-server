@@ -1,9 +1,8 @@
 extends Node
 
 var auth_request = preload("res://scripts/requests/authRequest.gd")
-var auth_with_cookie_request = preload("res://scripts/requests/auth_with_cookie_request.gd")
+var auth_with_secret_request = preload("res://scripts/requests/authWithSecretRequest.gd")
 var get_character_request = preload("res://scripts/requests/getCharacterRequest.gd")
-
 
 var cookie = ""
 var logged_in = false
@@ -24,10 +23,10 @@ func authenticate(level: String, key: String):
 	return res["response"]
 
 
-func authenticate_player_with_cookie(username: String, cookie: String) -> bool:
-	var new_req = auth_with_cookie_request.new()
+func authenticate_player_with_secret(username: String, secret: String) -> bool:
+	var new_req = auth_with_secret_request.new()
 	add_child(new_req)
-	var res = await new_req.authenticate_with_cookie(username, cookie)
+	var res = await new_req.authenticate_with_secret(username, secret, cookie)
 	new_req.queue_free()
 	return res
 
