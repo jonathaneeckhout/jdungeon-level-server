@@ -23,6 +23,8 @@ jobs:
         run: |
           mkdir -v -p ~/.local/share/godot/templates
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+      - name: WhatDoWeHave 
+        run: ls /github/home/.local/share/godot/export_templates/4.1.stable/
       - name: Linux Build
         run: |
           mkdir -v -p build/linux
