@@ -4,8 +4,8 @@ on: [push]
 env:
   GODOT_VERSION: "4.1"
   EXPORT_NAME: jdungeon-level-server
-  PROJECT_PATH: jdungeon-level-server
-  
+  PROJECT_PATH: ./
+
 jobs:
   export-linux:
     name: Linux Export
