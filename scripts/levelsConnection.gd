@@ -21,8 +21,18 @@ func _ready():
 		print("Failed to start levels server.")
 		return
 
-	var cert = load(crt_path)
-	var key = load(key_path)
+	var cert_file = FileAccess.open(crt_path, FileAccess.READ)
+	var key_file = FileAccess.open(key_path, FileAccess.READ)
+
+	var cert_string = cert_file.get_as_text()
+	var key_string = key_file.get_as_text()
+
+
+	var cert = X509Certificate.new()
+	var key = CryptoKey.new()
+
+	cert.load_from_string(cert_string)
+	key.load_from_string(key_string)
 
 	var server_tls_options = TLSOptions.server(key, cert)
 
