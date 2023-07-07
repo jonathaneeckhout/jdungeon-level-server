@@ -18,7 +18,7 @@ jobs:
         with:
           lfs: true
       - name: WhatDoWeHave 
-        run: ls /root/.local/share/godot/templates/
+        run: ls /root/.local/share/godot/templates/4.1.stable/
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/templates
