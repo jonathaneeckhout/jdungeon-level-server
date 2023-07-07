@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: jdungeon-level-server
+    env_file:
+      - ./.env
+    container_name: jdungeon-level-server
+    restart: always
+    volumes:
+      - /etc/letsencrypt/live/jdungeon.org/fullchain.pem:/etc/letsencrypt/live/jdungeon.org/fullchain.pem
+      - /etc/letsencrypt/live/jdungeon.org/privkey.pem:/etc/letsencrypt/live/jdungeon.org/privkey.pem
+    network_mode: "host"
