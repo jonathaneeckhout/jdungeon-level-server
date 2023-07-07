@@ -4,11 +4,14 @@ var auth_request = preload("res://scripts/requests/authRequest.gd")
 var auth_with_secret_request = preload("res://scripts/requests/authWithSecretRequest.gd")
 var get_character_request = preload("res://scripts/requests/getCharacterRequest.gd")
 
+@onready var level = Env.get_value("LEVEL")
+@onready var secret = Env.get_value("SECRET")
+
 var cookie = ""
 var logged_in = false
 
 func _ready():
-	var res = await authenticate("Grassland", "testpassword")
+	var res = await authenticate(level, secret)
 	if res:
 		print("Authorized with server")
 
