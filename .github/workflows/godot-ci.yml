@@ -2,7 +2,7 @@ name: godot-ci export
 on: [push]
 
 env:
-  GODOT_VERSION: 4.1-stable
+  GODOT_VERSION: "4.1"
   EXPORT_NAME: jdungeon-level-server
   PROJECT_PATH: jdungeon-level-server
   
@@ -11,7 +11,7 @@ jobs:
     name: Linux Export
     runs-on: ubuntu-20.04
     container:
-      image: barichello/godot-ci:3.3.4
+      image: barichello/godot-ci:4.1
     steps:
       - name: Checkout
         uses: actions/checkout@v2
