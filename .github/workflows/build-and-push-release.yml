@@ -1,7 +1,8 @@
 name: build and push the released docker image
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - '*'
 
 env:
   GODOT_VERSION: "4.1"
