@@ -43,6 +43,10 @@ jobs:
         with:
           name: linux
           path: build/linux
+      - name: WhatDoWeHave
+        run: ls -al
+      - name: WhatDoWeHave
+        run: ls -al build/linux
       - name: Make executable
         run: chmod +x build/linux/Jdungeon-level-server.x86_64
       - name: Log in to Docker Hub
