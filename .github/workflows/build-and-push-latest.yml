@@ -61,4 +61,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: mawakajaka/jdungeon-level-server:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
