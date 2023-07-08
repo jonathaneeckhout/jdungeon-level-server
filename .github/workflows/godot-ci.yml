@@ -38,7 +38,13 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
-      
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: linux
+          path: build/linux
+      - name: Make executable
+        run: chmod +x build/linux/Jdungeon-level-server.x86_64
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
