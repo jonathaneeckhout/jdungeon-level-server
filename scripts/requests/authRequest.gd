@@ -3,7 +3,7 @@ extends Node
 const HEADERS = ["Content-Type: application/json"]
 
 @onready var debug = Env.get_value("DEBUG")
-@onready var common_server_address = Env.get_value("COMMON_SERVER_ADDRES")
+@onready var common_server_address = Env.get_value("COMMON_SERVER_ADDRESS")
 @onready var url = "%s/login/level" % common_server_address
 
 @onready var http_request = HTTPRequest.new()

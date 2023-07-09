@@ -1,7 +1,7 @@
 extends Node
 
 @onready var debug = Env.get_value("DEBUG")
-@onready var common_server_address = Env.get_value("COMMON_SERVER_ADDRES")
+@onready var common_server_address = Env.get_value("COMMON_SERVER_ADDRESS")
 @onready var url = "%s/level/login/player" % common_server_address
 
 @onready var http_request = HTTPRequest.new()
