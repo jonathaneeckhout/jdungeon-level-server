@@ -1,5 +1,7 @@
 extends Node
 
+signal auth_response(response)
+
 const HEADERS = ["Content-Type: application/json"]
 
 @onready var debug = Env.get_value("DEBUG")
@@ -8,14 +10,12 @@ const HEADERS = ["Content-Type: application/json"]
 
 @onready var http_request = HTTPRequest.new()
 
-signal auth_response(response)
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var client_tls_options: TLSOptions
 
-	if debug =="true":
+	if debug == "true":
 		client_tls_options = TLSOptions.client_unsafe()
 	else:
 		client_tls_options = TLSOptions.client()
@@ -33,10 +33,9 @@ func authenticate(level: String, key: String):
 	if error != OK:
 		print("An error occurred in the HTTP request.")
 		return false
-	else:
-		var response = await auth_response
 
-		return response
+	var response = await auth_response
+	return response
 
 
 # Called when the HTTP request is completed.
@@ -65,7 +64,7 @@ func _http_request_completed(result, response_code, headers, body):
 	for val in headers:
 		var res = regex.search(val)
 		if res:
-			auth_response.emit({"response":response["data"]["auth"], "cookie":res.get_string(1)})
+			auth_response.emit({"response": response["data"]["auth"], "cookie": res.get_string(1)})
 			return
 
 	auth_response.emit({"response": false, "cookie": ""})

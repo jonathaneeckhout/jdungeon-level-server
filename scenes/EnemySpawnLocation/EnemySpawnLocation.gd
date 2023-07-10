@@ -13,7 +13,6 @@ var enemy: CharacterBody2D = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-
 	respawn_timer.timeout.connect(_on_respawn_timer_timeout)
 	respawn_timer.one_shot = true
 	add_child(respawn_timer)

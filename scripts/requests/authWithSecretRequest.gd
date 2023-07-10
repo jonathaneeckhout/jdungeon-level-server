@@ -1,18 +1,19 @@
 extends Node
 
+signal auth_response(response: bool)
+
 @onready var debug = Env.get_value("DEBUG")
 @onready var common_server_address = Env.get_value("COMMON_SERVER_ADDRESS")
 @onready var url = "%s/level/login/player" % common_server_address
 
 @onready var http_request = HTTPRequest.new()
 
-signal auth_response(response:bool)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var client_tls_options: TLSOptions
 
-	if debug =="true":
+	if debug == "true":
 		client_tls_options = TLSOptions.client_unsafe()
 	else:
 		client_tls_options = TLSOptions.client()
@@ -24,7 +25,7 @@ func _ready():
 
 
 func authenticate_with_secret(username: String, secret: String, cookie: String) -> bool:
-	var headers =  ["Content-Type: application/json", "Cookie: %s" % cookie ]
+	var headers = ["Content-Type: application/json", "Cookie: %s" % cookie]
 
 	var body = JSON.stringify({"username": username, "secret": secret})
 
@@ -32,15 +33,13 @@ func authenticate_with_secret(username: String, secret: String, cookie: String) 
 	if error != OK:
 		print("An error occurred in the HTTP request.")
 		return false
-	else:
-		var response = await auth_response
 
-		return response
+	var response = await auth_response
+	return response
 
 
 # Called when the HTTP request is completed.
 func _http_request_completed(result, response_code, _headers, body):
-
 	if result != HTTPRequest.RESULT_SUCCESS:
 		auth_response.emit(false)
 		return

@@ -1,7 +1,5 @@
 extends Node2D
 
-@onready var player_scene = load("res://scenes/Player/Player.tscn")
-
 var level: String = ""
 var players: Node2D
 var npcs: Node2D
@@ -10,8 +8,12 @@ var player_respawn_locations: Node2D
 
 var players_by_id = {}
 
+@onready var player_scene = load("res://scenes/Player/Player.tscn")
+
+
 func _ready():
 	multiplayer.peer_disconnected.connect(_client_disconnected)
+
 
 func set_level(level_name: String):
 	var scene
@@ -51,6 +53,7 @@ func remove_player(id: int):
 		print("Removing player %s" % players_by_id[id].name)
 		players_by_id[id].queue_free()
 		players_by_id.erase(id)
+
 
 func _client_disconnected(id):
 	remove_player(id)

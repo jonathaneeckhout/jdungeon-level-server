@@ -1,16 +1,17 @@
 extends Node
 
+signal logged_in(id: int, username: String, character: String)
+signal client_disconnected(id: int)
+signal player_moved(id: int, pos: Vector2)
+signal player_interacted(id: int, target: String)
+
+var players = {}
+
 @onready var port = int(Env.get_value("LEVEL_PORT"))
 @onready var max_peers = int(Env.get_value("LEVEL_MAX_PEERS"))
 @onready var crt_path = Env.get_value("LEVEL_CRT")
 @onready var key_path = Env.get_value("LEVEL_KEY")
 
-var players = {}
-
-signal logged_in(id: int, username: String, character: String)
-signal client_disconnected(id: int)
-signal player_moved(id: int, pos: Vector2)
-signal player_interacted(id: int, target: String)
 
 func _ready():
 	var server = ENetMultiplayerPeer.new()
@@ -26,7 +27,6 @@ func _ready():
 
 	var cert_string = cert_file.get_as_text()
 	var key_string = key_file.get_as_text()
-
 
 	var cert = X509Certificate.new()
 	var key = CryptoKey.new()
@@ -49,7 +49,10 @@ func _ready():
 func _client_connected(id):
 	print("Client connected ", id)
 	players[id] = {
-		"username": "", "logged_in": false, "character": "", "connected_time": Time.get_unix_time_from_system()
+		"username": "",
+		"logged_in": false,
+		"character": "",
+		"connected_time": Time.get_unix_time_from_system()
 	}
 
 
@@ -87,29 +90,24 @@ func add_player(_id: int, _character_name: String, _pos: Vector2):
 	pass
 
 
-@rpc("call_remote", "authority", "reliable")
-func remove_player(_character_name: String):
+@rpc("call_remote", "authority", "reliable") func remove_player(_character_name: String):
 	#Placeholder code for server
 	pass
 
 
-@rpc("call_remote", "any_peer", "reliable")
-func move(pos):
+@rpc("call_remote", "any_peer", "reliable") func move(pos):
 	player_moved.emit(multiplayer.get_remote_sender_id(), pos)
 
 
-@rpc("call_remote", "any_peer", "reliable")
-func interact(target: String):
+@rpc("call_remote", "any_peer", "reliable") func interact(target: String):
 	player_interacted.emit(multiplayer.get_remote_sender_id(), target)
 
 
-@rpc("call_remote", "authority", "reliable")
-func add_enemy(_enemy_name: String, _pos: Vector2):
+@rpc("call_remote", "authority", "reliable") func add_enemy(_enemy_name: String, _pos: Vector2):
 	#Placeholder code for server
 	pass
 
 
-@rpc("call_remote", "authority", "reliable")
-func remove_enemy(_enemy_name: String):
+@rpc("call_remote", "authority", "reliable") func remove_enemy(_enemy_name: String):
 	#Placeholder code for server
 	pass

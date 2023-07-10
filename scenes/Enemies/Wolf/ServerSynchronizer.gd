@@ -2,10 +2,11 @@ extends Node2D
 
 const SYNC_SPEED = 0.25
 
+var players_in_range = []
+
 @onready var sync_timer = Timer.new()
 @onready var enemy = $"../"
 
-var players_in_range = []
 
 func _ready():
 	sync_timer.timeout.connect(_on_sync_timer_timeout)
@@ -44,11 +45,9 @@ func sync_hurt(current_hp: int, amount: int):
 		hurt.rpc_id(other_player.player, current_hp, amount)
 
 
-@rpc("call_remote", "authority", "unreliable")
-func sync(_pos, _vel):
+@rpc("call_remote", "authority", "unreliable") func sync(_pos, _vel):
 	pass
 
 
-@rpc("call_remote", "authority", "reliable")
-func hurt(_current_hp: int, _amount: int):
+@rpc("call_remote", "authority", "reliable") func hurt(_current_hp: int, _amount: int):
 	pass
