@@ -24,6 +24,8 @@ func _on_player_logged_in(id: int, username: String, character_name: String):
 		multiplayer.disconnect_peer(id)
 		return
 
+	print("Adding character %s to level %s" % [character["name"], level_env])
+
 	# Add the player to the level
 	level.add_player(id, character["name"], character["position"])
 

@@ -33,6 +33,8 @@ func get_character(character_name: String, cookie: String):
 		print("An error occurred in the HTTP request.")
 		return null
 
+	print("Sending out get request to %s" % [request_url])
+
 	var response = await request_response
 	return response
 
@@ -40,6 +42,7 @@ func get_character(character_name: String, cookie: String):
 # Called when the HTTP request is completed.
 func _http_request_completed(result, response_code, _headers, body):
 	if result != HTTPRequest.RESULT_SUCCESS:
+		print("HTTPRequest failed")
 		request_response.emit(null)
 		return
 
@@ -52,6 +55,7 @@ func _http_request_completed(result, response_code, _headers, body):
 	var response = json.get_data()
 
 	if !"error" in response or response["error"] or !"data" in response:
+		print("Error or invalid response format")
 		request_response.emit(null)
 		return
 

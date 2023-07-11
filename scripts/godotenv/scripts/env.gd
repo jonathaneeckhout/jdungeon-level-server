@@ -6,20 +6,23 @@ extends Node
 
 func get_value(valuename: String):
 	# prioritized os environment variable
-	var env = parse("res://.env")
-
 	if OS.has_environment(valuename):
+		print("Getting environment value=[%s]" % valuename)
 		return OS.get_environment(valuename)
 
+	var env = parse("res://.env")
 	if env.has(valuename):
+		print("Getting environment value=[%s]" % valuename)
 		return env[valuename]
 
+	print("Could not find environment value=[%s]" % valuename)
 	# return empty
 	return ""
 
 
 func parse(filename):
 	if !FileAccess.file_exists(filename):
+		print("File=[%s] does not exist" % filename)
 		return {}
 
 	var file = FileAccess.open(filename, FileAccess.READ)

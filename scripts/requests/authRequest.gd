@@ -34,6 +34,8 @@ func authenticate(level: String, key: String):
 		print("An error occurred in the HTTP request.")
 		return false
 
+	print("Sending out authentication request for %s to %s" % [level, url])
+
 	var response = await auth_response
 	return response
 
@@ -41,6 +43,7 @@ func authenticate(level: String, key: String):
 # Called when the HTTP request is completed.
 func _http_request_completed(result, response_code, headers, body):
 	if result != HTTPRequest.RESULT_SUCCESS:
+		print("HTTPRequest failed")
 		auth_response.emit({"response": false, "cookie": ""})
 		return
 
@@ -54,6 +57,7 @@ func _http_request_completed(result, response_code, headers, body):
 	var response = json.get_data()
 
 	if !response.has("error") or response["error"] or !response.has("data"):
+		print("Error or invalid response format")
 		auth_response.emit({"response": false, "cookie": ""})
 		return
 
@@ -67,4 +71,5 @@ func _http_request_completed(result, response_code, headers, body):
 			auth_response.emit({"response": response["data"]["auth"], "cookie": res.get_string(1)})
 			return
 
+	print("Could not find cookie in response")
 	auth_response.emit({"response": false, "cookie": ""})

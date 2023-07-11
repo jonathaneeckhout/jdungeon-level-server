@@ -34,6 +34,8 @@ func authenticate_with_secret(username: String, secret: String, cookie: String) 
 		print("An error occurred in the HTTP request.")
 		return false
 
+	print("Sending out authentication request for %s to %s" % [username, url])
+
 	var response = await auth_response
 	return response
 
@@ -41,6 +43,7 @@ func authenticate_with_secret(username: String, secret: String, cookie: String) 
 # Called when the HTTP request is completed.
 func _http_request_completed(result, response_code, _headers, body):
 	if result != HTTPRequest.RESULT_SUCCESS:
+		print("HTTPRequest failed")
 		auth_response.emit(false)
 		return
 
@@ -53,6 +56,7 @@ func _http_request_completed(result, response_code, _headers, body):
 	var response = json.get_data()
 
 	if !response.has("error") or response["error"] or !response.has("data"):
+		print("Error or invalid response format")
 		auth_response.emit(false)
 		return
 

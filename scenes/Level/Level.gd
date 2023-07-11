@@ -25,6 +25,8 @@ func set_level(level_name: String):
 			print("Level %s does not exist" % level_name)
 			return false
 
+	print("Setting level to %s" % level_name)
+
 	var level_instance = scene.instantiate()
 	self.add_child(level_instance)
 
