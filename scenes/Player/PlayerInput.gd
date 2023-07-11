@@ -6,6 +6,8 @@ extends Node2D
 @export var interacting := false
 var interact_target = ""
 
+var last_processed_input = 0
+
 @onready var player = $"../"
 
 
@@ -19,17 +21,29 @@ func reset_inputs():
 	interacting = false
 
 
-func _on_player_moved(id: int, pos):
+func _on_player_moved(id: int, input_sequence: int, pos: Vector2):
 	if player.player != id:
 		return
+
+	# Ignore older inputs
+	if input_sequence < last_processed_input:
+		return
+
+	last_processed_input = input_sequence
 
 	moving = true
 	move_target = pos
 
 
-func _on_player_interacted(id: int, target: String):
+func _on_player_interacted(id: int, input_sequence: int, target: String):
 	if player.player != id:
 		return
+
+	# Ignore older inputs
+	if input_sequence < last_processed_input:
+		return
+
+	last_processed_input = input_sequence
 
 	if $"../../../Enemies".has_node(target):
 		interacting = true

@@ -28,6 +28,10 @@ LevelsConnection="*res://scripts/levelsConnection.gd"
 2d_physics/layer_3="enemies"
 2d_physics/layer_4="npcs"
 
+[physics]
+
+common/physics_ticks_per_second=20
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

@@ -1,27 +1,20 @@
 extends Node2D
 
-const SYNC_SPEED = 0.25
-
 var players_in_range = []
 
-@onready var sync_timer = Timer.new()
 @onready var enemy = $"../"
 
 
 func _ready():
-	sync_timer.timeout.connect(_on_sync_timer_timeout)
-	add_child(sync_timer)
-	#TODO: not sure if syncing can start immediately or need to wait for comfirmation of client
-	sync_timer.start(SYNC_SPEED)
-
 	#TODO: work with 2 areas to create a buffer zone
 	$"NetworkSyncArea2D".body_entered.connect(_on_sync_area_body_entered)
 	$"NetworkSyncArea2D".body_exited.connect(_on_sync_area_body_exited)
 
 
-func _on_sync_timer_timeout():
+func _process(_delta):
+	var timestamp = Time.get_unix_time_from_system()
 	for other_player in players_in_range:
-		sync.rpc_id(other_player.player, enemy.position, enemy.velocity)
+		sync.rpc_id(other_player.player, timestamp, enemy.position)
 
 
 func _on_sync_area_body_entered(body):
@@ -45,7 +38,10 @@ func sync_hurt(current_hp: int, amount: int):
 		hurt.rpc_id(other_player.player, current_hp, amount)
 
 
-@rpc("call_remote", "authority", "unreliable") func sync(_pos, _vel):
+@rpc("call_remote", "authority", "unreliable") func sync(
+	_timestamp: float,
+	_pos: Vector2,
+):
 	pass
 
 

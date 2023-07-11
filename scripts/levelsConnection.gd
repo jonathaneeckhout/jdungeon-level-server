@@ -2,8 +2,8 @@ extends Node
 
 signal logged_in(id: int, username: String, character: String)
 signal client_disconnected(id: int)
-signal player_moved(id: int, pos: Vector2)
-signal player_interacted(id: int, target: String)
+signal player_moved(id: int, input_sequence: int, pos: Vector2)
+signal player_interacted(id: int, input_sequence: int, target: String)
 
 var players = {}
 
@@ -95,12 +95,12 @@ func add_player(_id: int, _character_name: String, _pos: Vector2):
 	pass
 
 
-@rpc("call_remote", "any_peer", "reliable") func move(pos):
-	player_moved.emit(multiplayer.get_remote_sender_id(), pos)
+@rpc("call_remote", "any_peer", "reliable") func move(input_sequence: int, pos: Vector2):
+	player_moved.emit(multiplayer.get_remote_sender_id(), input_sequence, pos)
 
 
-@rpc("call_remote", "any_peer", "reliable") func interact(target: String):
-	player_interacted.emit(multiplayer.get_remote_sender_id(), target)
+@rpc("call_remote", "any_peer", "reliable") func interact(input_sequence: int, target: String):
+	player_interacted.emit(multiplayer.get_remote_sender_id(), input_sequence, target)
 
 
 @rpc("call_remote", "authority", "reliable") func add_enemy(_enemy_name: String, _pos: Vector2):
