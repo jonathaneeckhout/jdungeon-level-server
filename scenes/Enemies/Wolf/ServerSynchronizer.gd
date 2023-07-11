@@ -11,7 +11,7 @@ func _ready():
 	$"NetworkSyncArea2D".body_exited.connect(_on_sync_area_body_exited)
 
 
-func _process(_delta):
+func _physics_process(_delta):
 	var timestamp = Time.get_unix_time_from_system()
 	for other_player in players_in_range:
 		sync.rpc_id(other_player.player, timestamp, enemy.position)
