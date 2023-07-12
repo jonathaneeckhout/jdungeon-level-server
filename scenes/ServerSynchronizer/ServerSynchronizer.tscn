@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cmnt8u6el75fe"]
+
+[ext_resource type="Script" path="res://scenes/ServerSynchronizer/ServerSynchronizer.gd" id="1_diiew"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_84arr"]
+radius = 512.0
+
+[node name="ServerSynchronizer" type="Node2D"]
+script = ExtResource("1_diiew")
+
+[node name="NetworkSyncArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NetworkSyncArea2D"]
+shape = SubResource("CircleShape2D_84arr")

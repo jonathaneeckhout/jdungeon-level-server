@@ -1,8 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dq18xjaweyeec"]
+[gd_scene load_steps=8 format=3 uid="uid://dq18xjaweyeec"]
 
 [ext_resource type="Script" path="res://scenes/Player/Player.gd" id="1_2682b"]
-[ext_resource type="Script" path="res://scenes/Player/ServerSynchronizer.gd" id="2_qf66c"]
 [ext_resource type="Script" path="res://scenes/Player/PlayerInput.gd" id="2_t6mij"]
+[ext_resource type="PackedScene" uid="uid://cmnt8u6el75fe" path="res://scenes/ServerSynchronizer/ServerSynchronizer.tscn" id="3_54xug"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bgovn"]
 radius = 16.0
@@ -15,9 +15,6 @@ radius = 64.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rn7ha"]
 bg_color = Color(0.356863, 0.690196, 0.364706, 1)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_t1q2a"]
-radius = 1024.0
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
@@ -76,15 +73,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_rn7ha")
 value = 100.0
 metadata/_edit_lock_ = true
 
-[node name="ServerSynchronizer" type="Node2D" parent="."]
-script = ExtResource("2_qf66c")
-
-[node name="NetworkSyncArea2D" type="Area2D" parent="ServerSynchronizer"]
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ServerSynchronizer/NetworkSyncArea2D"]
-shape = SubResource("CircleShape2D_t1q2a")
-
 [node name="PlayerInput" type="Node2D" parent="."]
 script = ExtResource("2_t6mij")
+
+[node name="ServerSynchronizer" parent="." instance=ExtResource("3_54xug")]

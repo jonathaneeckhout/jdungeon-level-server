@@ -1,8 +1,9 @@
 extends Node2D
 
 var players_in_range = []
+var is_player = false
 
-@onready var player = $"../"
+@onready var root = $"../"
 
 
 func _ready():
@@ -13,29 +14,44 @@ func _ready():
 
 func _physics_process(_delta):
 	var timestamp = Time.get_unix_time_from_system()
-	sync.rpc_id(player.player, timestamp, player.position)
+
+	if is_player:
+		sync.rpc_id(root.player, timestamp, root.position)
+
 	for other_player in players_in_range:
-		sync.rpc_id(other_player.player, timestamp, player.position)
+		sync.rpc_id(other_player.player, timestamp, root.position)
 
 
 func _on_sync_area_body_entered(body):
-	if body == player:
+	if body == root:
 		return
 
-	LevelsConnection.add_player.rpc_id(player.player, body.player, body.name, body.position)
+	if is_player:
+		LevelsConnection.add_player.rpc_id(root.player, body.player, body.name, body.position)
+
+	else:
+		LevelsConnection.add_enemy.rpc_id(body.player, root.name, root.position)
+
 	players_in_range.append(body)
 
 
 func _on_sync_area_body_exited(body):
-	if body == player:
+	if body == root:
 		return
 
-	LevelsConnection.remove_player.rpc_id(player.player, body.name)
+	if is_player:
+		LevelsConnection.remove_player.rpc_id(root.player, body.name)
+	else:
+		if body.player in multiplayer.get_peers():
+			LevelsConnection.remove_enemy.rpc_id(body.player, root.name)
+
 	players_in_range.erase(body)
 
 
 func sync_hurt(current_hp: int, amount: int):
-	hurt.rpc_id(player.player, current_hp, amount)
+	if is_player:
+		hurt.rpc_id(root.player, current_hp, amount)
+
 	for other_player in players_in_range:
 		hurt.rpc_id(other_player.player, current_hp, amount)
 

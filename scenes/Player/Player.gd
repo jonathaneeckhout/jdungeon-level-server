@@ -42,6 +42,8 @@ func _ready():
 	$AttackArea2D.body_entered.connect(_on_attack_area_body_entered)
 	$AttackArea2D.body_exited.connect(_on_attack_area_body_exited)
 
+	server_synchronizer.is_player = true
+
 
 func _physics_process(delta):
 	#Player's behavior is determined on server side
