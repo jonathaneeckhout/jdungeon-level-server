@@ -1,29 +1,24 @@
-extends CharacterBody2D
-
-signal died
+extends "res://scripts/entity.gd"
 
 enum STATES { IDLE, WANDER, AGGROED, ATTACK }
 
+const CLASS = "Wolf"
 const AGGRO_SPEED = 250.0
 const WANDER_SPEED = 75.0
 const ATTACK_SPEED = 1.0
-const ATTACK_POWER = 5.0
-const MAX_HP = 100.0
 
 var state = STATES.IDLE
-var hp = MAX_HP
 
 var players_in_aggro_range = []
 var players_in_attack_range = []
 
 @onready var attack_timer = Timer.new()
-@onready var server_synchronizer = $ServerSynchronizer
 
 
 func _ready():
-	#Handle server specific functionality
-	if not multiplayer.is_server():
-		return
+	super()
+
+	$Interface/Name.text = CLASS
 
 	$AggroArea2D.body_entered.connect(_on_aggro_area_body_entered)
 	$AggroArea2D.body_exited.connect(_on_aggro_area_body_exited)
@@ -32,12 +27,6 @@ func _ready():
 
 	attack_timer.timeout.connect(_on_attack_timer_timeout)
 	add_child(attack_timer)
-
-
-func _physics_process(delta):
-	fsm(delta)
-
-	move_and_slide()
 
 
 func fsm(_delta):
@@ -76,26 +65,6 @@ func fsm(_delta):
 					#TODO: implement smart aggro mechanism, for now just pick the first one
 					attack(players_in_aggro_range[0])
 					attack_timer.start(ATTACK_SPEED)
-
-
-func attack(target: CharacterBody2D):
-	target.hurt(ATTACK_POWER)
-
-
-func hurt(damage: int):
-	hp = max(0, hp - damage)
-
-	if hp <= 0:
-		died.emit()
-		queue_free()
-		return
-
-	server_synchronizer.sync_hurt(hp, damage)
-	update_hp_bar()
-
-
-func update_hp_bar():
-	$Interface/HPBar.value = (hp / MAX_HP) * 100
 
 
 func _on_aggro_area_body_entered(body):

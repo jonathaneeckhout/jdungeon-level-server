@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/ServerSynchronizer/ServerSynchronizer.gd" id="1_diiew"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_84arr"]
-radius = 512.0
+radius = 1024.0
 
 [node name="ServerSynchronizer" type="Node2D"]
 script = ExtResource("1_diiew")

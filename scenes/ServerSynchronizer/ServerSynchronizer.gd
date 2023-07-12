@@ -30,7 +30,7 @@ func _on_sync_area_body_entered(body):
 		LevelsConnection.add_player.rpc_id(root.player, body.player, body.name, body.position)
 
 	else:
-		LevelsConnection.add_enemy.rpc_id(body.player, root.name, root.position)
+		LevelsConnection.add_enemy.rpc_id(body.player, root.name, root.CLASS, root.position)
 
 	players_in_range.append(body)
 

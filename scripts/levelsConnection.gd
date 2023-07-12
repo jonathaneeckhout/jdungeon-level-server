@@ -103,7 +103,8 @@ func add_player(_id: int, _character_name: String, _pos: Vector2):
 	player_interacted.emit(multiplayer.get_remote_sender_id(), input_sequence, target)
 
 
-@rpc("call_remote", "authority", "reliable") func add_enemy(_enemy_name: String, _pos: Vector2):
+@rpc("call_remote", "authority", "reliable")
+func add_enemy(_enemy_name: String, _enemy_class: String, _pos: Vector2):
 	#Placeholder code for server
 	pass
 
