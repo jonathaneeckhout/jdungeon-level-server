@@ -37,7 +37,7 @@ func _on_sync_area_body_exited(body):
 func sync_hurt(current_hp: int, amount: int):
 	hurt.rpc_id(player.player, current_hp, amount)
 	for other_player in players_in_range:
-		hurt.rpc_id(player.player, current_hp, amount)
+		hurt.rpc_id(other_player.player, current_hp, amount)
 
 
 @rpc("call_remote", "authority", "unreliable") func sync(
