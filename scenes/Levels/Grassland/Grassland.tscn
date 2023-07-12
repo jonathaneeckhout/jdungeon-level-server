@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://vl0tbe6flllf"]
+[gd_scene load_steps=6 format=3 uid="uid://vl0tbe6flllf"]
 
 [ext_resource type="PackedScene" uid="uid://b8tu2wvmmjac3" path="res://scenes/Enemies/Wolf/Wolf.tscn" id="1_wgwrv"]
 [ext_resource type="PackedScene" uid="uid://no6f5p44dw02" path="res://scenes/PlayerSpawnLocation/PlayerSpawnLocation.tscn" id="2_e51m8"]
 [ext_resource type="PackedScene" uid="uid://b4nglbtl885h4" path="res://scenes/EnemySpawnLocation/EnemySpawnLocation.tscn" id="3_tknl2"]
+[ext_resource type="PackedScene" uid="uid://p0gbvxm471v2" path="res://scenes/Enemies/Ram/Ram.tscn" id="4_8pf27"]
 [ext_resource type="PackedScene" uid="uid://d0rp878jtcmee" path="res://scenes/Enemies/Sheep/Sheep.tscn" id="4_emfvs"]
 
 [node name="Grassland" type="Node2D"]
@@ -29,9 +30,9 @@ position = Vector2(132, 494)
 enemy_scene = ExtResource("1_wgwrv")
 respawn_time = 3
 
-[node name="Sheep" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+[node name="Ram" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
 position = Vector2(813, 271)
-enemy_scene = ExtResource("4_emfvs")
+enemy_scene = ExtResource("4_8pf27")
 respawn_time = 10
 
 [node name="Sheep3" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
