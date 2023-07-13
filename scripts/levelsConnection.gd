@@ -112,3 +112,24 @@ func add_enemy(_enemy_name: String, _enemy_class: String, _pos: Vector2):
 @rpc("call_remote", "authority", "reliable") func remove_enemy(_enemy_name: String):
 	#Placeholder code for server
 	pass
+
+
+@rpc("call_remote", "any_peer", "reliable") func fetch_server_time(client_time: float):
+	var id = multiplayer.get_remote_sender_id()
+	return_server_time.rpc_id(id, Time.get_unix_time_from_system(), client_time)
+
+
+@rpc("call_remote", "authority", "reliable")
+func return_server_time(_server_time: float, _client_time: float):
+	#Placeholder code
+	pass
+
+
+@rpc("call_remote", "any_peer", "reliable") func get_latency(client_time: float):
+	var id = multiplayer.get_remote_sender_id()
+	return_latency.rpc_id(id, client_time)
+
+
+@rpc("call_remote", "authority", "reliable") func return_latency(_client_time: float):
+	#Placeholder code
+	pass
