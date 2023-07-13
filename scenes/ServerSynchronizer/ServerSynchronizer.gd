@@ -56,6 +56,15 @@ func sync_hurt(current_hp: int, amount: int):
 		hurt.rpc_id(other_player.player, current_hp, amount)
 
 
+func sync_attack(direction: Vector2):
+	var timestamp = Time.get_unix_time_from_system()
+	if is_player:
+		attack.rpc_id(root.player, timestamp, direction)
+
+	for other_player in players_in_range:
+		attack.rpc_id(other_player.player, timestamp, direction)
+
+
 @rpc("call_remote", "authority", "unreliable") func sync(
 	_timestamp: float,
 	_pos: Vector2,
@@ -64,4 +73,8 @@ func sync_hurt(current_hp: int, amount: int):
 
 
 @rpc("call_remote", "authority", "reliable") func hurt(_current_hp: int, _amount: int):
+	pass
+
+
+@rpc("call_remote", "authority", "reliable") func attack(_timestamp: int):
 	pass

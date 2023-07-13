@@ -102,6 +102,7 @@ func _on_attack_timer_timeout():
 
 func attack(target: CharacterBody2D):
 	target.hurt(ATTACK_POWER)
+	server_synchronizer.sync_attack(position.direction_to(target.position))
 
 
 func hurt(damage):
