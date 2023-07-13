@@ -31,37 +31,22 @@ enemy_scene = ExtResource("1_wgwrv")
 respawn_time = 3
 
 [node name="Ram" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(813, 271)
+position = Vector2(840, 225)
 enemy_scene = ExtResource("4_8pf27")
 respawn_time = 10
 
-[node name="Sheep3" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(749, 187)
-enemy_scene = ExtResource("4_emfvs")
-respawn_time = 10
-
 [node name="Sheep4" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(760, 67)
+position = Vector2(770, 49)
 enemy_scene = ExtResource("4_emfvs")
 respawn_time = 10
 
 [node name="Sheep5" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(934, 74)
-enemy_scene = ExtResource("4_emfvs")
-respawn_time = 10
-
-[node name="Sheep6" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(963, 194)
-enemy_scene = ExtResource("4_emfvs")
-respawn_time = 10
-
-[node name="Sheep7" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(912, 271)
+position = Vector2(963, 38)
 enemy_scene = ExtResource("4_emfvs")
 respawn_time = 10
 
 [node name="Sheep2" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(833, 168)
+position = Vector2(1034, 209)
 enemy_scene = ExtResource("4_emfvs")
 respawn_time = 10
 
