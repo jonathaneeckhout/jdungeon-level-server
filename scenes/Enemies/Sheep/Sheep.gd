@@ -13,6 +13,8 @@ func _ready():
 	behavior = behavior_script.new()
 	add_child(behavior)
 
+	behavior.init_wander()
+
 
 func fsm(delta):
 	behavior.fsm_wander(delta)
