@@ -30,6 +30,7 @@ func fsm(_delta):
 
 func attack(target: CharacterBody2D):
 	target.hurt(attack_power)
+	server_synchronizer.sync_attack(position.direction_to(target.position))
 
 
 func hurt(damage: int):
