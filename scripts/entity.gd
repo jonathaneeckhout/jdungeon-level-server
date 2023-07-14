@@ -23,8 +23,6 @@ func _ready():
 func _physics_process(delta):
 	fsm(delta)
 
-	move_and_slide()
-
 
 func fsm(_delta):
 	pass

@@ -51,6 +51,7 @@ func fsm(_delta):
 				velocity = (
 					(players_in_aggro_range[0].position - position).normalized() * AGGRO_SPEED
 				)
+				move_and_slide()
 		STATES.ATTACK:
 			if players_in_attack_range.size() == 0:
 				if players_in_aggro_range.size() > 0:

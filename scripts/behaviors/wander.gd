@@ -9,6 +9,7 @@ const MOVE_SPEED = 75.0
 const ARRIVAL_DISTANCE = 8
 const RAY_SIZE = 64
 const RAY_ANGLE = 30
+const MAX_COLLIDING_TIME = 1.0
 
 var state = STATES.IDLE
 var starting_postion: Vector2
@@ -17,6 +18,7 @@ var wander_target: Vector2
 @onready var root = $"../"
 
 @onready var idle_timer = Timer.new()
+@onready var colliding_timer = Timer.new()
 @onready var rays = Node2D.new()
 @onready var ray_direction = RayCast2D.new()
 
@@ -27,6 +29,10 @@ func _ready():
 
 	idle_timer.one_shot = true
 	add_child(idle_timer)
+
+	colliding_timer.one_shot = true
+	add_child(colliding_timer)
+	colliding_timer.timeout.connect(_on_colliding_timer_timeout)
 
 	init_avoidance_rays()
 
@@ -63,10 +69,10 @@ func init_avoidance_rays():
 	ray_right_0.target_position = Vector2(RAY_SIZE / 1.5, 0)
 	ray_right_1.target_position = Vector2(RAY_SIZE / 2.0, 0)
 
-	ray_left_0.rotation_degrees = -(2 * RAY_ANGLE)
-	ray_left_1.rotation_degrees = -(4 * RAY_ANGLE)
-	ray_right_0.rotation_degrees = 2 * RAY_ANGLE
-	ray_right_1.rotation_degrees = 4 * RAY_ANGLE
+	ray_left_0.rotation_degrees = -(1 * RAY_ANGLE)
+	ray_left_1.rotation_degrees = -(2 * RAY_ANGLE)
+	ray_right_0.rotation_degrees = 1 * RAY_ANGLE
+	ray_right_1.rotation_degrees = 2 * RAY_ANGLE
 
 	rays.add_child(ray_left_0)
 	rays.add_child(ray_right_0)
@@ -102,6 +108,12 @@ func _handle_move():
 	if root.position.distance_to(wander_target) > ARRIVAL_DISTANCE:
 		root.velocity = root.position.direction_to(wander_target) * MOVE_SPEED
 		_move_with_avoidance()
+		if root.get_slide_collision_count() > 0:
+			if colliding_timer.is_stopped():
+				colliding_timer.start(MAX_COLLIDING_TIME)
+		else:
+			if !colliding_timer.is_stopped():
+				colliding_timer.stop()
 		ray_direction.rotation = root.velocity.angle()
 		state = STATES.MOVE
 	else:
@@ -116,6 +128,9 @@ func _move_with_avoidance():
 		var viable_ray = _get_viable_ray()
 		if viable_ray:
 			root.velocity = Vector2.RIGHT.rotated(rays.rotation + viable_ray.rotation) * MOVE_SPEED
+			root.move_and_slide()
+	else:
+		root.move_and_slide()
 
 
 func _obstacle_ahead() -> bool:
@@ -131,3 +146,7 @@ func _get_viable_ray() -> RayCast2D:
 		if !ray.is_colliding():
 			return ray
 	return null
+
+
+func _on_colliding_timer_timeout():
+	wander_target = find_random_spot(starting_postion, MAX_WANDER_DISTANCE)
