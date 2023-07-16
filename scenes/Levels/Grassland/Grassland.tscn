@@ -16,17 +16,17 @@ position = Vector2(487, 83)
 [node name="EnemySpawnLocations" type="Node2D" parent="."]
 
 [node name="Wolf" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(197, 388)
+position = Vector2(60, 554)
 enemy_scene = ExtResource("1_wgwrv")
 respawn_time = 3
 
 [node name="Wolf2" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(278, 496)
+position = Vector2(141, 662)
 enemy_scene = ExtResource("1_wgwrv")
 respawn_time = 3
 
 [node name="Wolf3" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(132, 494)
+position = Vector2(-5, 660)
 enemy_scene = ExtResource("1_wgwrv")
 respawn_time = 3
 
