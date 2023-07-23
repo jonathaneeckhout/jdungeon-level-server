@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://bf2gq2seudhc5"]
+
+[ext_resource type="Script" path="res://scenes/Terrain/Tree/Tree.gd" id="1_fk8bf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f6j3d"]
+radius = 32.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qorxv"]
+bg_color = Color(0.254902, 0.713726, 0, 1)
+
+[node name="Tree" type="StaticBody2D"]
+script = ExtResource("1_fk8bf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_f6j3d")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qorxv")

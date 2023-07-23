@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://vl0tbe6flllf"]
+[gd_scene load_steps=7 format=3 uid="uid://vl0tbe6flllf"]
 
 [ext_resource type="PackedScene" uid="uid://b8tu2wvmmjac3" path="res://scenes/Enemies/Wolf/Wolf.tscn" id="1_wgwrv"]
 [ext_resource type="PackedScene" uid="uid://no6f5p44dw02" path="res://scenes/PlayerSpawnLocation/PlayerSpawnLocation.tscn" id="2_e51m8"]
 [ext_resource type="PackedScene" uid="uid://b4nglbtl885h4" path="res://scenes/EnemySpawnLocation/EnemySpawnLocation.tscn" id="3_tknl2"]
 [ext_resource type="PackedScene" uid="uid://p0gbvxm471v2" path="res://scenes/Enemies/Ram/Ram.tscn" id="4_8pf27"]
 [ext_resource type="PackedScene" uid="uid://d0rp878jtcmee" path="res://scenes/Enemies/Sheep/Sheep.tscn" id="4_emfvs"]
+[ext_resource type="PackedScene" uid="uid://bf2gq2seudhc5" path="res://scenes/Terrain/Tree/Tree.tscn" id="6_rc4by"]
 
 [node name="Grassland" type="Node2D"]
 
@@ -16,55 +17,177 @@ position = Vector2(487, 83)
 [node name="EnemySpawnLocations" type="Node2D" parent="."]
 
 [node name="Wolf" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(60, 554)
+position = Vector2(-31, 768)
 enemy_scene = ExtResource("1_wgwrv")
 respawn_time = 3
 
 [node name="Wolf2" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(141, 662)
+position = Vector2(50, 876)
 enemy_scene = ExtResource("1_wgwrv")
 respawn_time = 3
 
 [node name="Wolf3" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(-5, 660)
+position = Vector2(-96, 874)
+enemy_scene = ExtResource("1_wgwrv")
+respawn_time = 3
+
+[node name="Wolf4" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(-1415, 1521)
+enemy_scene = ExtResource("1_wgwrv")
+respawn_time = 3
+
+[node name="Wolf5" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(-174, -1560)
+enemy_scene = ExtResource("1_wgwrv")
+respawn_time = 3
+
+[node name="Wolf6" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(899, -1464)
 enemy_scene = ExtResource("1_wgwrv")
 respawn_time = 3
 
 [node name="Ram" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(813, 61)
+position = Vector2(850, -190)
 enemy_scene = ExtResource("4_8pf27")
 respawn_time = 10
 
 [node name="Sheep6" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(914, 155)
+position = Vector2(951, -96)
 enemy_scene = ExtResource("4_emfvs")
 respawn_time = 10
 
 [node name="Sheep4" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(804, 191)
+position = Vector2(841, -60)
 enemy_scene = ExtResource("4_emfvs")
 respawn_time = 10
 
 [node name="Sheep5" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(888, 311)
+position = Vector2(925, 60)
 enemy_scene = ExtResource("4_emfvs")
 respawn_time = 10
 
 [node name="Sheep7" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(1034, 230)
+position = Vector2(1071, -21)
 enemy_scene = ExtResource("4_emfvs")
 respawn_time = 10
 
 [node name="Sheep10" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
-position = Vector2(1019, 87)
+position = Vector2(1056, -164)
 enemy_scene = ExtResource("4_emfvs")
 respawn_time = 10
 
-[node name="Players" type="Node2D" parent="."]
+[node name="Sheep8" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(-1530, -1145)
+enemy_scene = ExtResource("4_emfvs")
+respawn_time = 10
+
+[node name="Sheep9" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(-1410, -1070)
+enemy_scene = ExtResource("4_emfvs")
+respawn_time = 10
+
+[node name="Sheep11" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(-1425, -1213)
+enemy_scene = ExtResource("4_emfvs")
+respawn_time = 10
+
+[node name="Sheep12" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(-2249, 347)
+enemy_scene = ExtResource("4_emfvs")
+respawn_time = 10
+
+[node name="Sheep13" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(-2129, 422)
+enemy_scene = ExtResource("4_emfvs")
+respawn_time = 10
+
+[node name="Sheep14" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(-2144, 279)
+enemy_scene = ExtResource("4_emfvs")
+respawn_time = 10
+
+[node name="Entities" type="Node2D" parent="."]
+
+[node name="Players" type="Node2D" parent="Entities"]
 y_sort_enabled = true
 
-[node name="NPCS" type="Node2D" parent="."]
+[node name="NPCS" type="Node2D" parent="Entities"]
 y_sort_enabled = true
 
-[node name="Enemies" type="Node2D" parent="."]
+[node name="Enemies" type="Node2D" parent="Entities"]
 y_sort_enabled = true
+
+[node name="Terrain" type="Node2D" parent="Entities"]
+y_sort_enabled = true
+
+[node name="Tree" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-136, 517)
+
+[node name="Tree2" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-409, 591)
+
+[node name="Tree3" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(392, 896)
+
+[node name="Tree4" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(279, 1104)
+
+[node name="Tree8" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(159, 1315)
+
+[node name="Tree9" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-217, 1275)
+
+[node name="Tree10" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-503, 1072)
+
+[node name="Tree11" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-639, 792)
+
+[node name="Tree12" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-687, 552)
+
+[node name="Tree13" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-799, 1046)
+
+[node name="Tree14" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(133, 544)
+
+[node name="Tree15" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(517, 715)
+
+[node name="Tree16" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-556, -885)
+
+[node name="Tree17" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(1062, -729)
+
+[node name="Tree18" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(337, -1454)
+
+[node name="Tree19" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-1455, -64)
+
+[node name="Tree20" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-1988, 1051)
+
+[node name="Tree21" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-885, 1872)
+
+[node name="Tree22" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(661, 1644)
+
+[node name="Tree23" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(1620, 967)
+
+[node name="Tree24" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(1842, 146)
+
+[node name="Tree5" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(6, 1127)
+
+[node name="Tree6" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-241, 1031)
+
+[node name="Tree7" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-419, 834)

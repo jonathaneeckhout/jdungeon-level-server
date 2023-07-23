@@ -7,6 +7,7 @@ extends Node2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	LevelsConnection.logged_in.connect(_on_player_logged_in)
+	LevelsConnection.level_info_needed.connect(_on_level_info_needed)
 	level.set_level(level_env)
 
 
@@ -30,3 +31,8 @@ func _on_player_logged_in(id: int, username: String, character_name: String):
 	level.add_player(id, character["name"], character["position"])
 
 	LevelsConnection.add_player.rpc_id(id, id, character["name"], character["position"])
+
+
+func _on_level_info_needed(id: int):
+	var info = level.get_info()
+	LevelsConnection.load_level_response.rpc_id(id, info)

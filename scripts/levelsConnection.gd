@@ -4,6 +4,7 @@ signal logged_in(id: int, username: String, character: String)
 signal client_disconnected(id: int)
 signal player_moved(id: int, input_sequence: int, pos: Vector2)
 signal player_interacted(id: int, input_sequence: int, target: String)
+signal level_info_needed(id: int)
 
 var players = {}
 
@@ -80,37 +81,64 @@ func authenticate_with_secret(username: String, secret: String, character: Strin
 
 @rpc("call_remote", "authority", "reliable")
 func client_login_response(_succeeded: bool, _cookie: String):
-	#Placeholder code for server
+	# Placeholder code for server
 	pass
 
 
 @rpc("call_remote", "authority", "reliable")
 func add_player(_id: int, _character_name: String, _pos: Vector2):
-	#Placeholder code for server
+	# Placeholder code for server
 	pass
 
 
 @rpc("call_remote", "authority", "reliable") func remove_player(_character_name: String):
-	#Placeholder code for server
+	# Placeholder code for server
 	pass
 
 
 @rpc("call_remote", "any_peer", "reliable") func move(input_sequence: int, pos: Vector2):
-	player_moved.emit(multiplayer.get_remote_sender_id(), input_sequence, pos)
+	var id = multiplayer.get_remote_sender_id()
+
+	# Only allow logged in players
+	if not players[id]["logged_in"]:
+		return
+
+	player_moved.emit(id, input_sequence, pos)
 
 
 @rpc("call_remote", "any_peer", "reliable") func interact(input_sequence: int, target: String):
-	player_interacted.emit(multiplayer.get_remote_sender_id(), input_sequence, target)
+	var id = multiplayer.get_remote_sender_id()
+
+	# Only allow logged in players
+	if not players[id]["logged_in"]:
+		return
+
+	player_interacted.emit(id, input_sequence, target)
+
+
+@rpc("call_remote", "any_peer", "reliable") func load_level():
+	var id = multiplayer.get_remote_sender_id()
+
+	# Only allow logged in players
+	if not players[id]["logged_in"]:
+		return
+
+	level_info_needed.emit(id)
+
+
+@rpc("call_remote", "any_peer", "reliable") func load_level_response(_level_info: Dictionary):
+	# Placeholder code
+	pass
 
 
 @rpc("call_remote", "authority", "reliable")
 func add_enemy(_enemy_name: String, _enemy_class: String, _pos: Vector2):
-	#Placeholder code for server
+	# Placeholder code for server
 	pass
 
 
 @rpc("call_remote", "authority", "reliable") func remove_enemy(_enemy_name: String):
-	#Placeholder code for server
+	# Placeholder code for server
 	pass
 
 
@@ -121,7 +149,7 @@ func add_enemy(_enemy_name: String, _enemy_class: String, _pos: Vector2):
 
 @rpc("call_remote", "authority", "reliable")
 func return_server_time(_server_time: float, _client_time: float):
-	#Placeholder code
+	# Placeholder code
 	pass
 
 
@@ -131,5 +159,5 @@ func return_server_time(_server_time: float, _client_time: float):
 
 
 @rpc("call_remote", "authority", "reliable") func return_latency(_client_time: float):
-	#Placeholder code
+	# Placeholder code
 	pass

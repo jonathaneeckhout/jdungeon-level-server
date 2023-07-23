@@ -4,6 +4,7 @@ var level: String = ""
 var players: Node2D
 var npcs: Node2D
 var enemies: Node2D
+var terrain: Node2D
 var player_respawn_locations: Node2D
 
 var players_by_id = {}
@@ -31,9 +32,10 @@ func set_level(level_name: String):
 	self.add_child(level_instance)
 
 	level = level_name
-	players = level_instance.get_node("Players")
-	npcs = level_instance.get_node("NPCS")
-	enemies = level_instance.get_node("Enemies")
+	players = level_instance.get_node("Entities/Players")
+	npcs = level_instance.get_node("Entities/NPCS")
+	enemies = level_instance.get_node("Entities/Enemies")
+	terrain = level_instance.get_node("Entities/Terrain")
 	player_respawn_locations = level_instance.get_node("PlayerRespawnLocations")
 
 	return true
@@ -86,3 +88,17 @@ func find_player_respawn_location(pos: Vector2):
 			closest_distance = distance
 
 	return closest
+
+
+func get_info():
+	var info: Dictionary
+
+	info["Terrain"] = []
+
+	# TODO: optimalize this pieces, cache it in file or something
+	for element in terrain.get_children():
+		info["Terrain"].append(
+			{"class": element.CLASS, "position": element.position}
+		)
+
+	return info

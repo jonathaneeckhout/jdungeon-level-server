@@ -118,7 +118,7 @@ func hurt(damage):
 
 
 func die():
-	var respawn_location = $"../../../".find_player_respawn_location(position)
+	var respawn_location = $"../../../../".find_player_respawn_location(position)
 	#Stop doing what you were doing
 	state = STATES.IDLE
 	position = respawn_location
