@@ -6,6 +6,7 @@ var npcs: Node2D
 var enemies: Node2D
 var terrain: Node2D
 var player_respawn_locations: Node2D
+var tilemap: TileMap
 
 var players_by_id = {}
 
@@ -37,6 +38,11 @@ func set_level(level_name: String):
 	enemies = level_instance.get_node("Entities/Enemies")
 	terrain = level_instance.get_node("Entities/Terrain")
 	player_respawn_locations = level_instance.get_node("PlayerRespawnLocations")
+	tilemap = level_instance.get_node("TileMap")
+
+	await CommonConnection.logged_in
+
+	await CommonConnection.upload_level_info(level_name, get_info())
 
 	return true
 
@@ -91,14 +97,41 @@ func find_player_respawn_location(pos: Vector2):
 
 
 func get_info():
-	var info: Dictionary
+	var info: Dictionary = {}
 
-	info["Terrain"] = []
+	info["terrain"] = []
 
-	# TODO: optimalize this pieces, cache it in file or something
 	for element in terrain.get_children():
-		info["Terrain"].append(
-			{"class": element.CLASS, "position": element.position}
+		info["terrain"].append(
+			{"class": element.CLASS, "position": {"x": element.position.x, "y": element.position.y}}
 		)
+
+	info["tilemap"] = get_tilemap_info()
+
+	return info
+
+
+func get_tilemap_info():
+	var info: Array = []
+
+	for layer in tilemap.get_layers_count():
+		var data = []
+		var tilemap_rect = tilemap.get_used_rect()
+
+		for x in range(tilemap_rect.position.x, tilemap_rect.end.x):
+			for y in range(tilemap_rect.position.y, tilemap_rect.end.y):
+				var coords = Vector2(x, y)
+				var source_id = tilemap.get_cell_source_id(layer, coords)
+				if source_id != -1:
+					var atlas_coords = tilemap.get_cell_atlas_coords(layer, coords)
+					data.append(
+						{
+							"co": {"x": coords.x, "y": coords.y},
+							"sid": source_id,
+							"aco": {"x": atlas_coords.x, "y": atlas_coords.y}
+						}
+					)
+
+		info.append({"layer": layer, "data": data})
 
 	return info

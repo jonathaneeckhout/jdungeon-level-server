@@ -1,10 +1,10 @@
 extends Node
 
-signal auth_response(response: bool)
+signal upload_level_info_response(response: bool)
 
 @onready var debug = Env.get_value("DEBUG")
 @onready var common_server_address = Env.get_value("COMMON_SERVER_ADDRESS")
-@onready var url = "%s/level/login/player" % common_server_address
+@onready var url = "%s/level/info" % common_server_address
 
 @onready var http_request = HTTPRequest.new()
 
@@ -24,19 +24,17 @@ func _ready():
 	http_request.request_completed.connect(_http_request_completed)
 
 
-func authenticate_with_secret(username: String, secret: String, cookie: String) -> bool:
+func upload_level_info(level_name: String, level_info: Dictionary, cookie: String) -> bool:
 	var headers = ["Content-Type: application/json", "Cookie: %s" % cookie]
 
-	var body = JSON.stringify({"username": username, "secret": secret})
+	var body = JSON.stringify({"level": level_name, "hash": level_info.hash(), "info": level_info})
 
 	var error = http_request.request(url, headers, HTTPClient.METHOD_POST, body)
 	if error != OK:
 		print("An error occurred in the HTTP request.")
 		return false
 
-	print("Sending out authentication request for %s to %s" % [username, url])
-
-	var response = await auth_response
+	var response = await upload_level_info_response
 	return response
 
 
@@ -44,21 +42,21 @@ func authenticate_with_secret(username: String, secret: String, cookie: String) 
 func _http_request_completed(result, response_code, _headers, body):
 	if result != HTTPRequest.RESULT_SUCCESS:
 		print("HTTPRequest failed")
-		auth_response.emit(false)
+		upload_level_info_response.emit(false)
 		return
 
 	if response_code != 200:
 		print("Error in response")
-		auth_response.emit(false)
+		upload_level_info_response.emit(false)
 		return
 
 	var json = JSON.new()
 	json.parse(body.get_string_from_utf8())
 	var response = json.get_data()
 
-	if !response.has("error") or response["error"] or !response.has("data"):
+	if !response.has("error") or response["error"]:
 		print("Error or invalid response format")
-		auth_response.emit(false)
+		upload_level_info_response.emit(false)
 		return
 
-	auth_response.emit(response["data"]["auth"])
+	upload_level_info_response.emit(true)

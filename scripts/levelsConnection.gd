@@ -4,7 +4,6 @@ signal logged_in(id: int, username: String, character: String)
 signal client_disconnected(id: int)
 signal player_moved(id: int, input_sequence: int, pos: Vector2)
 signal player_interacted(id: int, input_sequence: int, target: String)
-signal level_info_needed(id: int)
 
 var players = {}
 
@@ -114,21 +113,6 @@ func add_player(_id: int, _character_name: String, _pos: Vector2):
 		return
 
 	player_interacted.emit(id, input_sequence, target)
-
-
-@rpc("call_remote", "any_peer", "reliable") func load_level():
-	var id = multiplayer.get_remote_sender_id()
-
-	# Only allow logged in players
-	if not players[id]["logged_in"]:
-		return
-
-	level_info_needed.emit(id)
-
-
-@rpc("call_remote", "any_peer", "reliable") func load_level_response(_level_info: Dictionary):
-	# Placeholder code
-	pass
 
 
 @rpc("call_remote", "authority", "reliable")

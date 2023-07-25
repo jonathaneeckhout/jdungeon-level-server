@@ -1,11 +1,13 @@
 extends Node
 
+signal logged_in
+
 var auth_request = load("res://scripts/requests/authRequest.gd")
 var auth_with_secret_request = load("res://scripts/requests/authWithSecretRequest.gd")
 var get_character_request = load("res://scripts/requests/getCharacterRequest.gd")
+var upload_level_info_request = load("res://scripts/requests/uploadLevelInfoRequest.gd")
 
 var cookie = ""
-var logged_in = false
 
 @onready var level = Env.get_value("LEVEL")
 @onready var secret = Env.get_value("SECRET")
@@ -14,7 +16,9 @@ var logged_in = false
 func _ready():
 	var res = await authenticate(level, secret)
 	if res:
-		print("Authorized with server")
+		print("Authorized with common server")
+
+	# TODO: authorize periodically
 
 
 func authenticate(level_name: String, key: String):
@@ -24,8 +28,8 @@ func authenticate(level_name: String, key: String):
 	new_req.queue_free()
 	print("Authentication level %s %s" % [level_name, res["response"]])
 	if res["response"]:
-		logged_in = true
 		cookie = res["cookie"]
+		logged_in.emit()
 	return res["response"]
 
 
@@ -42,5 +46,14 @@ func get_character(character_name: String):
 	var new_req = get_character_request.new()
 	add_child(new_req)
 	var res = await new_req.get_character(character_name, cookie)
+	new_req.queue_free()
+	return res
+
+
+func upload_level_info(level_name: String, level_info: Dictionary) -> bool:
+	var new_req = upload_level_info_request.new()
+	add_child(new_req)
+	var res = await new_req.upload_level_info(level_name, level_info, cookie)
+	print("Uploaded level info %s" % [res])
 	new_req.queue_free()
 	return res

@@ -48,6 +48,7 @@ func _http_request_completed(result, response_code, _headers, body):
 
 	if response_code != 200:
 		print("Error in response")
+		request_response.emit(null)
 		return
 
 	var json = JSON.new()
