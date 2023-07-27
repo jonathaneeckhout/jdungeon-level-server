@@ -2,12 +2,16 @@ extends Node
 
 signal logged_in
 
+const AUTHENTICATION_INTERVAL_TIME = 300.0
+
 var auth_request = load("res://scripts/requests/authRequest.gd")
 var auth_with_secret_request = load("res://scripts/requests/authWithSecretRequest.gd")
 var get_character_request = load("res://scripts/requests/getCharacterRequest.gd")
 var upload_level_info_request = load("res://scripts/requests/uploadLevelInfoRequest.gd")
 
 var cookie = ""
+
+var authentication_timer: Timer
 
 @onready var level = Env.get_value("LEVEL")
 @onready var secret = Env.get_value("SECRET")
@@ -18,7 +22,12 @@ func _ready():
 	if res:
 		print("Authorized with common server")
 
-	# TODO: authorize periodically
+	# Periodically authenticate to make sure the cookie is still valid
+	authentication_timer = Timer.new()
+	authentication_timer.autostart = true
+	authentication_timer.wait_time = AUTHENTICATION_INTERVAL_TIME
+	authentication_timer.timeout.connect(_on_authentication_timer_timeout)
+	add_child(authentication_timer)
 
 
 func authenticate(level_name: String, key: String):
@@ -57,3 +66,9 @@ func upload_level_info(level_name: String, level_info: Dictionary) -> bool:
 	print("Uploaded level info %s" % [res])
 	new_req.queue_free()
 	return res
+
+
+func _on_authentication_timer_timeout():
+	var res = await authenticate(level, secret)
+	if res:
+		print("Authorized with common server")
