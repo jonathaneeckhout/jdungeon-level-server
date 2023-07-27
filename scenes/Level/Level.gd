@@ -51,6 +51,7 @@ func add_player(id: int, character_name: String, pos: Vector2):
 	var player = player_scene.instantiate()
 	player.player = id
 	player.name = character_name
+	player.level = level
 	player.position = pos
 	player.username = character_name
 	players.add_child(player)
@@ -66,6 +67,8 @@ func remove_player(id: int):
 
 
 func _client_disconnected(id):
+	if id in players_by_id:
+		CommonConnection.save_character(players_by_id[id].name, level, players_by_id[id].position)
 	remove_player(id)
 
 

@@ -7,6 +7,7 @@ const AUTHENTICATION_INTERVAL_TIME = 300.0
 var auth_request = load("res://scripts/requests/authRequest.gd")
 var auth_with_secret_request = load("res://scripts/requests/authWithSecretRequest.gd")
 var get_character_request = load("res://scripts/requests/getCharacterRequest.gd")
+var save_character_request = load("res://scripts/requests/saveCharacterRequest.gd")
 var upload_level_info_request = load("res://scripts/requests/uploadLevelInfoRequest.gd")
 
 var cookie = ""
@@ -55,6 +56,14 @@ func get_character(character_name: String):
 	var new_req = get_character_request.new()
 	add_child(new_req)
 	var res = await new_req.get_character(character_name, cookie)
+	new_req.queue_free()
+	return res
+
+
+func save_character(character_name: String, level_name: String, pos: Vector2):
+	var new_req = save_character_request.new()
+	add_child(new_req)
+	var res = await new_req.save_character(character_name, level_name, pos, cookie)
 	new_req.queue_free()
 	return res
 

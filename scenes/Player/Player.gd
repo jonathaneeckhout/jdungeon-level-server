@@ -7,6 +7,7 @@ const ATTACK_SPEED = 1.0
 const ATTACK_POWER = 30.0
 const MAX_HP = 100.0
 const ARRIVAL_DISTANCE = 8
+const SAVE_INTERVAL_TIME = 300.0
 
 @export var username := "":
 	set(user):
@@ -22,12 +23,13 @@ const ARRIVAL_DISTANCE = 8
 
 @export var vel: Vector2
 
-var world: String = ""
+var level: String = ""
 var hp = MAX_HP
 var state = STATES.IDLE
 var enemies_in_attack_range = []
 
 @onready var attack_timer = Timer.new()
+@onready var save_timer = Timer.new()
 # Player synchronized input.
 @onready var input = $PlayerInput
 @onready var server_synchronizer = $ServerSynchronizer
@@ -43,6 +45,11 @@ func _ready():
 	$AttackArea2D.body_exited.connect(_on_attack_area_body_exited)
 
 	server_synchronizer.is_player = true
+
+	save_timer.wait_time = SAVE_INTERVAL_TIME
+	save_timer.autostart = true
+	save_timer.timeout.connect(_on_save_timer_timeout)
+	add_child(save_timer)
 
 
 func _physics_process(delta):
@@ -149,3 +156,7 @@ func _on_attack_area_body_entered(body):
 func _on_attack_area_body_exited(body):
 	if enemies_in_attack_range.has(body):
 		enemies_in_attack_range.erase(body)
+
+
+func _on_save_timer_timeout():
+	CommonConnection.save_character(name, level, position)
