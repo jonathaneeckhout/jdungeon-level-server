@@ -2,12 +2,19 @@ class_name Entity extends CharacterBody2D
 
 signal died
 
+const ATTACK_LOCK_TIME = 10.0
+
 var max_hp: float = 100.0
 var hp: float = max_hp
 var attack_power: float = 5.0
+var experience = 100.0
+
+var attacker: CharacterBody2D
 
 var server_synchronizer: Node2D
 var interface: Control
+
+var attacker_lock_timer: Timer
 
 
 func _ready():
@@ -18,6 +25,12 @@ func _ready():
 	var interface_scene = load("res://scenes/Interface/interface.tscn")
 	interface = interface_scene.instantiate()
 	add_child(interface)
+
+	attacker_lock_timer = Timer.new()
+	attacker_lock_timer.one_shot = true
+	attacker_lock_timer.wait_time = ATTACK_LOCK_TIME
+	attacker_lock_timer.timeout.connect(_on_clock_attack_lock_timer_timeout)
+	add_child(attacker_lock_timer)
 
 
 func _physics_process(delta):
@@ -33,10 +46,19 @@ func attack(target: CharacterBody2D):
 	server_synchronizer.sync_attack(position.direction_to(target.position))
 
 
-func hurt(damage: int):
+func hurt(from: CharacterBody2D, damage: int):
+	# Check who is attacking me
+	if attacker == null:
+		attacker = from
+
+	# Reset the lock timer everytime I am hit by my attacker
+	if attacker == from:
+		attacker_lock_timer.start(ATTACK_LOCK_TIME)
+
 	hp = max(0, hp - damage)
 
 	if hp <= 0:
+		attacker.gain_experience(experience)
 		died.emit()
 		queue_free()
 		return
@@ -45,5 +67,14 @@ func hurt(damage: int):
 	update_hp_bar()
 
 
+# Adding this line to be in line with players
+func gain_experience(_amount: int):
+	pass
+
+
 func update_hp_bar():
 	$Interface/HPBar.value = (hp / max_hp) * 100
+
+
+func _on_clock_attack_lock_timer_timeout():
+	attacker = null

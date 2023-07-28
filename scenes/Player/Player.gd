@@ -27,6 +27,7 @@ var level: String = ""
 var hp = MAX_HP
 var state = STATES.IDLE
 var enemies_in_attack_range = []
+var stats: Node
 
 @onready var attack_timer = Timer.new()
 @onready var save_timer = Timer.new()
@@ -36,6 +37,9 @@ var enemies_in_attack_range = []
 
 
 func _ready():
+	stats = load("res://scenes/Player/stats.gd").new()
+	add_child(stats)
+
 	input.move_target = position
 
 	attack_timer.timeout.connect(_on_attack_timer_timeout)
@@ -108,7 +112,7 @@ func _on_attack_timer_timeout():
 
 
 func attack(target: CharacterBody2D):
-	target.hurt(ATTACK_POWER)
+	target.hurt(self, ATTACK_POWER)
 	server_synchronizer.sync_attack(position.direction_to(target.position))
 
 
@@ -137,6 +141,10 @@ func die():
 
 func update_hp_bar():
 	$Interface/HPBar.value = (hp / MAX_HP) * 100
+
+
+func gain_experience(amount: int):
+	stats.experience += amount
 
 
 func _handle_move():

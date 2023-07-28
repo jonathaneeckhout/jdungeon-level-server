@@ -58,11 +58,29 @@ func sync_hurt(current_hp: int, amount: int):
 
 func sync_attack(direction: Vector2):
 	var timestamp = Time.get_unix_time_from_system()
+
 	if is_player:
 		attack.rpc_id(root.player, timestamp, direction)
 
 	for other_player in players_in_range:
 		attack.rpc_id(other_player.player, timestamp, direction)
+
+
+func sync_experience(current_exp: int, amount: int, needed: int):
+	var timestamp = Time.get_unix_time_from_system()
+
+	if is_player:
+		gain_experience.rpc_id(root.player, timestamp, current_exp, amount, needed)
+
+
+func sync_level(current_level: int, amount: int):
+	var timestamp = Time.get_unix_time_from_system()
+
+	if is_player:
+		gain_level.rpc_id(root.player, timestamp, current_level, amount)
+
+	for other_player in players_in_range:
+		gain_level.rpc_id(root.player, timestamp, current_level, amount)
 
 
 @rpc("call_remote", "authority", "unreliable") func sync(
@@ -76,5 +94,19 @@ func sync_attack(direction: Vector2):
 	pass
 
 
-@rpc("call_remote", "authority", "reliable") func attack(_timestamp: int):
+@rpc("call_remote", "authority", "reliable") func attack(_timestamp: int, _direction: Vector2):
+	pass
+
+
+@rpc("call_remote", "authority", "reliable") func gain_experience(
+	_timestamp: int,
+	_current_exp: int,
+	_amount: int,
+	_needed: int
+):
+	pass
+
+
+@rpc("call_remote", "authority", "reliable")
+func gain_level(_timestamp: int, _current_level: int, _amount: int):
 	pass
