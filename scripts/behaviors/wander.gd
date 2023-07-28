@@ -1,11 +1,12 @@
 extends Node2D
 
-enum STATES { IDLE, MOVE, RUN, AGGROED, ATTACK }
+enum STATES { IDLE, MOVE, FLEE, AGGROED, ATTACK }
 
 const MIN_IDLE_TIME = 3
 const MAX_IDLE_TIME = 10
 const MAX_WANDER_DISTANCE = 256.0
 const MOVE_SPEED = 75.0
+const FLEE_SPEED = 150.0
 const ARRIVAL_DISTANCE = 8
 const RAY_SIZE = 64
 const RAY_ANGLE = 30
@@ -20,6 +21,7 @@ var wander_target: Vector2
 
 var players_in_aggro_range = []
 var players_in_attack_range = []
+var attackers_in_aggro_range = []
 
 @onready var root = $"../"
 
@@ -52,6 +54,28 @@ func init_wander():
 
 	ray_direction.target_position = Vector2(RAY_SIZE, 0)
 	add_child(ray_direction)
+
+
+func init_wander_and_flee():
+	init_wander()
+
+	var flee_area = Area2D.new()
+	flee_area.name = "FleeArea2D"
+	flee_area.collision_layer = 0
+	flee_area.collision_mask = 2
+
+	var cs_flee_area = CollisionShape2D.new()
+	flee_area.add_child(cs_flee_area)
+
+	var cs_flee_circle = CircleShape2D.new()
+
+	cs_flee_circle.radius = 512.0
+	cs_flee_area.shape = cs_flee_circle
+
+	add_child(flee_area)
+
+	flee_area.body_entered.connect(_on_flee_area_body_entered)
+	flee_area.body_exited.connect(_on_flee_area_body_exited)
 
 
 func init_wander_and_attack():
@@ -149,8 +173,26 @@ func fsm_wander(_delta):
 				wander_target = find_random_spot(starting_postion, MAX_WANDER_DISTANCE)
 		STATES.MOVE:
 			_handle_move()
-		STATES.RUN:
-			pass
+
+
+func fsm_wander_and_flee(_delta):
+	match state:
+		STATES.IDLE:
+			if root.attacker:
+				state = STATES.FLEE
+			elif idle_timer.is_stopped():
+				state = STATES.MOVE
+				wander_target = find_random_spot(starting_postion, MAX_WANDER_DISTANCE)
+		STATES.MOVE:
+			if root.attacker:
+				state = STATES.FLEE
+			else:
+				_handle_move()
+		STATES.FLEE:
+			if not root.attacker or not is_instance_valid(root.attacker):
+				state = STATES.IDLE
+			else:
+				_handle_flee()
 
 
 func fsm_wander_and_attack(_delta):
@@ -217,6 +259,15 @@ func _handle_move():
 		idle_timer.start(randi_range(MIN_IDLE_TIME, MAX_IDLE_TIME))
 
 
+func _handle_flee():
+	if root.attacker in attackers_in_aggro_range:
+		root.velocity = root.attacker.position.direction_to(root.position) * FLEE_SPEED
+		_move_with_avoidance()
+	else:
+		root.velocity = Vector2.ZERO
+		_move_with_avoidance()
+
+
 func _move_with_avoidance():
 	rays.rotation = root.velocity.angle()
 	if _obstacle_ahead():
@@ -251,6 +302,16 @@ func _on_aggro_area_body_entered(body):
 func _on_aggro_area_body_exited(body):
 	if players_in_aggro_range.has(body):
 		players_in_aggro_range.erase(body)
+
+
+func _on_flee_area_body_entered(body):
+	if not attackers_in_aggro_range.has(body):
+		attackers_in_aggro_range.append(body)
+
+
+func _on_flee_area_body_exited(body):
+	if attackers_in_aggro_range.has(body):
+		attackers_in_aggro_range.erase(body)
 
 
 func _on_attack_area_body_entered(body):
