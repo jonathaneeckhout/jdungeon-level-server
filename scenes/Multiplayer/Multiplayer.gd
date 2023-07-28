@@ -33,6 +33,6 @@ func _on_player_logged_in(id: int, username: String, character_name: String):
 	print("Adding character %s to level %s" % [character["name"], level_env])
 
 	# Add the player to the level
-	level.add_player(id, character["name"], character["position"])
+	level.add_player(id, character["name"], character["position"], character["experience_level"], character["experience"])
 
-	LevelsConnection.add_player.rpc_id(id, id, character["name"], character["position"])
+	LevelsConnection.add_player.rpc_id(id, id, character["name"], character["position"], character["experience_level"], character["experience"])

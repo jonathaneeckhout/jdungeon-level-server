@@ -66,11 +66,11 @@ func sync_attack(direction: Vector2):
 		attack.rpc_id(other_player.player, timestamp, direction)
 
 
-func sync_experience(current_exp: int, amount: int, needed: int):
+func sync_experience(current_exp: int, amount: int):
 	var timestamp = Time.get_unix_time_from_system()
 
 	if is_player:
-		gain_experience.rpc_id(root.player, timestamp, current_exp, amount, needed)
+		gain_experience.rpc_id(root.player, timestamp, current_exp, amount)
 
 
 func sync_level(current_level: int, amount: int):
@@ -98,12 +98,8 @@ func sync_level(current_level: int, amount: int):
 	pass
 
 
-@rpc("call_remote", "authority", "reliable") func gain_experience(
-	_timestamp: int,
-	_current_exp: int,
-	_amount: int,
-	_needed: int
-):
+@rpc("call_remote", "authority", "reliable")
+func gain_experience(_timestamp: int, _current_exp: int, _amount: int):
 	pass
 
 

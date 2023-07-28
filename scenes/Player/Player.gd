@@ -27,7 +27,7 @@ var level: String = ""
 var hp = MAX_HP
 var state = STATES.IDLE
 var enemies_in_attack_range = []
-var stats: Node
+var stats: Node = load("res://scenes/Player/stats.gd").new()
 
 @onready var attack_timer = Timer.new()
 @onready var save_timer = Timer.new()
@@ -37,7 +37,6 @@ var stats: Node
 
 
 func _ready():
-	stats = load("res://scenes/Player/stats.gd").new()
 	add_child(stats)
 
 	input.move_target = position
@@ -144,7 +143,7 @@ func update_hp_bar():
 
 
 func gain_experience(amount: int):
-	stats.experience += amount
+	stats.add_experience(amount)
 
 
 func _handle_move():

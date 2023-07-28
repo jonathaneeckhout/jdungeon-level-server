@@ -2,26 +2,8 @@ extends Node
 
 const BASE_EXPERIENCE = 100
 
-@export var level: int = 1:
-	set(value):
-		server_synchronizer.sync_level(value, value - level)
-
-		level = value
-		experience_needed_for_next_level += calculate_experience_needed_next_level(level)
-		# print("Current level %d" % level)
-		# print("Experience needed %d" % experience_needed_for_next_level)
-
-@export var experience: int = 0:
-	set(value):
-		server_synchronizer.sync_experience(
-			value, value - experience, experience_needed_for_next_level
-		)
-
-		experience = value
-		# print("Current experience %d" % experience)
-		while experience >= experience_needed_for_next_level:
-			experience -= experience_needed_for_next_level
-			level += 1
+var level: int = 1
+var experience: int = 0
 
 var experience_needed_for_next_level = BASE_EXPERIENCE
 
@@ -31,7 +13,26 @@ var experience_needed_for_next_level = BASE_EXPERIENCE
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	experience_needed_for_next_level = calculate_experience_needed_next_level(level)
+	server_synchronizer.sync_level(level, 0)
+	server_synchronizer.sync_experience(experience, 0)
 
 
 func calculate_experience_needed_next_level(current_level: int):
 	return BASE_EXPERIENCE + (BASE_EXPERIENCE * (pow(current_level, 2) - 1))
+
+
+func add_level(amount: int):
+	level += amount
+	experience_needed_for_next_level = calculate_experience_needed_next_level(level)
+	server_synchronizer.sync_level(level, amount)
+
+
+func add_experience(amount: int):
+	experience += amount
+
+	# print("Current experience %d" % experience)
+	while experience >= experience_needed_for_next_level:
+		experience -= experience_needed_for_next_level
+		add_level(1)
+
+	server_synchronizer.sync_experience(experience, amount)
