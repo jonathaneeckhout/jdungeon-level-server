@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-enum STATES { IDLE, MOVE, ATTACK }
+enum STATES { IDLE, MOVE, ATTACK, LOOT }
 
 const SPEED = 300.0
 const ATTACK_SPEED = 1.0
@@ -27,7 +27,9 @@ var level: String = ""
 var hp = MAX_HP
 var state = STATES.IDLE
 var enemies_in_attack_range = []
+var bodies_in_interact_range = []
 var stats: Node = load("res://scenes/Player/stats.gd").new()
+var inventory: Node = load("res://scenes/Player/inventory.gd").new()
 
 @onready var attack_timer = Timer.new()
 @onready var save_timer = Timer.new()
@@ -46,6 +48,9 @@ func _ready():
 
 	$AttackArea2D.body_entered.connect(_on_attack_area_body_entered)
 	$AttackArea2D.body_exited.connect(_on_attack_area_body_exited)
+
+	$InteractArea2D.body_entered.connect(_on_interact_area_body_entered)
+	$InteractArea2D.body_exited.connect(_on_interact_area_body_exited)
 
 	server_synchronizer.type = server_synchronizer.ENTITY_TYPES.PLAYER
 
@@ -70,23 +75,41 @@ func fsm(_delta):
 		STATES.IDLE:
 			if input.moving:
 				state = STATES.MOVE
-			#TODO: currently the only interaction is attacking
 			elif input.interacting:
-				state = STATES.ATTACK
+				_handle_interact_input()
 			else:
 				velocity = Vector2.ZERO
 				state = STATES.IDLE
 		STATES.MOVE:
-			#TODO: currently the only interaction is attacking
 			if input.interacting:
-				state = STATES.ATTACK
+				_handle_interact_input()
 			else:
 				_handle_move()
 		STATES.ATTACK:
 			if input.moving:
 				state = STATES.MOVE
+			elif input.interacting:
+				_handle_interact_input()
 			else:
 				_handle_attack()
+		STATES.LOOT:
+			if input.moving:
+				state = STATES.MOVE
+			elif input.interacting:
+				_handle_interact_input()
+			else:
+				_handle_loot()
+
+
+func _handle_interact_input():
+	match input.interact_type:
+		input.INTERACT_TYPES.ENEMY:
+			state = STATES.ATTACK
+		input.INTERACT_TYPES.NPC:
+			# TODO: handle npcs
+			state = STATES.ATTACK
+		input.INTERACT_TYPES.ITEM:
+			state = STATES.LOOT
 
 
 func _handle_attack():
@@ -106,8 +129,19 @@ func _handle_attack():
 	state = STATES.ATTACK
 
 
-func _on_attack_timer_timeout():
-	attack_timer.stop()
+func _handle_loot():
+	if not is_instance_valid(input.interact_target):
+		state = STATES.IDLE
+		return
+
+	if not bodies_in_interact_range.has(input.interact_target):
+		velocity = position.direction_to(input.interact_target.position) * SPEED
+		state = STATES.LOOT
+	else:
+		velocity = Vector2.ZERO
+
+		input.interact_target.interact(self)
+		state = STATES.IDLE
 
 
 func attack(target: CharacterBody2D):
@@ -163,6 +197,20 @@ func _on_attack_area_body_entered(body):
 func _on_attack_area_body_exited(body):
 	if enemies_in_attack_range.has(body):
 		enemies_in_attack_range.erase(body)
+
+
+func _on_interact_area_body_entered(body):
+	if not bodies_in_interact_range.has(body):
+		bodies_in_interact_range.append(body)
+
+
+func _on_interact_area_body_exited(body):
+	if bodies_in_interact_range.has(body):
+		bodies_in_interact_range.erase(body)
+
+
+func _on_attack_timer_timeout():
+	attack_timer.stop()
 
 
 func _on_save_timer_timeout():

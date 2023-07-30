@@ -91,7 +91,6 @@ func drop_loot():
 			var random_y = randi_range(-DROP_RANGE, DROP_RANGE)
 			item.position = position + Vector2(random_x, random_y)
 			$"../../Items".add_child(item)
-			print("Dropping loot")
 
 
 func add_item_to_loottable(item_res_path: String, drop_rate: float):

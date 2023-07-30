@@ -5,7 +5,7 @@ const SIZE = Vector2(6, 6)
 var inventory = []
 
 
-func _ready():
+func _init():
 	for x in range(SIZE.x):
 		var column = []
 		for y in range(SIZE.y):
@@ -18,9 +18,9 @@ func add_item_at_free_spot(item: Item):
 		for x in range(SIZE.x):
 			if inventory[x][y] == null:
 				inventory[x][y] = item
-				return true
+				return Vector2(x, y)
 
-	return false
+	return null
 
 
 func set_item_at_pos(item: Item, pos: Vector2):

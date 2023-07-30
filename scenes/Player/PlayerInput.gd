@@ -1,10 +1,13 @@
 extends Node2D
 
+enum INTERACT_TYPES { ENEMY, NPC, ITEM }
+
 @export var moving := false
 @export var move_target := Vector2()
 
 @export var interacting := false
 var interact_target = ""
+var interact_type = INTERACT_TYPES.ENEMY
 
 var last_processed_input = 0
 
@@ -48,3 +51,17 @@ func _on_player_interacted(id: int, input_sequence: int, target: String):
 	if $"../../../Enemies".has_node(target):
 		interacting = true
 		interact_target = $"../../../Enemies".get_node(target)
+		interact_type = INTERACT_TYPES.ENEMY
+		return
+
+	if $"../../../NPCS".has_node(target):
+		interacting = true
+		interact_target = $"../../../NPCS".get_node(target)
+		interact_type = INTERACT_TYPES.NPC
+		return
+
+	if $"../../../Items".has_node(target):
+		interacting = true
+		interact_target = $"../../../Items".get_node(target)
+		interact_type = INTERACT_TYPES.ITEM
+		return

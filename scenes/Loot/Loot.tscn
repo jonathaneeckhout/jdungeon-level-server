@@ -1,12 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://c7vo01w1lvnxx"]
+[gd_scene load_steps=4 format=3 uid="uid://c7vo01w1lvnxx"]
 
 [ext_resource type="Script" path="res://scenes/Loot/Loot.gd" id="1_fg8ij"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_frtrm"]
+radius = 32.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_umewy"]
 bg_color = Color(0.658824, 0.611765, 0.184314, 1)
 
-[node name="Loot" type="Node2D"]
+[node name="Loot" type="StaticBody2D"]
+collision_layer = 16
+collision_mask = 0
 script = ExtResource("1_fg8ij")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_frtrm")
 
 [node name="Panel" type="Panel" parent="."]
 offset_left = -16.0

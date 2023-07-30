@@ -24,5 +24,13 @@ func _ready():
 	add_child(expire_timer)
 
 
+func interact(from: CharacterBody2D):
+	var pos = from.inventory.add_item_at_free_spot(item)
+
+	if pos != null:
+		LevelsConnection.add_item_to_inventory.rpc_id(from.player, item.CLASS, pos)
+		queue_free()
+
+
 func _on_expire_timer_timeout():
 	queue_free()
