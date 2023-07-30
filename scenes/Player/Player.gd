@@ -47,7 +47,7 @@ func _ready():
 	$AttackArea2D.body_entered.connect(_on_attack_area_body_entered)
 	$AttackArea2D.body_exited.connect(_on_attack_area_body_exited)
 
-	server_synchronizer.is_player = true
+	server_synchronizer.type = server_synchronizer.ENTITY_TYPES.PLAYER
 
 	save_timer.wait_time = SAVE_INTERVAL_TIME
 	save_timer.autostart = true

@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7vo01w1lvnxx"]
+
+[ext_resource type="Script" path="res://scenes/Loot/Loot.gd" id="1_fg8ij"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_umewy"]
+bg_color = Color(0.658824, 0.611765, 0.184314, 1)
+
+[node name="Loot" type="Node2D"]
+script = ExtResource("1_fg8ij")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_umewy")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -24.0
+offset_top = -40.0
+offset_right = 24.0
+offset_bottom = -17.0

@@ -1,7 +1,11 @@
 extends Node2D
 
+enum ENTITY_TYPES { PLAYER, ENEMY, ITEM }
+
 var players_in_range = []
 var is_player = false
+
+var type = ENTITY_TYPES.ENEMY
 
 @onready var root = $"../"
 
@@ -13,9 +17,12 @@ func _ready():
 
 
 func _physics_process(_delta):
+	if type != ENTITY_TYPES.PLAYER and type != ENTITY_TYPES.ENEMY:
+		return
+
 	var timestamp = Time.get_unix_time_from_system()
 
-	if is_player:
+	if type == ENTITY_TYPES.PLAYER:
 		sync.rpc_id(root.player, timestamp, root.position)
 
 	for other_player in players_in_range:
@@ -26,11 +33,13 @@ func _on_sync_area_body_entered(body):
 	if body == root:
 		return
 
-	if is_player:
-		LevelsConnection.add_player.rpc_id(root.player, body.player, body.name, body.position)
-
-	else:
-		LevelsConnection.add_enemy.rpc_id(body.player, root.name, root.CLASS, root.position)
+	match type:
+		ENTITY_TYPES.PLAYER:
+			LevelsConnection.add_player.rpc_id(root.player, body.player, body.name, body.position)
+		ENTITY_TYPES.ENEMY:
+			LevelsConnection.add_enemy.rpc_id(body.player, root.name, root.CLASS, root.position)
+		ENTITY_TYPES.ITEM:
+			LevelsConnection.add_item.rpc_id(body.player, root.name, root.item.CLASS, root.position)
 
 	players_in_range.append(body)
 
@@ -39,17 +48,25 @@ func _on_sync_area_body_exited(body):
 	if body == root:
 		return
 
-	if is_player:
-		LevelsConnection.remove_player.rpc_id(root.player, body.name)
-	else:
-		if body.player in multiplayer.get_peers():
-			LevelsConnection.remove_enemy.rpc_id(body.player, root.name)
+	match type:
+		ENTITY_TYPES.PLAYER:
+			LevelsConnection.remove_player.rpc_id(root.player, body.name)
+		ENTITY_TYPES.ENEMY:
+			if body.player in multiplayer.get_peers():
+				LevelsConnection.remove_enemy.rpc_id(body.player, root.name)
+		ENTITY_TYPES.ITEM:
+			if body.player in multiplayer.get_peers():
+				LevelsConnection.remove_item.rpc_id(body.player, root.name)
 
 	players_in_range.erase(body)
 
 
 func sync_hurt(current_hp: int, amount: int):
-	if is_player:
+	# Only valid for players and enemies
+	if type != ENTITY_TYPES.PLAYER and type != ENTITY_TYPES.ENEMY:
+		return
+
+	if type == ENTITY_TYPES.PLAYER:
 		hurt.rpc_id(root.player, current_hp, amount)
 
 	for other_player in players_in_range:
@@ -57,9 +74,13 @@ func sync_hurt(current_hp: int, amount: int):
 
 
 func sync_attack(direction: Vector2):
+	# Only valid for players and enemies
+	if type != ENTITY_TYPES.PLAYER and type != ENTITY_TYPES.ENEMY:
+		return
+
 	var timestamp = Time.get_unix_time_from_system()
 
-	if is_player:
+	if type == ENTITY_TYPES.PLAYER:
 		attack.rpc_id(root.player, timestamp, direction)
 
 	for other_player in players_in_range:
@@ -67,17 +88,23 @@ func sync_attack(direction: Vector2):
 
 
 func sync_experience(current_exp: int, amount: int):
+	# Only valid for players
+	if type != ENTITY_TYPES.PLAYER:
+		return
+
 	var timestamp = Time.get_unix_time_from_system()
 
-	if is_player:
-		gain_experience.rpc_id(root.player, timestamp, current_exp, amount)
+	gain_experience.rpc_id(root.player, timestamp, current_exp, amount)
 
 
 func sync_level(current_level: int, amount: int):
+	# Only valid for players
+	if type != ENTITY_TYPES.PLAYER:
+		return
+
 	var timestamp = Time.get_unix_time_from_system()
 
-	if is_player:
-		gain_level.rpc_id(root.player, timestamp, current_level, amount)
+	gain_level.rpc_id(root.player, timestamp, current_level, amount)
 
 	for other_player in players_in_range:
 		gain_level.rpc_id(root.player, timestamp, current_level, amount)

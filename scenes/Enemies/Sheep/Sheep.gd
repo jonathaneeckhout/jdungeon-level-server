@@ -15,6 +15,8 @@ func _ready():
 
 	behavior.init_wander_and_flee()
 
+	add_item_to_loottable("res://scripts/items/healthPotion.gd", 0.8)
+
 
 func fsm(delta):
 	behavior.fsm_wander_and_flee(delta)

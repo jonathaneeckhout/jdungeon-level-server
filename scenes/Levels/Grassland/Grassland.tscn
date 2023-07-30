@@ -124,6 +124,8 @@ y_sort_enabled = true
 [node name="Enemies" type="Node2D" parent="Entities"]
 y_sort_enabled = true
 
+[node name="Items" type="Node2D" parent="Entities"]
+
 [node name="Terrain" type="Node2D" parent="Entities"]
 y_sort_enabled = true
 
