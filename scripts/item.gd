@@ -9,4 +9,4 @@ var equipable = false
 var max_stack_size = 10
 
 func use():
-	pass
+	return true

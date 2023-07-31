@@ -40,6 +40,7 @@ var inventory: Node = load("res://scenes/Player/inventory.gd").new()
 
 func _ready():
 	add_child(stats)
+	add_child(inventory)
 
 	input.move_target = position
 
