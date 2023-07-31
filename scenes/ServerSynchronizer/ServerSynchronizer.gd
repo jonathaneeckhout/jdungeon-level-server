@@ -73,6 +73,18 @@ func sync_hurt(current_hp: int, amount: int):
 		hurt.rpc_id(other_player.player, current_hp, amount)
 
 
+func sync_heal(current_hp: int, amount: int):
+	# Only valid for players and enemies
+	if type != ENTITY_TYPES.PLAYER and type != ENTITY_TYPES.ENEMY:
+		return
+
+	if type == ENTITY_TYPES.PLAYER:
+		heal.rpc_id(root.player, current_hp, amount)
+
+	for other_player in players_in_range:
+		heal.rpc_id(other_player.player, current_hp, amount)
+
+
 func sync_attack(direction: Vector2):
 	# Only valid for players and enemies
 	if type != ENTITY_TYPES.PLAYER and type != ENTITY_TYPES.ENEMY:
@@ -118,6 +130,10 @@ func sync_level(current_level: int, amount: int):
 
 
 @rpc("call_remote", "authority", "reliable") func hurt(_current_hp: int, _amount: int):
+	pass
+
+
+@rpc("call_remote", "authority", "reliable") func heal(_current_hp: int, _amount: int):
 	pass
 
 

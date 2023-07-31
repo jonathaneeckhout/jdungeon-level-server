@@ -8,5 +8,8 @@ var equipable = false
 
 var max_stack_size = 10
 
-func use():
+
+func use(who: CharacterBody2D):
+	if healing > 0:
+		who.heal(healing)
 	return true

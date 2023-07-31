@@ -44,7 +44,7 @@ func remove_item_at_pos(pos: Vector2):
 
 func use_item_at_pos(pos: Vector2):
 	var item = inventory[pos.x][pos.y]
-	if item and item.use():
+	if item and item.use(root):
 		remove_item_at_pos(pos)
 		return true
 

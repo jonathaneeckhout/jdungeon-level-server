@@ -2,6 +2,9 @@ extends Node
 
 const BASE_EXPERIENCE = 100
 
+var max_hp: float = 100.0
+var hp: float = max_hp
+
 var level: int = 1
 var experience: int = 0
 

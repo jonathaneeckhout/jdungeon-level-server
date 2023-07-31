@@ -5,7 +5,6 @@ enum STATES { IDLE, MOVE, ATTACK, LOOT }
 const SPEED = 300.0
 const ATTACK_SPEED = 1.0
 const ATTACK_POWER = 30.0
-const MAX_HP = 100.0
 const ARRIVAL_DISTANCE = 8
 const SAVE_INTERVAL_TIME = 300.0
 
@@ -24,7 +23,6 @@ const SAVE_INTERVAL_TIME = 300.0
 @export var vel: Vector2
 
 var level: String = ""
-var hp = MAX_HP
 var state = STATES.IDLE
 var enemies_in_attack_range = []
 var bodies_in_interact_range = []
@@ -152,13 +150,19 @@ func attack(target: CharacterBody2D):
 
 func hurt(damage):
 	# Deal damage if health pool is big enough
-	if damage < hp:
-		hp -= damage
-		server_synchronizer.sync_hurt(hp, damage)
+	if damage < stats.hp:
+		stats.hp -= damage
+		server_synchronizer.sync_hurt(stats.hp, damage)
 	# Die if damage is bigger than remaining hp
 	else:
 		die()
 
+	update_hp_bar()
+
+
+func heal(healing):
+	stats.hp = min(stats.hp + healing, stats.max_hp)
+	server_synchronizer.sync_heal(stats.hp, healing)
 	update_hp_bar()
 
 
@@ -167,14 +171,14 @@ func die():
 	#Stop doing what you were doing
 	state = STATES.IDLE
 	position = respawn_location
-	hp = MAX_HP
+	stats.hp = stats.max_hp
 
 	#TODO: sync dying, for now just update the hp again
-	server_synchronizer.sync_hurt(hp, 0)
+	server_synchronizer.sync_hurt(stats.hp, 0)
 
 
 func update_hp_bar():
-	$Interface/HPBar.value = (hp / MAX_HP) * 100
+	$Interface/HPBar.value = (stats.hp / stats.max_hp) * 100
 
 
 func gain_experience(amount: int):
