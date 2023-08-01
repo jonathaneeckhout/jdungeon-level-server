@@ -24,11 +24,18 @@ func _ready():
 	http_request.request_completed.connect(_http_request_completed)
 
 
-func save_character(character: String, level: String, position: Vector2, cookie: String) -> bool:
+func save_character(
+	character: String, level: String, position: Vector2, gold: int, cookie: String
+) -> bool:
 	var headers = ["Content-Type: application/json", "Cookie: %s" % cookie]
 
 	var body = JSON.stringify(
-		{"character": character, "level": level, "position": {"x": position.x, "y": position.y}}
+		{
+			"character": character,
+			"level": level,
+			"position": {"x": position.x, "y": position.y},
+			"gold": gold
+		}
 	)
 
 	var error = http_request.request(url, headers, HTTPClient.METHOD_POST, body)
