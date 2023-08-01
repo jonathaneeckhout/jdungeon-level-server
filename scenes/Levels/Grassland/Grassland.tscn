@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://vl0tbe6flllf"]
+[gd_scene load_steps=9 format=3 uid="uid://vl0tbe6flllf"]
 
 [ext_resource type="TileSet" uid="uid://dbdpmrmccbtfl" path="res://data/tilesets/GrassDirtSandFlower.tres" id="1_a1j67"]
 [ext_resource type="PackedScene" uid="uid://b8tu2wvmmjac3" path="res://scenes/Enemies/Wolf/Wolf.tscn" id="1_wgwrv"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b4nglbtl885h4" path="res://scenes/EnemySpawnLocation/EnemySpawnLocation.tscn" id="3_tknl2"]
 [ext_resource type="PackedScene" uid="uid://p0gbvxm471v2" path="res://scenes/Enemies/Ram/Ram.tscn" id="4_8pf27"]
 [ext_resource type="PackedScene" uid="uid://d0rp878jtcmee" path="res://scenes/Enemies/Sheep/Sheep.tscn" id="4_emfvs"]
+[ext_resource type="PackedScene" uid="uid://cnr4y0ffsieea" path="res://scenes/Enemies/Bushman/Bushman.tscn" id="5_0ew1g"]
 [ext_resource type="PackedScene" uid="uid://bf2gq2seudhc5" path="res://scenes/Terrain/Tree/Tree.tscn" id="6_rc4by"]
 
 [node name="Grassland" type="Node2D"]
@@ -46,6 +47,16 @@ respawn_time = 3
 [node name="Wolf5" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
 position = Vector2(-174, -1560)
 enemy_scene = ExtResource("1_wgwrv")
+respawn_time = 3
+
+[node name="Bushman" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(-993, -23)
+enemy_scene = ExtResource("5_0ew1g")
+respawn_time = 3
+
+[node name="Bushman2" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(-1355, 174)
+enemy_scene = ExtResource("5_0ew1g")
 respawn_time = 3
 
 [node name="Wolf6" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
@@ -176,6 +187,12 @@ position = Vector2(337, -1454)
 
 [node name="Tree19" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
 position = Vector2(-1455, -64)
+
+[node name="Tree25" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-1239, 38)
+
+[node name="Tree26" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
+position = Vector2(-1080, -184)
 
 [node name="Tree20" parent="Entities/Terrain" instance=ExtResource("6_rc4by")]
 position = Vector2(-1988, 1051)
