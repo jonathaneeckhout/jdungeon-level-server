@@ -10,6 +10,7 @@ var hp: float = max_hp
 var attack_power: float = 5.0
 var experience = 100.0
 
+var loot_money
 var loot_table = []
 
 var attacker: CharacterBody2D
@@ -87,14 +88,15 @@ func drop_loot():
 			var item = loot_scene.instantiate()
 			item.name = str(item.get_instance_id())
 			item.item = loot["item"].new()
+			item.item.amount = randi_range(1, loot["amount"])
 			var random_x = randi_range(-DROP_RANGE, DROP_RANGE)
 			var random_y = randi_range(-DROP_RANGE, DROP_RANGE)
 			item.position = position + Vector2(random_x, random_y)
 			$"../../Items".add_child(item)
 
 
-func add_item_to_loottable(item_res_path: String, drop_rate: float):
-	loot_table.append({"item": load(item_res_path), "drop_rate": drop_rate})
+func add_item_to_loottable(item_res_path: String, drop_rate: float, amount: int = 1):
+	loot_table.append({"item": load(item_res_path), "drop_rate": drop_rate, "amount": amount})
 
 
 # Adding this line to be in line with players

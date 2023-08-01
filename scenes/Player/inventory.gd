@@ -3,6 +3,7 @@ extends Node
 const SIZE = Vector2(6, 6)
 
 var inventory = []
+var gold = 0
 
 @onready var root = $".."
 
@@ -49,6 +50,11 @@ func use_item_at_pos(pos: Vector2):
 		return true
 
 	return false
+
+
+func add_gold(amount: int):
+	gold += amount
+	LevelsConnection.sync_gold.rpc_id(root.player, gold)
 
 
 func _on_inventory_item_used_at_pos(grid_pos: Vector2):

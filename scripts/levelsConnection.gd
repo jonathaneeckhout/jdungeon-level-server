@@ -150,6 +150,11 @@ func add_item_to_inventory(_item_class: String, _pos: Vector2):
 	pass
 
 
+@rpc("call_remote", "authority", "reliable") func sync_gold(_amount: int):
+	# Placeholder code for server
+	pass
+
+
 @rpc("call_remote", "any_peer", "reliable") func use_inventory_item_at_pos(grid_pos: Vector2):
 	var id = multiplayer.get_remote_sender_id()
 
