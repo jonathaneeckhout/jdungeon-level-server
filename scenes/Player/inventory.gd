@@ -85,8 +85,10 @@ func load_items(items: Dictionary):
 				inventory[item_data["pos"]["x"]][item_data["pos"]["y"]] = item
 
 
-func _on_inventory_item_used_at_pos(grid_pos: Vector2):
-	# TODO: check who used it
+func _on_inventory_item_used_at_pos(id: int, grid_pos: Vector2):
+	if root.player != id:
+		return
+
 	use_item_at_pos(grid_pos)
 
 

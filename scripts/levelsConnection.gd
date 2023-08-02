@@ -5,7 +5,7 @@ signal client_disconnected(id: int)
 signal player_moved(id: int, input_sequence: int, pos: Vector2)
 signal player_interacted(id: int, input_sequence: int, target: String)
 signal player_requested_inventory(id: int)
-signal inventory_item_used_at_pos(grid_pos: Vector2)
+signal inventory_item_used_at_pos(id: int, grid_pos: Vector2)
 
 var players = {}
 
@@ -179,7 +179,7 @@ func add_item_to_inventory(_item_class: String, _pos: Vector2):
 	if not players[id]["logged_in"]:
 		return
 
-	inventory_item_used_at_pos.emit(grid_pos)
+	inventory_item_used_at_pos.emit(id, grid_pos)
 
 
 @rpc("call_remote", "any_peer", "reliable") func get_inventory():
