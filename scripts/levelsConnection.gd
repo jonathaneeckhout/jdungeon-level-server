@@ -145,6 +145,17 @@ func add_item(_item_name: String, _item_class: String, _pos: Vector2):
 
 
 @rpc("call_remote", "authority", "reliable")
+func add_npc(_npc_name: String, _npc_class: String, _pos: Vector2):
+	# Placeholder code for server
+	pass
+
+
+@rpc("call_remote", "authority", "reliable") func remove_npc(_npc_name: String):
+	# Placeholder code for server
+	pass
+
+
+@rpc("call_remote", "authority", "reliable")
 func add_item_to_inventory(_item_class: String, _pos: Vector2):
 	# Placeholder code for server
 	pass

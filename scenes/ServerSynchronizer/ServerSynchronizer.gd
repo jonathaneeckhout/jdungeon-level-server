@@ -1,6 +1,6 @@
 extends Node2D
 
-enum ENTITY_TYPES { PLAYER, ENEMY, ITEM }
+enum ENTITY_TYPES { PLAYER, ENEMY, ITEM, NPC }
 
 var players_in_range = []
 var is_player = false
@@ -17,7 +17,8 @@ func _ready():
 
 
 func _physics_process(_delta):
-	if type != ENTITY_TYPES.PLAYER and type != ENTITY_TYPES.ENEMY:
+	# TODO: just disable the physics process for non moving entities
+	if type != ENTITY_TYPES.PLAYER and type != ENTITY_TYPES.ENEMY and type != ENTITY_TYPES.NPC:
 		return
 
 	var timestamp = Time.get_unix_time_from_system()
@@ -40,6 +41,8 @@ func _on_sync_area_body_entered(body):
 			LevelsConnection.add_enemy.rpc_id(body.player, root.name, root.CLASS, root.position)
 		ENTITY_TYPES.ITEM:
 			LevelsConnection.add_item.rpc_id(body.player, root.name, root.item.CLASS, root.position)
+		ENTITY_TYPES.NPC:
+			LevelsConnection.add_npc.rpc_id(body.player, root.name, root.CLASS, root.position)
 
 	players_in_range.append(body)
 
@@ -57,6 +60,9 @@ func _on_sync_area_body_exited(body):
 		ENTITY_TYPES.ITEM:
 			if body.player in multiplayer.get_peers():
 				LevelsConnection.remove_item.rpc_id(body.player, root.name)
+		ENTITY_TYPES.NPC:
+			if body.player in multiplayer.get_peers():
+				LevelsConnection.remove_npc.rpc_id(body.player, root.name)
 
 	players_in_range.erase(body)
 

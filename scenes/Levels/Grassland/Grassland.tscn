@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://vl0tbe6flllf"]
+[gd_scene load_steps=10 format=3 uid="uid://vl0tbe6flllf"]
 
 [ext_resource type="TileSet" uid="uid://dbdpmrmccbtfl" path="res://data/tilesets/GrassDirtSandFlower.tres" id="1_a1j67"]
 [ext_resource type="PackedScene" uid="uid://b8tu2wvmmjac3" path="res://scenes/Enemies/Wolf/Wolf.tscn" id="1_wgwrv"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://d0rp878jtcmee" path="res://scenes/Enemies/Sheep/Sheep.tscn" id="4_emfvs"]
 [ext_resource type="PackedScene" uid="uid://cnr4y0ffsieea" path="res://scenes/Enemies/Bushman/Bushman.tscn" id="5_0ew1g"]
 [ext_resource type="PackedScene" uid="uid://bf2gq2seudhc5" path="res://scenes/Terrain/Tree/Tree.tscn" id="6_rc4by"]
+[ext_resource type="PackedScene" uid="uid://clnimd55bgnnp" path="res://scenes/NPCs/MilkLady/MilkLady.tscn" id="8_0pqxi"]
 
 [node name="Grassland" type="Node2D"]
 
@@ -131,6 +132,9 @@ y_sort_enabled = true
 
 [node name="NPCS" type="Node2D" parent="Entities"]
 y_sort_enabled = true
+
+[node name="MilkLady" parent="Entities/NPCS" instance=ExtResource("8_0pqxi")]
+position = Vector2(-1273, -561)
 
 [node name="Enemies" type="Node2D" parent="Entities"]
 y_sort_enabled = true
