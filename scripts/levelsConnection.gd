@@ -4,6 +4,7 @@ signal logged_in(id: int, username: String, character: String)
 signal client_disconnected(id: int)
 signal player_moved(id: int, input_sequence: int, pos: Vector2)
 signal player_interacted(id: int, input_sequence: int, target: String)
+signal player_requested_inventory(id: int)
 signal inventory_item_used_at_pos(grid_pos: Vector2)
 
 var players = {}
@@ -179,6 +180,21 @@ func add_item_to_inventory(_item_class: String, _pos: Vector2):
 		return
 
 	inventory_item_used_at_pos.emit(grid_pos)
+
+
+@rpc("call_remote", "any_peer", "reliable") func get_inventory():
+	var id = multiplayer.get_remote_sender_id()
+
+	# Only allow logged in players
+	if not players[id]["logged_in"]:
+		return
+
+	player_requested_inventory.emit(id)
+
+
+@rpc("call_remote", "authority", "reliable") func sync_inventory(_inventory: Dictionary):
+	# Placeholder code for server
+	pass
 
 
 @rpc("call_remote", "any_peer", "reliable") func fetch_server_time(client_time: float):

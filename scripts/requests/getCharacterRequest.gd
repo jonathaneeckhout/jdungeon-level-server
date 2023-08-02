@@ -63,4 +63,7 @@ func _http_request_completed(result, response_code, _headers, body):
 	var data = response["data"]
 	data["position"] = Vector2(response["data"]["position"]["x"], response["data"]["position"]["y"])
 
+	if data["inventory"] == null:
+		data["inventory"] = {"items": []}
+
 	request_response.emit(data)

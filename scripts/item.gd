@@ -18,3 +18,9 @@ func use(who: CharacterBody2D):
 	if healing > 0:
 		who.heal(healing)
 	return true
+
+
+func get_output():
+	var output = {"amount": amount}
+
+	return output

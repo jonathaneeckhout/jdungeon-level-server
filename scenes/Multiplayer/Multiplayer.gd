@@ -39,7 +39,8 @@ func _on_player_logged_in(id: int, username: String, character_name: String):
 		character["position"],
 		character["experience_level"],
 		character["experience"],
-		character["gold"]
+		character["gold"],
+		character["inventory"]
 	)
 
 	LevelsConnection.add_player.rpc_id(
