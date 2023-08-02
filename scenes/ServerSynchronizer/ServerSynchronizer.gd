@@ -36,7 +36,9 @@ func _on_sync_area_body_entered(body):
 
 	match type:
 		ENTITY_TYPES.PLAYER:
-			LevelsConnection.add_player.rpc_id(root.player, body.player, body.name, body.position)
+			LevelsConnection.add_other_player.rpc_id(
+				root.player, body.player, body.name, body.position, body.stats.hp
+			)
 		ENTITY_TYPES.ENEMY:
 			LevelsConnection.add_enemy.rpc_id(
 				body.player, root.name, root.CLASS, root.position, root.hp
@@ -57,7 +59,7 @@ func _on_sync_area_body_exited(body):
 
 	match type:
 		ENTITY_TYPES.PLAYER:
-			LevelsConnection.remove_player.rpc_id(root.player, body.name)
+			LevelsConnection.remove_other_player.rpc_id(root.player, body.name)
 		ENTITY_TYPES.ENEMY:
 			if body.player in multiplayer.get_peers():
 				LevelsConnection.remove_enemy.rpc_id(body.player, root.name)

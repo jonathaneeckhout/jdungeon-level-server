@@ -103,6 +103,17 @@ func client_login_response(_succeeded: bool, _cookie: String):
 	pass
 
 
+@rpc("call_remote", "authority", "reliable")
+func add_other_player(_id: int, _character_name: String, _pos: Vector2, _hp: float):
+	# Placeholder code for server
+	pass
+
+
+@rpc("call_remote", "authority", "reliable") func remove_other_player(_character_name: String):
+	# Placeholder code for server
+	pass
+
+
 @rpc("call_remote", "any_peer", "reliable") func move(input_sequence: int, pos: Vector2):
 	var id = multiplayer.get_remote_sender_id()
 
