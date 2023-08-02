@@ -38,11 +38,15 @@ func _on_sync_area_body_entered(body):
 		ENTITY_TYPES.PLAYER:
 			LevelsConnection.add_player.rpc_id(root.player, body.player, body.name, body.position)
 		ENTITY_TYPES.ENEMY:
-			LevelsConnection.add_enemy.rpc_id(body.player, root.name, root.CLASS, root.position)
+			LevelsConnection.add_enemy.rpc_id(
+				body.player, root.name, root.CLASS, root.position, root.hp
+			)
 		ENTITY_TYPES.ITEM:
 			LevelsConnection.add_item.rpc_id(body.player, root.name, root.item.CLASS, root.position)
 		ENTITY_TYPES.NPC:
-			LevelsConnection.add_npc.rpc_id(body.player, root.name, root.CLASS, root.position)
+			LevelsConnection.add_npc.rpc_id(
+				body.player, root.name, root.CLASS, root.position, root.hp
+			)
 
 	players_in_range.append(body)
 

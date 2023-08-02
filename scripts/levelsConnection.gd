@@ -124,7 +124,7 @@ func client_login_response(_succeeded: bool, _cookie: String):
 
 
 @rpc("call_remote", "authority", "reliable")
-func add_enemy(_enemy_name: String, _enemy_class: String, _pos: Vector2):
+func add_enemy(_enemy_name: String, _enemy_class: String, _pos: Vector2, _hp: float):
 	# Placeholder code for server
 	pass
 
@@ -146,7 +146,7 @@ func add_item(_item_name: String, _item_class: String, _pos: Vector2):
 
 
 @rpc("call_remote", "authority", "reliable")
-func add_npc(_npc_name: String, _npc_class: String, _pos: Vector2):
+func add_npc(_npc_name: String, _npc_class: String, _pos: Vector2, _hp: float):
 	# Placeholder code for server
 	pass
 
