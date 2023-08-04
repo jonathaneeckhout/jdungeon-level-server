@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://vl0tbe6flllf"]
+[gd_scene load_steps=15 format=3 uid="uid://vl0tbe6flllf"]
 
 [ext_resource type="TileSet" uid="uid://dbdpmrmccbtfl" path="res://data/tilesets/GrassDirtSandFlower.tres" id="1_a1j67"]
 [ext_resource type="PackedScene" uid="uid://b8tu2wvmmjac3" path="res://scenes/Enemies/Wolf/Wolf.tscn" id="1_wgwrv"]
@@ -11,6 +11,9 @@
 [ext_resource type="PackedScene" uid="uid://clnimd55bgnnp" path="res://scenes/NPCs/MilkLady/MilkLady.tscn" id="8_0pqxi"]
 [ext_resource type="PackedScene" uid="uid://1t26bl722kvl" path="res://scenes/Terrain/Caravan/Caravan.tscn" id="10_af24a"]
 [ext_resource type="PackedScene" uid="uid://buaph3b8h5god" path="res://scenes/Terrain/Tree_2/Tree_2.tscn" id="11_6prma"]
+[ext_resource type="PackedScene" uid="uid://dxc4hql46mqgc" path="res://scenes/Terrain/Sign/CaravanSign.tscn" id="12_4i5jm"]
+[ext_resource type="PackedScene" uid="uid://gid3t8xcjf07" path="res://scenes/Terrain/Tree_3/Tree_3.tscn" id="13_datmy"]
+[ext_resource type="PackedScene" uid="uid://bflbs0r8ff3gm" path="res://scenes/Terrain/Grass/Grass.tscn" id="14_3tge3"]
 
 [node name="Grassland" type="Node2D"]
 
@@ -241,3 +244,105 @@ position = Vector2(-818, -986)
 
 [node name="Tree_6" parent="Entities/Terrain" instance=ExtResource("11_6prma")]
 position = Vector2(-1632, -1280)
+
+[node name="Sign" parent="Entities/Terrain" instance=ExtResource("12_4i5jm")]
+position = Vector2(298, -701)
+
+[node name="Tree_7" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(-7, -42)
+
+[node name="Tree_8" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(-287, 293)
+
+[node name="Tree_9" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(-342, -71)
+
+[node name="Tree_10" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(-105, -342)
+
+[node name="Tree_11" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(751, -495)
+
+[node name="Tree_12" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(-520, -1008)
+
+[node name="Tree_13" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(-2160, -860)
+
+[node name="Tree_14" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(-1880, -1678)
+
+[node name="Tree_15" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(-62, -1911)
+
+[node name="Tree_16" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(1498, -1856)
+
+[node name="Tree_17" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(1926, -1445)
+
+[node name="Tree_18" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(1875, -928)
+
+[node name="Tree_19" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(1604, 17)
+
+[node name="Tree_20" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(1218, 437)
+
+[node name="Tree_21" parent="Entities/Terrain" instance=ExtResource("13_datmy")]
+position = Vector2(-96, 1785)
+
+[node name="Grass" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(-304, -736)
+
+[node name="Grass2" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(692, -109)
+
+[node name="Grass3" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(-1448, 963)
+
+[node name="Grass4" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(-1745, 463)
+
+[node name="Grass5" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(-1164, 1285)
+
+[node name="Grass6" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(-1834, 2005)
+
+[node name="Grass7" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(-2046, 39)
+
+[node name="Grass8" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(-2097, -1385)
+
+[node name="Grass9" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(-893, -1605)
+
+[node name="Grass10" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(-1575, -2037)
+
+[node name="Grass11" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(518, -2105)
+
+[node name="Grass12" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(1679, -2118)
+
+[node name="Grass13" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(1675, -575)
+
+[node name="Grass14" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(1387, -117)
+
+[node name="Grass15" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(1701, 701)
+
+[node name="Grass16" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(1548, 1502)
+
+[node name="Grass17" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(934, 2282)
+
+[node name="Grass18" parent="Entities/Terrain" instance=ExtResource("14_3tge3")]
+position = Vector2(1934, 2032)
