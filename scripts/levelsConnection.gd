@@ -208,6 +208,11 @@ func add_item_to_inventory(_item_class: String, _pos: Vector2):
 	pass
 
 
+@rpc("call_remote", "authority", "reliable") func sync_shop(_vendor: String, _shop: Dictionary):
+	# Placeholder code for server
+	pass
+
+
 @rpc("call_remote", "any_peer", "reliable") func fetch_server_time(client_time: float):
 	var id = multiplayer.get_remote_sender_id()
 	return_server_time.rpc_id(id, Time.get_unix_time_from_system(), client_time)

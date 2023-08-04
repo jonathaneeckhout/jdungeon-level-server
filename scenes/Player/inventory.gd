@@ -10,10 +10,9 @@ var gold = 0
 
 func _ready():
 	for x in range(SIZE.x):
-		var column = []
+		inventory.append([])
 		for y in range(SIZE.y):
-			column.append(null)
-		inventory.append(column)
+			inventory[x].append(null)
 
 	LevelsConnection.inventory_item_used_at_pos.connect(_on_inventory_item_used_at_pos)
 	LevelsConnection.player_requested_inventory.connect(_on_player_requested_inventory)

@@ -95,6 +95,10 @@ func drop_loot():
 			$"../../Items".add_child(item)
 
 
+func interact(_from: CharacterBody2D):
+	pass
+
+
 func add_item_to_loottable(item_res_path: String, drop_rate: float, amount: int = 1):
 	loot_table.append({"item": load(item_res_path), "drop_rate": drop_rate, "amount": amount})
 

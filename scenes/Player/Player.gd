@@ -1,10 +1,10 @@
 extends CharacterBody2D
 
-enum STATES { IDLE, MOVE, ATTACK, LOOT }
+enum STATES { IDLE, MOVE, ATTACK, LOOT, NPC }
 
 const SPEED = 300.0
 const ATTACK_SPEED = 1.0
-const ATTACK_POWER = 30.0
+const ATTACK_POWER = 300.0
 const ARRIVAL_DISTANCE = 8
 const SAVE_INTERVAL_TIME = 300.0
 
@@ -98,15 +98,20 @@ func fsm(_delta):
 				_handle_interact_input()
 			else:
 				_handle_loot()
-
+		STATES.NPC:
+			if input.moving:
+				state = STATES.MOVE
+			elif input.interacting:
+				_handle_interact_input()
+			else:
+				_handle_npc()
 
 func _handle_interact_input():
 	match input.interact_type:
 		input.INTERACT_TYPES.ENEMY:
 			state = STATES.ATTACK
 		input.INTERACT_TYPES.NPC:
-			# TODO: handle npcs
-			state = STATES.ATTACK
+			state = STATES.NPC
 		input.INTERACT_TYPES.ITEM:
 			state = STATES.LOOT
 
@@ -142,6 +147,20 @@ func _handle_loot():
 		input.interact_target.interact(self)
 		state = STATES.IDLE
 
+
+func _handle_npc():
+	if not is_instance_valid(input.interact_target):
+		state = STATES.IDLE
+		return
+
+	if not bodies_in_interact_range.has(input.interact_target):
+		velocity = position.direction_to(input.interact_target.position) * SPEED
+		state = STATES.NPC
+	else:
+		velocity = Vector2.ZERO
+
+		input.interact_target.interact(self)
+		state = STATES.IDLE
 
 func attack(target: CharacterBody2D):
 	target.hurt(self, ATTACK_POWER)

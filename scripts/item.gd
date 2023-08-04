@@ -8,6 +8,7 @@ var equipable = false
 var gold = false
 
 var amount = 1
+var price = 0
 var max_stack_size = 10
 
 
@@ -21,6 +22,6 @@ func use(who: CharacterBody2D):
 
 
 func get_output():
-	var output = {"amount": amount}
+	var output = {"amount": amount, "price": price}
 
 	return output
