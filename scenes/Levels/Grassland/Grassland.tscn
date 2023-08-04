@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://vl0tbe6flllf"]
+[gd_scene load_steps=16 format=3 uid="uid://vl0tbe6flllf"]
 
 [ext_resource type="TileSet" uid="uid://dbdpmrmccbtfl" path="res://data/tilesets/GrassDirtSandFlower.tres" id="1_a1j67"]
 [ext_resource type="PackedScene" uid="uid://b8tu2wvmmjac3" path="res://scenes/Enemies/Wolf/Wolf.tscn" id="1_wgwrv"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cnr4y0ffsieea" path="res://scenes/Enemies/Bushman/Bushman.tscn" id="5_0ew1g"]
 [ext_resource type="PackedScene" uid="uid://bf2gq2seudhc5" path="res://scenes/Terrain/Tree/Tree.tscn" id="6_rc4by"]
 [ext_resource type="PackedScene" uid="uid://clnimd55bgnnp" path="res://scenes/NPCs/MilkLady/MilkLady.tscn" id="8_0pqxi"]
+[ext_resource type="PackedScene" uid="uid://blf3ufu55hdtl" path="res://scenes/Enemies/TreeTrunkGuy/TreeTrunkGuy.tscn" id="8_y3kiu"]
 [ext_resource type="PackedScene" uid="uid://1t26bl722kvl" path="res://scenes/Terrain/Caravan/Caravan.tscn" id="10_af24a"]
 [ext_resource type="PackedScene" uid="uid://buaph3b8h5god" path="res://scenes/Terrain/Tree_2/Tree_2.tscn" id="11_6prma"]
 [ext_resource type="PackedScene" uid="uid://dxc4hql46mqgc" path="res://scenes/Terrain/Sign/CaravanSign.tscn" id="12_4i5jm"]
@@ -129,6 +130,18 @@ respawn_time = 10
 position = Vector2(-2144, 279)
 enemy_scene = ExtResource("4_emfvs")
 respawn_time = 10
+
+[node name="TreeTrunkGuy" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(-511, 1717)
+enemy_scene = ExtResource("8_y3kiu")
+
+[node name="TreeTrunkGuy2" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(-664, 1488)
+enemy_scene = ExtResource("8_y3kiu")
+
+[node name="TreeTrunkGuy3" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
+position = Vector2(-1075, 1200)
+enemy_scene = ExtResource("8_y3kiu")
 
 [node name="Entities" type="Node2D" parent="."]
 
