@@ -16,7 +16,10 @@ func _ready():
 	behavior.init_wander()
 
 	add_child(shop)
+	shop.add_item_at_free_spot(load("res://scripts/items/apple.gd").new(), 20)
+	shop.add_item_at_free_spot(load("res://scripts/items/meat.gd").new(), 50)
 	shop.add_item_at_free_spot(load("res://scripts/items/healthPotion.gd").new(), 100)
+	shop.add_item_at_free_spot(load("res://scripts/items/manaPotion.gd").new(), 100)
 
 
 func fsm(delta):

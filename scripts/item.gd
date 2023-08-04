@@ -1,6 +1,7 @@
 class_name Item extends Node
 
 var healing = 0
+var mana = 0
 
 var consumable = false
 var stackable = false
