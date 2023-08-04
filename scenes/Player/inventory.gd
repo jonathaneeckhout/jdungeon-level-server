@@ -60,6 +60,15 @@ func add_gold(amount: int):
 	LevelsConnection.sync_gold.rpc_id(root.player, gold)
 
 
+func pay_gold(amount: int):
+	if amount <= gold:
+		gold -= amount
+		LevelsConnection.sync_gold.rpc_id(root.player, gold)
+		return true
+	else:
+		return false
+
+
 func get_output():
 	var output = {"items": []}
 

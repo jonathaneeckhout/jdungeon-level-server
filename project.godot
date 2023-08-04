@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Env="*res://scripts/godotenv/scripts/env.gd"
+Global="*res://scripts/global.gd"
 CommonConnection="*res://scripts/commonConnection.gd"
 LevelsConnection="*res://scripts/levelsConnection.gd"
 

@@ -14,6 +14,8 @@ func _ready():
 		for y in range(SIZE.y):
 			shop[x].append(null)
 
+	LevelsConnection.shop_item_bought_at_pos.connect(_on_shop_item_bought_at_pos)
+
 
 func add_item_at_free_spot(item: Item, price: int):
 	for y in range(SIZE.y):
@@ -53,3 +55,20 @@ func get_output():
 				output["items"].append(item_output)
 
 	return output
+
+
+func _on_shop_item_bought_at_pos(id: int, vendor: String, grid_pos: Vector2):
+	if vendor != root.CLASS:
+		return
+
+	var player = Global.level.get_player_by_id(id)
+	if player == null:
+		return
+
+	var item = shop[grid_pos.x][grid_pos.y]
+	if item == null:
+		return
+
+	if player.inventory.pay_gold(item.price):
+		if player.inventory.add_item_at_free_spot(item.duplicate()) == null:
+			player.inventory.add_gold(item.price)

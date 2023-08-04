@@ -6,6 +6,7 @@ signal player_moved(id: int, input_sequence: int, pos: Vector2)
 signal player_interacted(id: int, input_sequence: int, target: String)
 signal player_requested_inventory(id: int)
 signal inventory_item_used_at_pos(id: int, grid_pos: Vector2)
+signal shop_item_bought_at_pos(id: int, vendor: String, grid_pos: Vector2)
 
 var players = {}
 
@@ -206,6 +207,17 @@ func add_item_to_inventory(_item_class: String, _pos: Vector2):
 @rpc("call_remote", "authority", "reliable") func sync_inventory(_inventory: Dictionary):
 	# Placeholder code for server
 	pass
+
+
+@rpc("call_remote", "any_peer", "reliable")
+func buy_shop_item_at_pos(vendor: String, grid_pos: Vector2):
+	var id = multiplayer.get_remote_sender_id()
+
+	# Only allow logged in players
+	if not players[id]["logged_in"]:
+		return
+
+	shop_item_bought_at_pos.emit(id, vendor, grid_pos)
 
 
 @rpc("call_remote", "authority", "reliable") func sync_shop(_vendor: String, _shop: Dictionary):

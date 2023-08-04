@@ -14,6 +14,8 @@ var players_by_id = {}
 
 
 func _ready():
+	Global.level = self
+
 	multiplayer.peer_disconnected.connect(_client_disconnected)
 
 
@@ -76,6 +78,13 @@ func remove_player(id: int):
 		print("Removing player %s" % players_by_id[id].name)
 		players_by_id[id].queue_free()
 		players_by_id.erase(id)
+
+
+func get_player_by_id(id: int):
+	if id in players_by_id:
+		return players_by_id[id]
+	else:
+		return null
 
 
 func _client_disconnected(id):
