@@ -91,7 +91,7 @@ func drop_loot():
 			var random_x = randi_range(-Global.DROP_RANGE, Global.DROP_RANGE)
 			var random_y = randi_range(-Global.DROP_RANGE, Global.DROP_RANGE)
 			item.position = position + Vector2(random_x, random_y)
-			Global.items.add_child(item)
+			Global.level.items.add_child(item)
 
 
 func interact(_from: CharacterBody2D):
