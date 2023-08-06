@@ -4,6 +4,7 @@ var level: String = ""
 var players: Node2D
 var npcs: Node2D
 var enemies: Node2D
+var items: Node2D
 var terrain: Node2D
 var player_respawn_locations: Node2D
 var tilemap: TileMap
@@ -38,6 +39,7 @@ func set_level(level_name: String):
 	players = level_instance.get_node("Entities/Players")
 	npcs = level_instance.get_node("Entities/NPCS")
 	enemies = level_instance.get_node("Entities/Enemies")
+	items = level_instance.get_node("Entities/Items")
 	terrain = level_instance.get_node("Entities/Terrain")
 	player_respawn_locations = level_instance.get_node("PlayerRespawnLocations")
 	tilemap = level_instance.get_node("TileMap")

@@ -3,7 +3,6 @@ class_name Entity extends CharacterBody2D
 signal died
 
 const ATTACK_LOCK_TIME = 10.0
-const DROP_RANGE = 64
 
 var max_hp: float = 100.0
 var hp: float = max_hp
@@ -89,10 +88,10 @@ func drop_loot():
 			item.name = str(item.get_instance_id())
 			item.item = loot["item"].new()
 			item.item.amount = randi_range(1, loot["amount"])
-			var random_x = randi_range(-DROP_RANGE, DROP_RANGE)
-			var random_y = randi_range(-DROP_RANGE, DROP_RANGE)
+			var random_x = randi_range(-Global.DROP_RANGE, Global.DROP_RANGE)
+			var random_y = randi_range(-Global.DROP_RANGE, Global.DROP_RANGE)
 			item.position = position + Vector2(random_x, random_y)
-			$"../../Items".add_child(item)
+			Global.items.add_child(item)
 
 
 func interact(_from: CharacterBody2D):

@@ -5,6 +5,8 @@ const SIZE = Vector2(6, 6)
 var inventory = []
 var gold = 0
 
+var loot_scene = load("res://scenes/Loot/Loot.tscn")
+
 @onready var root = $".."
 
 
@@ -15,6 +17,7 @@ func _ready():
 			inventory[x].append(null)
 
 	LevelsConnection.inventory_item_used_at_pos.connect(_on_inventory_item_used_at_pos)
+	LevelsConnection.inventory_item_dropped_at_pos.connect(_on_inventory_item_dropped_at_pos)
 	LevelsConnection.player_requested_inventory.connect(_on_player_requested_inventory)
 
 
@@ -98,6 +101,25 @@ func _on_inventory_item_used_at_pos(id: int, grid_pos: Vector2):
 		return
 
 	use_item_at_pos(grid_pos)
+
+
+func _on_inventory_item_dropped_at_pos(id: int, grid_pos: Vector2):
+	if root.player != id:
+		return
+
+	var item = inventory[grid_pos.x][grid_pos.y]
+	if not item:
+		return
+
+	remove_item_at_pos(grid_pos)
+
+	var loot_item = loot_scene.instantiate()
+	loot_item.name = str(loot_item.get_instance_id())
+	loot_item.item = item
+	var random_x = randi_range(-Global.DROP_RANGE, Global.DROP_RANGE)
+	var random_y = randi_range(-Global.DROP_RANGE, Global.DROP_RANGE)
+	loot_item.position = root.position + Vector2(random_x, random_y)
+	Global.level.items.add_child(loot_item)
 
 
 func _on_player_requested_inventory(id: int):
