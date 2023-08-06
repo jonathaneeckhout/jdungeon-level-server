@@ -89,11 +89,10 @@ func get_output():
 
 func load_items(items: Dictionary):
 	for item_data in items["items"]:
-		match item_data["class"]:
-			"HealthPotion":
-				var item = load("res://scripts/items/healthPotion.gd").new()
-				item.amount = item_data["amount"]
-				inventory[item_data["pos"]["x"]][item_data["pos"]["y"]] = item
+		var item = Global.item_class_to_item(item_data["class"])
+		if item:
+			item.amount = item_data["amount"]
+			inventory[item_data["pos"]["x"]][item_data["pos"]["y"]] = item
 
 
 func _on_inventory_item_used_at_pos(id: int, grid_pos: Vector2):
