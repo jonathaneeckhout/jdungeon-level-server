@@ -1,7 +1,6 @@
 extends Node
 
-const SIZE = Vector2(4, 4)
-
+var size = 1
 var shop = []
 var gold = 0
 
@@ -9,55 +8,34 @@ var gold = 0
 
 
 func _ready():
-	for x in range(SIZE.x):
-		shop.append([])
-		for y in range(SIZE.y):
-			shop[x].append(null)
-
-	LevelsConnection.shop_item_bought_at_pos.connect(_on_shop_item_bought_at_pos)
+	LevelsConnection.shop_item_bought.connect(_on_shop_item_bought)
 
 
-func add_item_at_free_spot(item: Item, price: int):
-	for y in range(SIZE.y):
-		for x in range(SIZE.x):
-			if shop[x][y] == null:
-				item.price = price
-				shop[x][y] = item
-				var pos = Vector2(x, y)
-				return pos
+func add_item(item_class: String, price: int):
+	if shop.size() >= size:
+		return null
 
-	return null
+	var item = {
+		"uuid": Global.uuid.v4(),
+		"class": item_class,
+		"price": price,
+	}
 
-
-func set_item_at_pos(item: Item, pos: Vector2):
-	var prev_item = shop[pos.x][pos.y]
-	if prev_item:
-		shop[pos.x][pos.y] = item
-	return prev_item
-
-
-func remove_item_at_pos(pos: Vector2):
-	var item = shop[pos.x][pos.y]
-	shop[pos.x][pos.y] = null
+	shop.append(item)
 	return item
 
 
+func get_item(item_uuid: String):
+	for item in shop:
+		if item["uuid"] == item_uuid:
+			return item
+
+
 func get_output():
-	var output = {"items": []}
-
-	for x in range(SIZE.x):
-		for y in range(SIZE.y):
-			var item = shop[x][y]
-			if item != null:
-				var item_output = item.get_output()
-				item_output["class"] = item.CLASS
-				item_output["pos"] = {"x": x, "y": y}
-				output["items"].append(item_output)
-
-	return output
+	return {"items": shop}
 
 
-func _on_shop_item_bought_at_pos(id: int, vendor: String, grid_pos: Vector2):
+func _on_shop_item_bought(id: int, vendor: String, item_uuid: String):
 	if vendor != root.CLASS:
 		return
 
@@ -65,10 +43,11 @@ func _on_shop_item_bought_at_pos(id: int, vendor: String, grid_pos: Vector2):
 	if player == null:
 		return
 
-	var item = shop[grid_pos.x][grid_pos.y]
-	if item == null:
+	var item = get_item(item_uuid)
+	if !item:
 		return
 
-	if player.inventory.pay_gold(item.price):
-		if player.inventory.add_item_at_free_spot(item.duplicate()) == null:
-			player.inventory.add_gold(item.price)
+	if player.inventory.pay_gold(item["price"]):
+		var new_item = Global.create_new_item(item["class"], 1)
+		if player.inventory.add_item_at_free_spot(new_item) == null:
+			player.inventory.add_gold(item["price"])

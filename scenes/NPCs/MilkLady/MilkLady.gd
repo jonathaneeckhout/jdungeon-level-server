@@ -15,11 +15,13 @@ func _ready():
 	add_child(behavior)
 	behavior.init_wander()
 
+	shop.size = 16
 	add_child(shop)
-	shop.add_item_at_free_spot(load("res://scripts/items/apple.gd").new(), 20)
-	shop.add_item_at_free_spot(load("res://scripts/items/meat.gd").new(), 50)
-	shop.add_item_at_free_spot(load("res://scripts/items/healthPotion.gd").new(), 100)
-	shop.add_item_at_free_spot(load("res://scripts/items/manaPotion.gd").new(), 100)
+
+	shop.add_item("Apple", 20)
+	shop.add_item("Meat", 50)
+	shop.add_item("HealthPotion", 100)
+	shop.add_item("ManaPotion", 100)
 
 
 func fsm(delta):

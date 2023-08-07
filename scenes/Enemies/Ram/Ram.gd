@@ -15,7 +15,7 @@ func _ready():
 
 	behavior.init_wander()
 
-	add_item_to_loottable("res://scripts/items/meat.gd", 0.30, 1)
+	add_item_to_loottable("Meat", 0.30, 1)
 
 
 func fsm(delta):

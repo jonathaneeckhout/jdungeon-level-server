@@ -16,8 +16,8 @@ func _ready():
 
 	behavior.init_wander_and_attack()
 
-	add_item_to_loottable("res://scripts/items/gold.gd", 0.5, 100)
-	add_item_to_loottable("res://scripts/items/healthPotion.gd", 0.25, 1)
+	add_item_to_loottable("Gold", 0.5, 100)
+	add_item_to_loottable("HealthPotion", 0.25, 1)
 
 
 func fsm(delta):

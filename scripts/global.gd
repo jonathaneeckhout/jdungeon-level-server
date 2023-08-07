@@ -2,6 +2,7 @@ extends Node
 
 const DROP_RANGE = 64
 
+var uuid = load("res://scripts/uuid/uuid.gd")
 var level: Node2D
 
 
@@ -19,4 +20,12 @@ func item_class_to_item(item_class: String):
 		"Meat":
 			item = load("res://scripts/items/meat.gd").new()
 
+	return item
+
+
+func create_new_item(item_class: String, amount: int):
+	var item = item_class_to_item(item_class)
+	if item:
+		item.name = uuid.v4()
+		item.amount = amount
 	return item

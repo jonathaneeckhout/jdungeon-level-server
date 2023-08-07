@@ -84,22 +84,23 @@ func die():
 func drop_loot():
 	for loot in loot_table:
 		if randf() < loot["drop_rate"]:
-			var item = loot_scene.instantiate()
-			item.name = str(item.get_instance_id())
-			item.item = loot["item"].new()
-			item.item.amount = randi_range(1, loot["amount"])
+			var loot_item = loot_scene.instantiate()
+			loot_item.name = str(loot_item.get_instance_id())
+			loot_item.item = Global.create_new_item(
+				loot["item_class"], randi_range(1, loot["amount"])
+			)
 			var random_x = randi_range(-Global.DROP_RANGE, Global.DROP_RANGE)
 			var random_y = randi_range(-Global.DROP_RANGE, Global.DROP_RANGE)
-			item.position = position + Vector2(random_x, random_y)
-			Global.level.items.add_child(item)
+			loot_item.position = position + Vector2(random_x, random_y)
+			Global.level.items.add_child(loot_item)
 
 
 func interact(_from: CharacterBody2D):
 	pass
 
 
-func add_item_to_loottable(item_res_path: String, drop_rate: float, amount: int = 1):
-	loot_table.append({"item": load(item_res_path), "drop_rate": drop_rate, "amount": amount})
+func add_item_to_loottable(item_class: String, drop_rate: float, amount: int = 1):
+	loot_table.append({"item_class": item_class, "drop_rate": drop_rate, "amount": amount})
 
 
 # Adding this line to be in line with players
