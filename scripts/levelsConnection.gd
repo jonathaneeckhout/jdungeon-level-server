@@ -5,8 +5,8 @@ signal client_disconnected(id: int)
 signal player_moved(id: int, input_sequence: int, pos: Vector2)
 signal player_interacted(id: int, input_sequence: int, target: String)
 signal player_requested_inventory(id: int)
-signal inventory_item_used_at_pos(id: int, grid_pos: Vector2)
-signal inventory_item_dropped_at_pos(id: int, grid_pos: Vector2)
+signal inventory_item_used(id: int, item_uuid: String)
+signal inventory_item_dropped(id: int, item_uuid: String)
 signal shop_item_bought(id: int, vendor: String, item_uuid: String)
 
 var players = {}
@@ -170,12 +170,12 @@ func add_npc(_npc_name: String, _npc_class: String, _pos: Vector2, _hp: float):
 
 
 @rpc("call_remote", "authority", "reliable")
-func add_item_to_inventory(_item_class: String, _pos: Vector2):
+func add_item_to_inventory(_item_uuid: String, _item_class: String):
 	# Placeholder code for server
 	pass
 
 
-@rpc("call_remote", "authority", "reliable") func remove_item_from_inventory(_pos: Vector2):
+@rpc("call_remote", "authority", "reliable") func remove_item_from_inventory(_item_uuid: String):
 	# Placeholder code for server
 	pass
 
@@ -185,24 +185,24 @@ func add_item_to_inventory(_item_class: String, _pos: Vector2):
 	pass
 
 
-@rpc("call_remote", "any_peer", "reliable") func use_inventory_item_at_pos(grid_pos: Vector2):
+@rpc("call_remote", "any_peer", "reliable") func use_inventory_item(item_uuid: String):
 	var id = multiplayer.get_remote_sender_id()
 
 	# Only allow logged in players
 	if not players[id]["logged_in"]:
 		return
 
-	inventory_item_used_at_pos.emit(id, grid_pos)
+	inventory_item_used.emit(id, item_uuid)
 
 
-@rpc("call_remote", "any_peer", "reliable") func drop_inventory_item_at_pos(grid_pos: Vector2):
+@rpc("call_remote", "any_peer", "reliable") func drop_inventory_item(item_uuid: String):
 	var id = multiplayer.get_remote_sender_id()
 
 	# Only allow logged in players
 	if not players[id]["logged_in"]:
 		return
 
-	inventory_item_dropped_at_pos.emit(id, grid_pos)
+	inventory_item_dropped.emit(id, item_uuid)
 
 
 @rpc("call_remote", "any_peer", "reliable") func get_inventory():

@@ -49,5 +49,5 @@ func _on_shop_item_bought(id: int, vendor: String, item_uuid: String):
 
 	if player.inventory.pay_gold(item["price"]):
 		var new_item = Global.create_new_item(item["class"], 1)
-		if player.inventory.add_item_at_free_spot(new_item) == null:
+		if not player.inventory.add_item(new_item):
 			player.inventory.add_gold(item["price"])

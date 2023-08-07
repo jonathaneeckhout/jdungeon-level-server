@@ -23,6 +23,6 @@ func use(who: CharacterBody2D):
 
 
 func get_output():
-	var output = {"amount": amount, "price": price}
+	var output = {"uuid": name, "amount": amount, "price": price}
 
 	return output

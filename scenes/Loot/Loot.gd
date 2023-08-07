@@ -30,9 +30,7 @@ func interact(from: CharacterBody2D):
 		queue_free()
 		return
 
-	var pos = from.inventory.add_item_at_free_spot(item)
-
-	if pos != null:
+	if from.inventory.add_item(item):
 		queue_free()
 
 

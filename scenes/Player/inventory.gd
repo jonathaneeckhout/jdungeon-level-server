@@ -1,6 +1,6 @@
 extends Node
 
-const SIZE = Vector2(6, 6)
+const SIZE = 36
 
 var inventory = []
 var gold = 0
@@ -11,48 +11,39 @@ var loot_scene = load("res://scenes/Loot/Loot.tscn")
 
 
 func _ready():
-	for x in range(SIZE.x):
-		inventory.append([])
-		for y in range(SIZE.y):
-			inventory[x].append(null)
-
-	LevelsConnection.inventory_item_used_at_pos.connect(_on_inventory_item_used_at_pos)
-	LevelsConnection.inventory_item_dropped_at_pos.connect(_on_inventory_item_dropped_at_pos)
+	LevelsConnection.inventory_item_used.connect(_on_inventory_item_used)
+	LevelsConnection.inventory_item_dropped.connect(_on_inventory_item_dropped)
 	LevelsConnection.player_requested_inventory.connect(_on_player_requested_inventory)
 
 
-func add_item_at_free_spot(item: Item):
-	for y in range(SIZE.y):
-		for x in range(SIZE.x):
-			if inventory[x][y] == null:
-				inventory[x][y] = item
-				var pos = Vector2(x, y)
-				LevelsConnection.add_item_to_inventory.rpc_id(root.player, item.CLASS, pos)
-				return pos
+func add_item(item: Item):
+	if inventory.size() >= SIZE:
+		return false
 
-	return null
+	inventory.append(item)
+	LevelsConnection.add_item_to_inventory.rpc_id(root.player, item.name, item.CLASS)
+
+	return true
 
 
-func set_item_at_pos(item: Item, pos: Vector2):
-	var prev_item = inventory[pos.x][pos.y]
-	if prev_item:
-		LevelsConnection.remove_item_from_inventory.rpc_id(root.player, pos)
-	inventory[pos.x][pos.y] = item
-	LevelsConnection.add_item_to_inventory.rpc_id(root.player, item.CLASS, pos)
-	return prev_item
+func remove_item(item_uuid: String):
+	var item = get_item(item_uuid)
+	if item:
+		inventory.erase(item)
+		LevelsConnection.remove_item_from_inventory.rpc_id(root.player, item_uuid)
+		return item
 
 
-func remove_item_at_pos(pos: Vector2):
-	var item = inventory[pos.x][pos.y]
-	inventory[pos.x][pos.y] = null
-	LevelsConnection.remove_item_from_inventory.rpc_id(root.player, pos)
-	return item
+func get_item(item_uuid: String):
+	for item in inventory:
+		if item.name == item_uuid:
+			return item
 
 
-func use_item_at_pos(pos: Vector2):
-	var item = inventory[pos.x][pos.y]
+func use_item(item_uuid: String):
+	var item = get_item(item_uuid)
 	if item and item.use(root):
-		remove_item_at_pos(pos)
+		remove_item(item_uuid)
 		return true
 
 	return false
@@ -68,49 +59,45 @@ func pay_gold(amount: int):
 		gold -= amount
 		LevelsConnection.sync_gold.rpc_id(root.player, gold)
 		return true
-	else:
-		return false
+
+	return false
 
 
 func get_output():
 	var output = {"items": []}
 
-	for y in range(SIZE.y):
-		for x in range(SIZE.x):
-			var item = inventory[x][y]
-			if item != null:
-				var item_output = item.get_output()
-				item_output["class"] = item.CLASS
-				item_output["pos"] = {"x": x, "y": y}
-				output["items"].append(item_output)
+	for item in inventory:
+		var item_output = item.get_output()
+		item_output["class"] = item.CLASS
+		output["items"].append(item_output)
 
 	return output
 
 
 func load_items(items: Dictionary):
 	for item_data in items["items"]:
-		var item = Global.item_class_to_item(item_data["class"])
+		var item = Global.create_new_item(item_data["class"], item_data["amount"])
 		if item:
-			item.amount = item_data["amount"]
-			inventory[item_data["pos"]["x"]][item_data["pos"]["y"]] = item
+			item.name = item_data["uuid"]
+			inventory.append(item)
 
 
-func _on_inventory_item_used_at_pos(id: int, grid_pos: Vector2):
+func _on_inventory_item_used(id: int, item_uuid: String):
 	if root.player != id:
 		return
 
-	use_item_at_pos(grid_pos)
+	use_item(item_uuid)
 
 
-func _on_inventory_item_dropped_at_pos(id: int, grid_pos: Vector2):
+func _on_inventory_item_dropped(id: int, item_uuid: String):
 	if root.player != id:
 		return
 
-	var item = inventory[grid_pos.x][grid_pos.y]
+	var item = get_item(item_uuid)
 	if not item:
 		return
 
-	remove_item_at_pos(grid_pos)
+	remove_item(item_uuid)
 
 	var loot_item = loot_scene.instantiate()
 	loot_item.name = str(loot_item.get_instance_id())
