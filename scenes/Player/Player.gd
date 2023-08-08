@@ -28,6 +28,7 @@ var enemies_in_attack_range = []
 var bodies_in_interact_range = []
 var stats: Node = load("res://scenes/Player/stats.gd").new()
 var inventory: Node = load("res://scenes/Player/inventory.gd").new()
+var equipment: Node = load("res://scenes/Player/equipment.gd").new()
 
 @onready var attack_timer = Timer.new()
 @onready var save_timer = Timer.new()
@@ -39,6 +40,7 @@ var inventory: Node = load("res://scenes/Player/inventory.gd").new()
 func _ready():
 	add_child(stats)
 	add_child(inventory)
+	add_child(equipment)
 
 	input.move_target = position
 
@@ -106,6 +108,7 @@ func fsm(_delta):
 			else:
 				_handle_npc()
 
+
 func _handle_interact_input():
 	match input.interact_type:
 		input.INTERACT_TYPES.ENEMY:
@@ -162,6 +165,7 @@ func _handle_npc():
 		input.interact_target.interact(self)
 		state = STATES.IDLE
 
+
 func attack(target: CharacterBody2D):
 	target.hurt(self, ATTACK_POWER)
 	server_synchronizer.sync_attack(position.direction_to(target.position))
@@ -194,6 +198,10 @@ func die():
 
 	#TODO: sync dying, for now just update the hp again
 	server_synchronizer.sync_hurt(stats.hp, 0)
+
+
+func equip_item(item: Item):
+	return equipment.equip_item(item)
 
 
 func update_hp_bar():
