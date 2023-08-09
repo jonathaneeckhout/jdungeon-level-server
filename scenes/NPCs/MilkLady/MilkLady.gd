@@ -23,6 +23,8 @@ func _ready():
 	shop.add_item("HealthPotion", 100)
 	shop.add_item("ManaPotion", 100)
 	shop.add_item("IronSpear", 500)
+	shop.add_item("IronPlateArms", 250)
+	shop.add_item("IronPlateLegs", 300)
 
 
 func fsm(delta):
