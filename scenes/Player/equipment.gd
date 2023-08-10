@@ -29,7 +29,7 @@ func equip_item(item: Item):
 		return false
 
 	if equipment[item.equipment_slot] != null:
-		unequip_item(item.name)
+		unequip_item(equipment[item.equipment_slot].name)
 
 	equipment[item.equipment_slot] = item
 

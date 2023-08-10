@@ -23,11 +23,18 @@ func _ready():
 	shop.add_item("HealthPotion", 100)
 	shop.add_item("ManaPotion", 100)
 	shop.add_item("IronSpear", 500)
+
 	shop.add_item("IronPlateArms", 250)
 	shop.add_item("IronPlateBody", 750)
 	shop.add_item("IronPlateBoots", 150)
 	shop.add_item("IronPlateHelm", 200)
 	shop.add_item("IronPlateLegs", 300)
+
+	shop.add_item("WoolArms", 25)
+	shop.add_item("WoolBody", 75)
+	shop.add_item("WoolBoots", 15)
+	shop.add_item("WoolHat", 20)
+	shop.add_item("WoolLegs", 30)
 
 
 func fsm(delta):
