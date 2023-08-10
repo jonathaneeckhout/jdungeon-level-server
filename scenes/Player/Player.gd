@@ -246,4 +246,6 @@ func _on_attack_timer_timeout():
 
 
 func _on_save_timer_timeout():
-	CommonConnection.save_character(name, level, position, inventory.gold, inventory.get_output())
+	CommonConnection.save_character(
+		name, level, position, inventory.gold, inventory.get_output(), equipment.get_output()
+	)

@@ -74,9 +74,16 @@ func get_output():
 	return output
 
 
-func load_items(_items: Dictionary):
-	# TODO: load persistent equipment
-	pass
+func load_items(items: Dictionary):
+	for equipment_slot in items["equipment"]:
+		if not equipment.has(equipment_slot):
+			continue
+
+		var item_data = items["equipment"][equipment_slot]
+		var item = Global.create_new_item(item_data["class"], item_data["amount"])
+		if item:
+			item.name = item_data["uuid"]
+			equip_item(item)
 
 
 func _on_player_requested_equipment(id: int):

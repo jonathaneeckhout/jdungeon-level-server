@@ -30,6 +30,7 @@ func save_character(
 	position: Vector2,
 	gold: int,
 	inventory: Dictionary,
+	equipment: Dictionary,
 	cookie: String
 ) -> bool:
 	var headers = ["Content-Type: application/json", "Cookie: %s" % cookie]
@@ -40,7 +41,8 @@ func save_character(
 			"level": level,
 			"position": {"x": position.x, "y": position.y},
 			"gold": gold,
-			"inventory": inventory
+			"inventory": inventory,
+			"equipment": equipment
 		}
 	)
 

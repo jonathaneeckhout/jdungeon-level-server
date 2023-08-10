@@ -62,11 +62,18 @@ func get_character(character_name: String):
 
 
 func save_character(
-	character_name: String, level_name: String, pos: Vector2, gold: int, inventory: Dictionary
+	character_name: String,
+	level_name: String,
+	pos: Vector2,
+	gold: int,
+	inventory: Dictionary,
+	equipment: Dictionary
 ):
 	var new_req = save_character_request.new()
 	add_child(new_req)
-	var res = await new_req.save_character(character_name, level_name, pos, gold, inventory, cookie)
+	var res = await new_req.save_character(
+		character_name, level_name, pos, gold, inventory, equipment, cookie
+	)
 	new_req.queue_free()
 	return res
 

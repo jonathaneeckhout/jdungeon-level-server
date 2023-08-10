@@ -58,7 +58,8 @@ func add_player(
 	current_level: int,
 	experience: int,
 	gold: int,
-	inventory: Dictionary
+	inventory: Dictionary,
+	equipment: Dictionary
 ):
 	var player = player_scene.instantiate()
 	player.player = id
@@ -73,6 +74,7 @@ func add_player(
 	# Add to this list for internal tracking
 	players_by_id[id] = player
 	player.inventory.load_items(inventory)
+	player.equipment.load_items(equipment)
 
 
 func remove_player(id: int):
@@ -96,7 +98,8 @@ func _client_disconnected(id):
 			level,
 			players_by_id[id].position,
 			players_by_id[id].inventory.gold,
-			players_by_id[id].inventory.get_output()
+			players_by_id[id].inventory.get_output(),
+			players_by_id[id].equipment.get_output()
 		)
 		CommonConnection.save_character_stats(
 			players_by_id[id].name,
