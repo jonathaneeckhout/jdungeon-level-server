@@ -24,6 +24,9 @@ func _ready():
 	shop.add_item("ManaPotion", 100)
 	shop.add_item("IronSpear", 500)
 	shop.add_item("IronPlateArms", 250)
+	shop.add_item("IronPlateBody", 750)
+	shop.add_item("IronPlateBoots", 150)
+	shop.add_item("IronPlateHelm", 200)
 	shop.add_item("IronPlateLegs", 300)
 
 

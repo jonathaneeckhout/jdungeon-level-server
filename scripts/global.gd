@@ -26,8 +26,15 @@ func item_class_to_item(item_class: String):
 
 		"IronPlateArms":
 			item = load("res://scripts/items/equipment/armours/ironplatearms.gd").new()
+		"IronPlateBody":
+			item = load("res://scripts/items/equipment/armours/ironplatebody.gd").new()
+		"IronPlateBoots":
+			item = load("res://scripts/items/equipment/armours/ironplateboots.gd").new()
+		"IronPlateHelm":
+			item = load("res://scripts/items/equipment/armours/ironplatehelm.gd").new()
 		"IronPlateLegs":
 			item = load("res://scripts/items/equipment/armours/ironplatelegs.gd").new()
+
 	return item
 
 
