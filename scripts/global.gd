@@ -23,6 +23,8 @@ func item_class_to_item(item_class: String):
 
 		"IronSpear":
 			item = load("res://scripts/items/equipment/weapons/ironspear.gd").new()
+		"IronSword":
+			item = load("res://scripts/items/equipment/weapons/ironsword.gd").new()
 
 		"IronPlateArms":
 			item = load("res://scripts/items/equipment/armours/ironplatearms.gd").new()
