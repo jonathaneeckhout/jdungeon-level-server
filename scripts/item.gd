@@ -13,8 +13,10 @@ var amount = 1
 var price = 0
 var max_stack_size = 10
 
+var attack_power = 0
+var attack_speed = 0
+
 var defense = 0
-var attack = 0
 
 
 func use(who: CharacterBody2D):
@@ -33,7 +35,8 @@ func get_output():
 
 	if equipable:
 		output["equipment_slot"] = equipment_slot
+		output["attack_power"] = attack_power
+		output["attack_speed"] = attack_speed
 		output["defense"] = defense
-		output["attack"] = attack
 
 	return output

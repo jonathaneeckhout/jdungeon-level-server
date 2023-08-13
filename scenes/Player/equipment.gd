@@ -2,6 +2,8 @@ extends Node
 
 const SIZE = 10
 
+signal equipment_changed
+
 var equipment = {
 	"Head": null,
 	"Body": null,
@@ -36,6 +38,7 @@ func equip_item(item: Item):
 	LevelsConnection.equip_item.rpc_id(root.player, item.equipment_slot, item.name, item.CLASS)
 
 	# TODO: update player stats
+	equipment_changed.emit()
 
 	return true
 
@@ -51,6 +54,7 @@ func unequip_item(item_uuid: String):
 			root.inventory.add_item(item)
 
 			# TODO: update player stats
+			equipment_changed.emit()
 
 			return item
 
@@ -72,6 +76,21 @@ func get_output():
 			output["equipment"][equipment_slot]["class"] = item.CLASS
 
 	return output
+
+
+func get_stats():
+	var attack_power = 0
+	var attack_speed = 0
+	var defense = 0
+
+	for equipment_slot in equipment:
+		var item = equipment[equipment_slot]
+		if item != null:
+			attack_power += item.attack_power
+			attack_speed += item.attack_speed
+			defense += item.defense
+
+	return {"attack_power": attack_power, "attack_speed": attack_speed, "defense": defense}
 
 
 func load_items(items: Dictionary):

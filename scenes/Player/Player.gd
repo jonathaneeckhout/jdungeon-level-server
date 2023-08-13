@@ -204,7 +204,7 @@ func equip_item(item: Item):
 
 
 func update_hp_bar():
-	$Interface/HPBar.value = (stats.hp / stats.max_hp) * 100
+	$Interface/HPBar.value = (stats.hp * 100 / stats.max_hp)
 
 
 func gain_experience(amount: int):

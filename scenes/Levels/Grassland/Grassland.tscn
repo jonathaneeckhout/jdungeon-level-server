@@ -34,42 +34,42 @@ position = Vector2(487, 83)
 [node name="Wolf" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
 position = Vector2(-31, 768)
 enemy_scene = ExtResource("1_wgwrv")
-respawn_time = 3
+respawn_time = 20
 
 [node name="Wolf2" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
 position = Vector2(50, 876)
 enemy_scene = ExtResource("1_wgwrv")
-respawn_time = 3
+respawn_time = 20
 
 [node name="Wolf3" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
 position = Vector2(-96, 874)
 enemy_scene = ExtResource("1_wgwrv")
-respawn_time = 3
+respawn_time = 20
 
 [node name="Wolf4" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
 position = Vector2(-1415, 1521)
 enemy_scene = ExtResource("1_wgwrv")
-respawn_time = 3
+respawn_time = 20
 
 [node name="Wolf5" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
 position = Vector2(-174, -1560)
 enemy_scene = ExtResource("1_wgwrv")
-respawn_time = 3
+respawn_time = 20
 
 [node name="Bushman" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
 position = Vector2(-993, -23)
 enemy_scene = ExtResource("5_0ew1g")
-respawn_time = 3
+respawn_time = 15
 
 [node name="Bushman2" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
 position = Vector2(-1355, 174)
 enemy_scene = ExtResource("5_0ew1g")
-respawn_time = 3
+respawn_time = 15
 
 [node name="Wolf6" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
 position = Vector2(899, -1464)
 enemy_scene = ExtResource("1_wgwrv")
-respawn_time = 3
+respawn_time = 20
 
 [node name="Ram" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
 position = Vector2(850, -190)
@@ -134,14 +134,17 @@ respawn_time = 10
 [node name="TreeTrunkGuy" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
 position = Vector2(-511, 1717)
 enemy_scene = ExtResource("8_y3kiu")
+respawn_time = 15
 
 [node name="TreeTrunkGuy2" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
 position = Vector2(-664, 1488)
 enemy_scene = ExtResource("8_y3kiu")
+respawn_time = 15
 
 [node name="TreeTrunkGuy3" parent="EnemySpawnLocations" instance=ExtResource("3_tknl2")]
 position = Vector2(-1075, 1200)
 enemy_scene = ExtResource("8_y3kiu")
+respawn_time = 15
 
 [node name="Entities" type="Node2D" parent="."]
 

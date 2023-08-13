@@ -1,6 +1,7 @@
 extends Node
 
 const BASE_EXPERIENCE = 100
+const BASE_MAX_HP = 10
 const BASE_ATTACK_POWER = 1
 const BASE_ATTACK_SPEED = 1.0
 
@@ -22,6 +23,10 @@ var defense: int = 0
 
 func _ready():
 	LevelsConnection.player_requested_stats.connect(_on_player_requested_stats)
+
+	root.equipment.equipment_changed.connect(_on_equipment_changed)
+
+	update_stats()
 
 	experience_needed_for_next_level = calculate_experience_needed_next_level(level)
 
@@ -51,11 +56,22 @@ func add_experience(amount: int):
 
 
 func update_stats():
-	update_attack_power()
+	var equipment_stats = root.equipment.get_stats()
+	update_max_hp(equipment_stats)
+	update_attack_power(equipment_stats)
+
+	LevelsConnection.sync_stats.rpc_id(root.player, get_output())
 
 
-func update_attack_power():
+func update_max_hp(_equipment_stats: Dictionary):
+	max_hp = int(BASE_MAX_HP + (BASE_MAX_HP * level / 2))
+
+	root.update_hp_bar()
+
+
+func update_attack_power(equipment_stats: Dictionary):
 	attack_power = int(BASE_ATTACK_POWER + (BASE_ATTACK_POWER * level / 10))
+	attack_power += equipment_stats["attack_power"]
 
 
 func get_output():
@@ -81,3 +97,7 @@ func _on_player_requested_stats(id: int):
 		return
 
 	LevelsConnection.sync_stats.rpc_id(id, get_output())
+
+
+func _on_equipment_changed():
+	update_stats()
