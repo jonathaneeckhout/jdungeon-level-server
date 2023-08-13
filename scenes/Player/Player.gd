@@ -3,8 +3,7 @@ extends CharacterBody2D
 enum STATES { IDLE, MOVE, ATTACK, LOOT, NPC }
 
 const SPEED = 300.0
-const ATTACK_SPEED = 1.0
-const ATTACK_POWER = 30.0
+
 const ARRIVAL_DISTANCE = 8
 const SAVE_INTERVAL_TIME = 300.0
 
@@ -131,7 +130,7 @@ func _handle_attack():
 
 		if attack_timer.is_stopped():
 			attack(input.interact_target)
-			attack_timer.start(ATTACK_SPEED)
+			attack_timer.start(stats.attack_speed)
 
 	state = STATES.ATTACK
 
@@ -167,7 +166,7 @@ func _handle_npc():
 
 
 func attack(target: CharacterBody2D):
-	target.hurt(self, ATTACK_POWER)
+	target.hurt(self, stats.attack_power)
 	server_synchronizer.sync_attack(position.direction_to(target.position))
 
 

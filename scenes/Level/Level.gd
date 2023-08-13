@@ -76,6 +76,8 @@ func add_player(
 	player.inventory.load_items(inventory)
 	player.equipment.load_items(equipment)
 
+	player.stats.update_stats()
+
 
 func remove_player(id: int):
 	if id in players_by_id:

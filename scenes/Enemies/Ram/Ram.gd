@@ -6,6 +6,12 @@ var behavior_script = load("res://scripts/behaviors/wander.gd")
 var behavior: Node
 
 
+func _init():
+	max_hp = 7
+	attack_power = 2
+	experience = 65
+
+
 func _ready():
 	super()
 	$Interface/Name.text = CLASS

@@ -23,6 +23,11 @@ Global="*res://scripts/global.gd"
 CommonConnection="*res://scripts/commonConnection.gd"
 LevelsConnection="*res://scripts/levelsConnection.gd"
 
+[debug]
+
+gdscript/warnings/integer_division=0
+gdscript/warnings/narrowing_conversion=0
+
 [input]
 
 ui_left={

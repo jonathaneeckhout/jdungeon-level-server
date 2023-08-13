@@ -10,6 +10,7 @@ signal inventory_item_dropped(id: int, item_uuid: String)
 signal shop_item_bought(id: int, vendor: String, item_uuid: String)
 signal equipment_item_removed(id: int, item_uuid: String)
 signal player_requested_equipment(id: int)
+signal player_requested_stats(id: int)
 
 var players = {}
 
@@ -269,6 +270,21 @@ func equip_item(_equipment_slot: String, _item_uuid: String, _item_class: String
 
 
 @rpc("call_remote", "authority", "reliable") func sync_equipment(_inventory: Dictionary):
+	# Placeholder code for server
+	pass
+
+
+@rpc("call_remote", "any_peer", "reliable") func get_stats():
+	var id = multiplayer.get_remote_sender_id()
+
+	# Only allow logged in players
+	if not players[id]["logged_in"]:
+		return
+
+	player_requested_stats.emit(id)
+
+
+@rpc("call_remote", "authority", "reliable") func sync_stats(_stats: Dictionary):
 	# Placeholder code for server
 	pass
 

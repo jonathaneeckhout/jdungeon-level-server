@@ -4,10 +4,10 @@ signal died
 
 const ATTACK_LOCK_TIME = 10.0
 
-var max_hp: float = 100.0
-var hp: float = max_hp
-var attack_power: float = 5.0
-var experience = 100.0
+var max_hp: int = 10
+var hp: int = 0
+var attack_power: int = 1
+var experience = 100
 
 var loot_money
 var loot_table = []
@@ -23,6 +23,8 @@ var loot_scene = load("res://scenes/Loot/Loot.tscn")
 
 
 func _ready():
+	hp = max_hp
+
 	var server_synchronizer_scene = load("res://scenes/ServerSynchronizer/ServerSynchronizer.tscn")
 	server_synchronizer = server_synchronizer_scene.instantiate()
 	add_child(server_synchronizer)

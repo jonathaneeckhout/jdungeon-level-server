@@ -6,6 +6,12 @@ var behavior_script = load("res://scripts/behaviors/wander.gd")
 var behavior: Node
 
 
+func _init():
+	max_hp = 10
+	attack_power = 4
+	experience = 100
+
+
 func _ready():
 	super()
 
