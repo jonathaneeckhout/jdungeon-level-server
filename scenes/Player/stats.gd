@@ -4,6 +4,7 @@ const BASE_EXPERIENCE = 100
 const BASE_MAX_HP = 10
 const BASE_ATTACK_POWER = 1
 const BASE_ATTACK_SPEED = 1.0
+const BASE_DEFENSE = 0
 
 var max_hp: int = 10
 var hp: int = max_hp
@@ -59,6 +60,8 @@ func update_stats():
 	var equipment_stats = root.equipment.get_stats()
 	update_max_hp(equipment_stats)
 	update_attack_power(equipment_stats)
+	update_attack_speed(equipment_stats)
+	update_defense(equipment_stats)
 
 	LevelsConnection.sync_stats.rpc_id(root.player, get_output())
 
@@ -71,7 +74,22 @@ func update_max_hp(_equipment_stats: Dictionary):
 
 func update_attack_power(equipment_stats: Dictionary):
 	attack_power = int(BASE_ATTACK_POWER + (BASE_ATTACK_POWER * level / 10))
-	attack_power += equipment_stats["attack_power"]
+
+	if equipment_stats.has("attack_power"):
+		attack_power += equipment_stats["attack_power"]
+
+
+func update_attack_speed(equipment_stats: Dictionary):
+	attack_speed = BASE_ATTACK_SPEED
+	if equipment_stats.has("attack_speed"):
+		attack_speed = equipment_stats["attack_speed"]
+
+
+func update_defense(equipment_stats: Dictionary):
+	defense = int(BASE_DEFENSE + (BASE_DEFENSE * level / 10))
+
+	if equipment_stats.has("defense"):
+		defense += equipment_stats["defense"]
 
 
 func get_output():

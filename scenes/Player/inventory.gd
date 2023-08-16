@@ -75,6 +75,9 @@ func get_output():
 
 
 func load_items(items: Dictionary):
+	if not items.has("items"):
+		return
+
 	for item_data in items["items"]:
 		var item = Global.create_new_item(item_data["class"], item_data["amount"])
 		if item:

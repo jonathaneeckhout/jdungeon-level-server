@@ -6,4 +6,4 @@ const CLASS = "WoolBody"
 func _init():
 	equipable = true
 	equipment_slot = "Body"
-	defense = 15
+	defense = 3

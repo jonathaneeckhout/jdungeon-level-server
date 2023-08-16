@@ -94,6 +94,9 @@ func get_stats():
 
 
 func load_items(items: Dictionary):
+	if not items.has("equipment"):
+		return
+
 	for equipment_slot in items["equipment"]:
 		if not equipment.has(equipment_slot):
 			continue
