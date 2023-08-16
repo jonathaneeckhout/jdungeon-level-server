@@ -6,7 +6,12 @@ const ATTACK_LOCK_TIME = 10.0
 
 var max_hp: int = 10
 var hp: int = 0
-var attack_power: int = 1
+var attack_power: int = 1:
+	set(value):
+		attack_power = value
+		min_attack_power = int((attack_power * 60) / 100)
+
+var min_attack_power: int = 0
 var experience = 100
 
 var loot_money
@@ -49,7 +54,10 @@ func fsm(_delta):
 
 
 func attack(target: CharacterBody2D):
-	target.hurt(attack_power)
+	var damage = randi_range(min_attack_power, attack_power)
+
+	target.hurt(damage)
+
 	server_synchronizer.sync_attack(position.direction_to(target.position))
 
 

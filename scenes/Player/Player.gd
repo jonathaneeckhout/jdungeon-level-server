@@ -171,10 +171,13 @@ func attack(target: CharacterBody2D):
 
 
 func hurt(damage):
+	# Reduce the damage according to the defense stat
+	var reduced_damage = max(0, damage - stats.defense)
+
 	# Deal damage if health pool is big enough
-	if damage < stats.hp:
-		stats.hp -= damage
-		server_synchronizer.sync_hurt(stats.hp, damage)
+	if reduced_damage < stats.hp:
+		stats.hp -= reduced_damage
+		server_synchronizer.sync_hurt(stats.hp, reduced_damage)
 	# Die if damage is bigger than remaining hp
 	else:
 		die()

@@ -82,7 +82,8 @@ func update_attack_power(equipment_stats: Dictionary):
 func update_attack_speed(equipment_stats: Dictionary):
 	attack_speed = BASE_ATTACK_SPEED
 	if equipment_stats.has("attack_speed"):
-		attack_speed = equipment_stats["attack_speed"]
+		if equipment_stats["attack_speed"] > 0:
+			attack_speed = equipment_stats["attack_speed"]
 
 
 func update_defense(equipment_stats: Dictionary):

@@ -8,7 +8,7 @@ var behavior: Node
 
 func _init():
 	max_hp = 30
-	attack_power = 4
+	attack_power = 36
 	experience = 130
 
 
