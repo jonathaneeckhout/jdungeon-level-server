@@ -70,13 +70,14 @@ func hurt(from: CharacterBody2D, damage: int):
 	if attacker == from:
 		attacker_lock_timer.start(ATTACK_LOCK_TIME)
 
+	server_synchronizer.sync_hurt(hp, damage)
+
 	hp = max(0, hp - damage)
 
 	if hp <= 0:
 		die()
 		return
 
-	server_synchronizer.sync_hurt(hp, damage)
 	update_hp_bar()
 
 

@@ -14,7 +14,13 @@ var experience: int = 0
 
 var experience_needed_for_next_level = BASE_EXPERIENCE
 
-var attack_power: int = BASE_ATTACK_POWER
+var attack_power: int = BASE_ATTACK_POWER:
+	set(value):
+		attack_power = value
+		min_attack_power = int((attack_power * 60) / 100)
+
+var min_attack_power: int = 0
+
 var attack_speed: float = BASE_ATTACK_SPEED
 var defense: int = 0
 

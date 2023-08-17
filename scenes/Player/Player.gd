@@ -166,7 +166,9 @@ func _handle_npc():
 
 
 func attack(target: CharacterBody2D):
-	target.hurt(self, stats.attack_power)
+	var damage = randi_range(stats.min_attack_power, stats.attack_power)
+
+	target.hurt(self, damage)
 	server_synchronizer.sync_attack(position.direction_to(target.position))
 
 
