@@ -1,6 +1,7 @@
 extends Node2D
 
 var level: String = ""
+var level_instance: Node2D
 var players: Node2D
 var npcs: Node2D
 var enemies: Node2D
@@ -16,6 +17,9 @@ var players_by_id = {}
 
 func _ready():
 	Global.level = self
+
+	LevelsConnection.started.connect(_on_levelsconnection_started)
+	LevelsConnection.stopped.connect(_on_levelsconnection_stopped)
 
 	LevelsConnection.logged_in.connect(_on_player_logged_in)
 	multiplayer.peer_disconnected.connect(_client_disconnected)
@@ -33,7 +37,7 @@ func set_level(level_name: String):
 
 	print("Setting level to %s" % level_name)
 
-	var level_instance = scene.instantiate()
+	level_instance = scene.instantiate()
 	self.add_child(level_instance)
 
 	level = level_name
@@ -81,6 +85,11 @@ func remove_player(id: int):
 		print("Removing player %s" % players_by_id[id].name)
 		players_by_id[id].queue_free()
 		players_by_id.erase(id)
+
+
+func remove_all_players():
+	for id in players_by_id:
+		remove_player(id)
 
 
 func get_player_by_id(id: int):
@@ -174,6 +183,15 @@ func get_tilemap_info():
 		info.append({"layer": layer, "data": data})
 
 	return info
+
+
+func _on_levelsconnection_started():
+	pass
+
+
+func _on_levelsconnection_stopped():
+	# Remove all players when the server is not running
+	remove_all_players()
 
 
 func _on_player_logged_in(id: int, username: String, character_name: String):

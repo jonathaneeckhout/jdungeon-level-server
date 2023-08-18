@@ -87,6 +87,9 @@ func _handle_authenticate():
 
 
 func _handle_disconnected():
+	# Stop the level server as the service can not be guaranteed
+	LevelsConnection.stop()
+
 	# Stop the ping timer if disconnected
 	CommonConnection.stop_ping_timer()
 	# Stop the authentication timer if disconnected

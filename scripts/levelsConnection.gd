@@ -1,5 +1,8 @@
 extends Node
 
+signal started
+signal stopped
+
 signal logged_in(id: int, username: String, character: String)
 signal client_disconnected(id: int)
 signal player_moved(id: int, input_sequence: int, pos: Vector2)
@@ -49,6 +52,15 @@ func start():
 		return
 
 	multiplayer.multiplayer_peer = server
+
+	started.emit()
+
+
+func stop():
+	multiplayer.multiplayer_peer.close()
+	multiplayer.multiplayer_peer = null
+
+	stopped.emit()
 
 
 func _client_connected(id):

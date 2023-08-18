@@ -57,18 +57,20 @@ func _on_sync_area_body_exited(body):
 	if body == root:
 		return
 
-	match type:
-		ENTITY_TYPES.PLAYER:
-			LevelsConnection.remove_other_player.rpc_id(root.player, body.name)
-		ENTITY_TYPES.ENEMY:
-			if body.player in multiplayer.get_peers():
-				LevelsConnection.remove_enemy.rpc_id(body.player, root.name)
-		ENTITY_TYPES.ITEM:
-			if body.player in multiplayer.get_peers():
-				LevelsConnection.remove_item.rpc_id(body.player, root.name)
-		ENTITY_TYPES.NPC:
-			if body.player in multiplayer.get_peers():
-				LevelsConnection.remove_npc.rpc_id(body.player, root.name)
+	if multiplayer.multiplayer_peer != null:
+		match type:
+			ENTITY_TYPES.PLAYER:
+				if root.player in multiplayer.get_peers():
+					LevelsConnection.remove_other_player.rpc_id(root.player, body.name)
+			ENTITY_TYPES.ENEMY:
+				if body.player in multiplayer.get_peers():
+					LevelsConnection.remove_enemy.rpc_id(body.player, root.name)
+			ENTITY_TYPES.ITEM:
+				if body.player in multiplayer.get_peers():
+					LevelsConnection.remove_item.rpc_id(body.player, root.name)
+			ENTITY_TYPES.NPC:
+				if body.player in multiplayer.get_peers():
+					LevelsConnection.remove_npc.rpc_id(body.player, root.name)
 
 	players_in_range.erase(body)
 
