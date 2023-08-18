@@ -5,6 +5,53 @@ const DROP_RANGE = 64
 var uuid = load("res://scripts/uuid/uuid.gd")
 var level: Node2D
 
+var env_level: String
+var env_secret: String
+var env_port: int
+var env_max_peers: int
+var env_crt_path: String
+var env_key_path: String
+var env_debug: bool
+var env_common_server_address: String
+
+
+func load_env_variables():
+	env_level = Env.get_value("LEVEL")
+	if env_level == "":
+		return false
+
+	env_secret = Env.get_value("SECRET")
+	if env_secret == "":
+		return false
+
+	var env_port_str = Env.get_value("LEVEL_PORT")
+	if env_port_str == "":
+		return false
+
+	env_port = int(env_port_str)
+
+	var env_max_peers_str = Env.get_value("LEVEL_MAX_PEERS")
+	if env_max_peers_str == "":
+		return false
+
+	env_max_peers = int(env_max_peers_str)
+
+	env_crt_path = Env.get_value("LEVEL_CRT")
+	if env_crt_path == "":
+		return false
+
+	env_key_path = Env.get_value("LEVEL_KEY")
+	if env_key_path == "":
+		return false
+
+	env_debug = Env.get_value("DEBUG") == "true"
+
+	env_common_server_address = Env.get_value("COMMON_SERVER_ADDRESS")
+	if env_common_server_address == "":
+		return false
+
+	return true
+
 
 func item_class_to_item(item_class: String):
 	var item: Item

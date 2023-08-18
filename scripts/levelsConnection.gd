@@ -14,23 +14,23 @@ signal player_requested_stats(id: int)
 
 var players = {}
 
-@onready var port = int(Env.get_value("LEVEL_PORT"))
-@onready var max_peers = int(Env.get_value("LEVEL_MAX_PEERS"))
-@onready var crt_path = Env.get_value("LEVEL_CRT")
-@onready var key_path = Env.get_value("LEVEL_KEY")
-
 
 func _ready():
+	multiplayer.peer_connected.connect(_client_connected)
+	multiplayer.peer_disconnected.connect(_client_disconnected)
+
+
+func start():
 	var server = ENetMultiplayerPeer.new()
 
-	server.create_server(port, max_peers)
+	server.create_server(Global.env_port, Global.env_max_peers)
 
 	if server.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		print("Failed to start levels server.")
 		return
 
-	var cert_file = FileAccess.open(crt_path, FileAccess.READ)
-	var key_file = FileAccess.open(key_path, FileAccess.READ)
+	var cert_file = FileAccess.open(Global.env_crt_path, FileAccess.READ)
+	var key_file = FileAccess.open(Global.env_key_path, FileAccess.READ)
 
 	var cert_string = cert_file.get_as_text()
 	var key_string = key_file.get_as_text()
@@ -49,8 +49,6 @@ func _ready():
 		return
 
 	multiplayer.multiplayer_peer = server
-	multiplayer.peer_connected.connect(_client_connected)
-	multiplayer.peer_disconnected.connect(_client_disconnected)
 
 
 func _client_connected(id):

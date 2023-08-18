@@ -2,9 +2,7 @@ extends Node
 
 signal request_response(res: bool)
 
-@onready var debug = Env.get_value("DEBUG")
-@onready var common_server_address = Env.get_value("COMMON_SERVER_ADDRESS")
-@onready var url = "%s/api/character/stats" % common_server_address
+@onready var url = "%s/api/character/stats" % Global.env_common_server_address
 
 @onready var http_request = HTTPRequest.new()
 
@@ -13,7 +11,7 @@ signal request_response(res: bool)
 func _ready():
 	var client_tls_options: TLSOptions
 
-	if debug == "true":
+	if Global.env_debug:
 		client_tls_options = TLSOptions.client_unsafe()
 	else:
 		client_tls_options = TLSOptions.client()

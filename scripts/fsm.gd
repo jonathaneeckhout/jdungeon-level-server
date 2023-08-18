@@ -9,8 +9,6 @@ var state: STATES = STATES.INIT
 var fsm_timer: Timer
 var auth_retry_timer: Timer
 
-@onready var level = Env.get_value("LEVEL")
-
 
 func _ready():
 	CommonConnection.disconnected.connect(_on_common_server_disconnected)
@@ -47,8 +45,13 @@ func fsm():
 
 
 func _handle_init():
-	if not await Global.level.set_level(level):
-		print("FSM: Failed to load level=[%s], quitting server" % level)
+	if not Global.load_env_variables():
+		print("FSM: Failed to load environment variables, quitting server")
+		get_tree().quit()
+		return
+
+	if not await Global.level.set_level(Global.env_level):
+		print("FSM: Failed to load level=[%s], quitting server" % Global.env_level)
 		get_tree().quit()
 		return
 
@@ -72,7 +75,10 @@ func _handle_authenticate():
 	CommonConnection.start_authentication_timer()
 
 	# Upload the level information to the server
-	await CommonConnection.upload_level_info(level, Global.level.get_info())
+	await CommonConnection.upload_level_info(Global.env_level, Global.level.get_info())
+
+	# Start the level server
+	LevelsConnection.start()
 
 	print("FSM: Authentication with common server done")
 	state = STATES.RUNNING

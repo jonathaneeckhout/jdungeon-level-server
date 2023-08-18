@@ -4,9 +4,7 @@ signal auth_response(response)
 
 const HEADERS = ["Content-Type: application/json"]
 
-@onready var debug = Env.get_value("DEBUG")
-@onready var common_server_address = Env.get_value("COMMON_SERVER_ADDRESS")
-@onready var url = "%s/login/level" % common_server_address
+@onready var url = "%s/login/level" % Global.env_common_server_address
 
 @onready var http_request = HTTPRequest.new()
 
@@ -15,7 +13,7 @@ const HEADERS = ["Content-Type: application/json"]
 func _ready():
 	var client_tls_options: TLSOptions
 
-	if debug == "true":
+	if Global.env_debug:
 		client_tls_options = TLSOptions.client_unsafe()
 	else:
 		client_tls_options = TLSOptions.client()

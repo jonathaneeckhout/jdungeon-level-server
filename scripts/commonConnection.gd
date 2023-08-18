@@ -18,9 +18,6 @@ var cookie = ""
 var ping_timer: Timer
 var authentication_timer: Timer
 
-@onready var level = Env.get_value("LEVEL")
-@onready var secret = Env.get_value("SECRET")
-
 
 func _ready():
 	# Periodically ping the server to check if it is still online
@@ -61,9 +58,9 @@ func stop_authentication_timer():
 func authenticate():
 	var new_req = auth_request.new()
 	add_child(new_req)
-	var res = await new_req.authenticate(level, secret)
+	var res = await new_req.authenticate(Global.env_level, Global.env_secret)
 	new_req.queue_free()
-	print("Authentication level %s %s" % [level, res["response"]])
+	print("Authentication level %s %s" % [Global.env_level, res["response"]])
 	if res["response"]:
 		cookie = res["cookie"]
 	return res["response"]
