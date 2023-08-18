@@ -17,6 +17,7 @@ var players_by_id = {}
 func _ready():
 	Global.level = self
 
+	LevelsConnection.logged_in.connect(_on_player_logged_in)
 	multiplayer.peer_disconnected.connect(_client_disconnected)
 
 
@@ -26,7 +27,7 @@ func set_level(level_name: String):
 	match level_name:
 		"Grassland":
 			scene = load("res://scenes/Levels/Grassland/Grassland.tscn")
-		"_":
+		_:
 			print("Level %s does not exist" % level_name)
 			return false
 
@@ -43,10 +44,6 @@ func set_level(level_name: String):
 	terrain = level_instance.get_node("Entities/Terrain")
 	player_respawn_locations = level_instance.get_node("PlayerRespawnLocations")
 	tilemap = level_instance.get_node("TileMap")
-
-	await CommonConnection.logged_in
-
-	await CommonConnection.upload_level_info(level_name, get_info())
 
 	return true
 
@@ -177,3 +174,42 @@ func get_tilemap_info():
 		info.append({"layer": layer, "data": data})
 
 	return info
+
+
+func _on_player_logged_in(id: int, username: String, character_name: String):
+	print("Player logged in %s" % username)
+	# Get the player's character information
+	var character = await CommonConnection.get_character(username)
+	if character == null:
+		print("Player=[%s], character=[%s] does not exist" % [username, character_name])
+		multiplayer.disconnect_peer(id)
+		return
+
+	if character["level"] != level:
+		print("Player=[%s], connected to the wrong level" % [username])
+		multiplayer.disconnect_peer(id)
+		return
+
+	print("Adding character %s to level %s" % [character["name"], level])
+
+	# Add the player to the level
+	add_player(
+		id,
+		character["name"],
+		character["position"],
+		character["experience_level"],
+		character["experience"],
+		character["gold"],
+		character["inventory"],
+		character["equipment"]
+	)
+
+	LevelsConnection.add_player.rpc_id(
+		id,
+		id,
+		character["name"],
+		character["position"],
+		character["experience_level"],
+		character["experience"],
+		character["gold"]
+	)

@@ -22,6 +22,7 @@ Env="*res://scripts/godotenv/scripts/env.gd"
 Global="*res://scripts/global.gd"
 CommonConnection="*res://scripts/commonConnection.gd"
 LevelsConnection="*res://scripts/levelsConnection.gd"
+FSM="*res://scripts/fsm.gd"
 
 [debug]
 

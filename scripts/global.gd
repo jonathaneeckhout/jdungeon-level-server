@@ -10,7 +10,7 @@ func item_class_to_item(item_class: String):
 	var item: Item
 	match item_class:
 		"Gold":
-			item = load("res://scripts/items/gold.gd").new()
+			item = load("res://scripts/items/varia/gold.gd").new()
 
 		"HealthPotion":
 			item = load("res://scripts/items/consumables/healthPotion.gd").new()
