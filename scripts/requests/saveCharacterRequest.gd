@@ -2,7 +2,7 @@ extends Node
 
 signal request_response(res: bool)
 
-@onready var url = "%s/api/characters" % Global.env_common_server_address
+@onready var url = "%s/level/characters" % Global.env_common_server_address
 
 @onready var http_request = HTTPRequest.new()
 
@@ -26,7 +26,7 @@ func save_character(
 	character: String,
 	level: String,
 	position: Vector2,
-	gold: int,
+	stats: Dictionary,
 	inventory: Dictionary,
 	equipment: Dictionary,
 	cookie: String
@@ -38,7 +38,7 @@ func save_character(
 			"character": character,
 			"level": level,
 			"position": {"x": position.x, "y": position.y},
-			"gold": gold,
+			"stats": stats,
 			"inventory": inventory,
 			"equipment": equipment
 		}

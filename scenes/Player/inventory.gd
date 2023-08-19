@@ -64,7 +64,7 @@ func pay_gold(amount: int):
 
 
 func get_output():
-	var output = {"items": []}
+	var output = {"gold": gold, "items": []}
 
 	for item in inventory:
 		var item_output = item.get_output()
@@ -74,11 +74,10 @@ func get_output():
 	return output
 
 
-func load_items(items: Dictionary):
-	if not items.has("items"):
-		return
+func load_inventory(inventory_data: Dictionary):
+	gold = inventory_data.get("gold", 0)
 
-	for item_data in items["items"]:
+	for item_data in inventory_data.get("items", []):
 		var item = Global.create_new_item(item_data["class"], item_data["amount"])
 		if item:
 			item.name = item_data["uuid"]

@@ -4,7 +4,7 @@ signal auth_response(response)
 
 const HEADERS = ["Content-Type: application/json"]
 
-@onready var url = "%s/login/level" % Global.env_common_server_address
+@onready var url = "%s/level/login" % Global.env_common_server_address
 
 @onready var http_request = HTTPRequest.new()
 

@@ -123,17 +123,17 @@ func sync_experience(current_exp: int, amount: int):
 	gain_experience.rpc_id(root.player, timestamp, current_exp, amount)
 
 
-func sync_level(current_level: int, amount: int):
+func sync_level(current_level: int, amount: int, exp_needed_for_next_level: int):
 	# Only valid for players
 	if type != ENTITY_TYPES.PLAYER:
 		return
 
 	var timestamp = Time.get_unix_time_from_system()
 
-	gain_level.rpc_id(root.player, timestamp, current_level, amount)
+	gain_level.rpc_id(root.player, timestamp, current_level, amount, exp_needed_for_next_level)
 
 	for other_player in players_in_range:
-		gain_level.rpc_id(root.player, timestamp, current_level, amount)
+		gain_level.rpc_id(root.player, timestamp, current_level, amount, exp_needed_for_next_level)
 
 
 @rpc("call_remote", "authority", "unreliable") func sync(
@@ -160,6 +160,7 @@ func gain_experience(_timestamp: int, _current_exp: int, _amount: int):
 	pass
 
 
-@rpc("call_remote", "authority", "reliable")
-func gain_level(_timestamp: int, _current_level: int, _amount: int):
+@rpc("call_remote", "authority", "reliable") func gain_level(
+	_timestamp: int, _current_level: int, _amount: int, _exp_needed_for_next_level: int
+):
 	pass

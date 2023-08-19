@@ -10,7 +10,6 @@ var auth_with_secret_request = load("res://scripts/requests/authWithSecretReques
 var get_ping_request = load("res://scripts/requests/getPingRequest.gd")
 var get_character_request = load("res://scripts/requests/getCharacterRequest.gd")
 var save_character_request = load("res://scripts/requests/saveCharacterRequest.gd")
-var save_character_stats_request = load("res://scripts/requests/saveCharacterStatsRequest.gd")
 var upload_level_info_request = load("res://scripts/requests/uploadLevelInfoRequest.gd")
 
 var cookie = ""
@@ -95,23 +94,15 @@ func save_character(
 	character_name: String,
 	level_name: String,
 	pos: Vector2,
-	gold: int,
+	stats: Dictionary,
 	inventory: Dictionary,
 	equipment: Dictionary
 ):
 	var new_req = save_character_request.new()
 	add_child(new_req)
 	var res = await new_req.save_character(
-		character_name, level_name, pos, gold, inventory, equipment, cookie
+		character_name, level_name, pos, stats, inventory, equipment, cookie
 	)
-	new_req.queue_free()
-	return res
-
-
-func save_character_stats(character_name: String, current_level: int, experience: int):
-	var new_req = save_character_stats_request.new()
-	add_child(new_req)
-	var res = await new_req.save_character_stats(character_name, current_level, experience, cookie)
 	new_req.queue_free()
 	return res
 

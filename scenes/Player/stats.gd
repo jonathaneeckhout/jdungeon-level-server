@@ -37,7 +37,7 @@ func _ready():
 
 	experience_needed_for_next_level = calculate_experience_needed_next_level(level)
 
-	server_synchronizer.sync_level(level, 0)
+	server_synchronizer.sync_level(level, 0, experience_needed_for_next_level)
 	server_synchronizer.sync_experience(experience, 0)
 
 
@@ -48,7 +48,7 @@ func calculate_experience_needed_next_level(current_level: int):
 func add_level(amount: int):
 	level += amount
 	experience_needed_for_next_level = calculate_experience_needed_next_level(level)
-	server_synchronizer.sync_level(level, amount)
+	server_synchronizer.sync_level(level, amount, experience_needed_for_next_level)
 
 
 func add_experience(amount: int):
@@ -101,20 +101,23 @@ func update_defense(equipment_stats: Dictionary):
 
 func get_output():
 	var output = {
-		"stats":
-		{
-			"level": level,
-			"experience": experience,
-			"hp": hp,
-			"max_hp": max_hp,
-			"experience_needed": experience_needed_for_next_level,
-			"attack_power": attack_power,
-			"attack_speed": attack_speed,
-			"defense": defense
-		}
+		"level": level,
+		"experience": experience,
+		"hp": hp,
+		"max_hp": max_hp,
+		"experience_needed": experience_needed_for_next_level,
+		"attack_power": attack_power,
+		"attack_speed": attack_speed,
+		"defense": defense
 	}
 
 	return output
+
+
+func load_stats(stats_data: Dictionary):
+	level = stats_data.get("level", 1)
+	experience = stats_data.get("experience", 0)
+	hp = stats_data.get("hp", max_hp)
 
 
 func _on_player_requested_stats(id: int):

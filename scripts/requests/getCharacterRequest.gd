@@ -2,7 +2,7 @@ extends Node
 
 signal request_response(response)
 
-@onready var url = "%s/api" % Global.env_common_server_address
+@onready var url = "%s/level" % Global.env_common_server_address
 
 @onready var http_request = HTTPRequest.new()
 

@@ -56,9 +56,7 @@ func add_player(
 	id: int,
 	character_name: String,
 	pos: Vector2,
-	current_level: int,
-	experience: int,
-	gold: int,
+	stats: Dictionary,
 	inventory: Dictionary,
 	equipment: Dictionary
 ):
@@ -68,13 +66,14 @@ func add_player(
 	player.level = level
 	player.position = pos
 	player.username = character_name
-	player.stats.level = current_level
-	player.stats.experience = experience
-	player.inventory.gold = gold
+
+	player.stats.load_stats(stats)
+
 	players.add_child(player)
 	# Add to this list for internal tracking
 	players_by_id[id] = player
-	player.inventory.load_items(inventory)
+
+	player.inventory.load_inventory(inventory)
 	player.equipment.load_items(equipment)
 
 	player.stats.update_stats()
@@ -105,14 +104,9 @@ func _client_disconnected(id):
 			players_by_id[id].name,
 			level,
 			players_by_id[id].position,
-			players_by_id[id].inventory.gold,
+			players_by_id[id].stats.get_output(),
 			players_by_id[id].inventory.get_output(),
 			players_by_id[id].equipment.get_output()
-		)
-		CommonConnection.save_character_stats(
-			players_by_id[id].name,
-			players_by_id[id].stats.level,
-			players_by_id[id].stats.experience
 		)
 	remove_player(id)
 
@@ -215,19 +209,9 @@ func _on_player_logged_in(id: int, username: String, character_name: String):
 		id,
 		character["name"],
 		character["position"],
-		character["experience_level"],
-		character["experience"],
-		character["gold"],
+		character["stats"],
 		character["inventory"],
 		character["equipment"]
 	)
 
-	LevelsConnection.add_player.rpc_id(
-		id,
-		id,
-		character["name"],
-		character["position"],
-		character["experience_level"],
-		character["experience"],
-		character["gold"]
-	)
+	LevelsConnection.add_player.rpc_id(id, id, character["name"], character["position"])
