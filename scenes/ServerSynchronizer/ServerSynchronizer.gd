@@ -37,17 +37,17 @@ func _on_sync_area_body_entered(body):
 	match type:
 		ENTITY_TYPES.PLAYER:
 			LevelsConnection.add_other_player.rpc_id(
-				root.player, body.player, body.name, body.position, body.stats.hp
+				root.player, body.player, body.name, body.position, body.stats.hp, body.stats.max_hp
 			)
 		ENTITY_TYPES.ENEMY:
 			LevelsConnection.add_enemy.rpc_id(
-				body.player, root.name, root.CLASS, root.position, root.hp
+				body.player, root.name, root.CLASS, root.position, root.hp, root.max_hp
 			)
 		ENTITY_TYPES.ITEM:
 			LevelsConnection.add_item.rpc_id(body.player, root.name, root.item.CLASS, root.position)
 		ENTITY_TYPES.NPC:
 			LevelsConnection.add_npc.rpc_id(
-				body.player, root.name, root.CLASS, root.position, root.hp
+				body.player, root.name, root.CLASS, root.position, root.hp, root.max_hp
 			)
 
 	players_in_range.append(body)

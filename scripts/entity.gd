@@ -70,9 +70,9 @@ func hurt(from: CharacterBody2D, damage: int):
 	if attacker == from:
 		attacker_lock_timer.start(ATTACK_LOCK_TIME)
 
-	server_synchronizer.sync_hurt(hp, damage)
-
 	hp = max(0, hp - damage)
+
+	server_synchronizer.sync_hurt(hp, damage)
 
 	if hp <= 0:
 		die()
@@ -120,7 +120,7 @@ func gain_experience(_amount: int):
 
 
 func update_hp_bar():
-	$Interface/HPBar.value = (hp / max_hp) * 100
+	$Interface/HPBar.value = (hp * 100 / max_hp)
 
 
 func _on_clock_attack_lock_timer_timeout():

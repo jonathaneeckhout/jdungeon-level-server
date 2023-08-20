@@ -62,7 +62,7 @@ func _handle_init():
 
 
 func _handle_authenticate():
-	# Try to authenticate to the commonserver
+	# Try to authenticate to the common server
 	if not await CommonConnection.authenticate():
 		print("FSM: Failed to authenticate to common server")
 		# Start the retry timer when authentication failed
