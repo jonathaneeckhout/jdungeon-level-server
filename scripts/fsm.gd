@@ -45,11 +45,13 @@ func fsm():
 
 
 func _handle_init():
+	# Load the environment variables
 	if not Global.load_env_variables():
 		print("FSM: Failed to load environment variables, quitting server")
 		get_tree().quit()
 		return
 
+	# Load the level depending on the "LEVEL" environment variable
 	if not await Global.level.set_level(Global.env_level):
 		print("FSM: Failed to load level=[%s], quitting server" % Global.env_level)
 		get_tree().quit()

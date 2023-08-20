@@ -80,11 +80,13 @@ func sync_hurt(current_hp: int, amount: int):
 	if type != ENTITY_TYPES.PLAYER and type != ENTITY_TYPES.ENEMY:
 		return
 
+	var timestamp = Time.get_unix_time_from_system()
+
 	if type == ENTITY_TYPES.PLAYER:
-		hurt.rpc_id(root.player, current_hp, amount)
+		hurt.rpc_id(root.player, timestamp, current_hp, amount)
 
 	for other_player in players_in_range:
-		hurt.rpc_id(other_player.player, current_hp, amount)
+		hurt.rpc_id(other_player.player, timestamp, current_hp, amount)
 
 
 func sync_heal(current_hp: int, amount: int):
@@ -92,11 +94,13 @@ func sync_heal(current_hp: int, amount: int):
 	if type != ENTITY_TYPES.PLAYER and type != ENTITY_TYPES.ENEMY:
 		return
 
+	var timestamp = Time.get_unix_time_from_system()
+
 	if type == ENTITY_TYPES.PLAYER:
-		heal.rpc_id(root.player, current_hp, amount)
+		heal.rpc_id(root.player, timestamp, current_hp, amount)
 
 	for other_player in players_in_range:
-		heal.rpc_id(other_player.player, current_hp, amount)
+		heal.rpc_id(other_player.player, timestamp, current_hp, amount)
 
 
 func sync_attack(direction: Vector2):
@@ -143,11 +147,13 @@ func sync_level(current_level: int, amount: int, exp_needed_for_next_level: int)
 	pass
 
 
-@rpc("call_remote", "authority", "reliable") func hurt(_current_hp: int, _amount: int):
+@rpc("call_remote", "authority", "reliable")
+func hurt(_timestamp: float, _current_hp: int, _amount: int):
 	pass
 
 
-@rpc("call_remote", "authority", "reliable") func heal(_current_hp: int, _amount: int):
+@rpc("call_remote", "authority", "reliable")
+func heal(_timestamp: float, _current_hp: int, _amount: int):
 	pass
 
 
